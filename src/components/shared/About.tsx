@@ -149,7 +149,7 @@ export const About = () => {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
-                className="text-6xl md:text-8xl font-display font-black leading-[0.9] tracking-tighter"
+                className="text-6xl md:text-8xl font-display font-black leading-tight tracking-tighter"
               >
                 Building the <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-400">core of startups.</span>

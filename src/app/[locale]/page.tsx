@@ -53,41 +53,43 @@ export default function Home() {
       <main className="relative z-10">
         
         {/* HERO SECTION: THE MASTER VIEW (MINIMALIST) */}
-        <section className="relative h-screen flex flex-col items-center justify-center container mx-auto px-6 overflow-hidden">
+        <section className="relative min-h-screen flex flex-col items-center container mx-auto px-6 overflow-hidden pt-32 pb-12">
           
-          {/* Top Label */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="flex items-center gap-3 px-5 py-2 rounded-full glass-panel border-white/5 mb-8"
-          >
-            <Terminal className="w-4 h-4 text-primary" />
-            <span className="label-tech text-primary/80 font-bold uppercase">NORTE_SISTEMA // STABLE_BUILD.24</span>
-          </motion.div>
-
-          {/* Main Title (Protagonist) */}
-          <div className="flex flex-col items-center text-center mb-16 cursor-default">
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-              className="font-display text-6xl md:text-8xl lg:text-[9.5rem] font-black tracking-tighter leading-[0.9] max-w-7xl"
+          <div className="flex-1 flex flex-col items-center justify-center w-full">
+            {/* Top Label */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="flex items-center gap-3 px-5 py-2 rounded-full glass-panel border-white/5 mb-8"
             >
-              <span className="block text-foreground/90">
-                {t('hero_title_1')}
-              </span>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-[#9db2ff] to-blue-400">
-                {t('hero_title_2')}
-              </span>
-            </motion.h1>
+              <Terminal className="w-4 h-4 text-primary" />
+              <span className="label-tech text-primary/80 font-bold uppercase">NORTE_SISTEMA // STABLE_BUILD.24</span>
+            </motion.div>
+
+            {/* Main Title (Protagonist) */}
+            <div className="flex flex-col items-center text-center mb-0 cursor-default">
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                className="font-display text-5xl md:text-8xl lg:text-[9rem] font-black tracking-tighter leading-tight max-w-7xl"
+              >
+                <span className="block text-foreground/90">
+                  {t('hero_title_1')}
+                </span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-[#9db2ff] to-blue-400">
+                  {t('hero_title_2')}
+                </span>
+              </motion.h1>
+            </div>
           </div>
 
-          {/* TECH CAROUSEL ANCHORED AT BOTTOM */}
+          {/* TECH CAROUSEL ANCHORED AT BOTTOM (FLOW BASED) */}
           <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1, duration: 1 }}
-              className="absolute bottom-6 w-screen left-1/2 -translate-x-1/2"
+              className="w-screen mt-auto pt-16"
           >
             <div className="text-center mb-4">
               <span className="text-[0.6rem] font-mono tracking-[0.6em] text-primary font-bold uppercase flex items-center justify-center gap-4">

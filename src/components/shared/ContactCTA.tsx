@@ -36,7 +36,7 @@ export const ContactCTA = () => {
             <motion.h2 
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              className="text-6xl md:text-8xl lg:text-9xl font-display font-black tracking-tighter leading-[0.85]"
+              className="text-6xl md:text-8xl lg:text-9xl font-display font-black tracking-tighter leading-tight"
             >
               Ready to scale your <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-400 to-purple-400 animate-gradient">infrastructure?</span>
