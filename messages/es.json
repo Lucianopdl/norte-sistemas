@@ -1,0 +1,85 @@
+{
+  "Index": {
+    "title": "Norte Sistemas - Desarrollo de Software de Élite",
+    "description": "Ingeniería de software premium para PyMEs y Startups.",
+    "cta": "Empezar"
+  },
+  "Navigation": {
+    "home": "Inicio",
+    "services": "Capacidades",
+    "about": "Origen",
+    "contact": "Soporte"
+  },
+  "Services": {
+    "software": {
+      "title": "Software a Medida",
+      "description": "Soluciones únicas diseñadas para los problemas específicos de tu empresa. Sin límites tecnológicos.",
+      "full_description": "Desarrollamos arquitecturas de software robustas y escalables desde cero. Nuestro enfoque prioriza la eficiencia, la mantenibilidad y el rendimiento óptimo ante cargas masivas de tráfico.",
+      "features": ["Desarrollo Backend (Node.js/Go)", "Microservicios & APIs", "Estructuras de Datos Avanzadas", "Optimización de Código Crítico"]
+    },
+    "ai": {
+      "title": "Motores de IA",
+      "description": "Implementación de redes neuronales y automatización inteligente para optimizar procesos críticos.",
+      "full_description": "Integramos soluciones inteligentes que aprenden y evolucionan con tu negocio. Desde procesamiento de lenguaje natural hasta visión artificial y modelos predictivos personalizados.",
+      "features": ["LLMs Customizados", "Modelos de Clasificación", "Automatización Cognitiva", "Integración con OpenAI/Gemini"]
+    },
+    "web": {
+      "title": "Arquitectura Web",
+      "description": "Plataformas SaaS de alto rendimiento con arquitecturas modernas y escalabilidad infinita.",
+      "full_description": "Creamos experiencias digitales que cargan en milisegundos. Utilizamos las tecnologías más modernas para garantizar que cada interacción sea fluida y altamente receptiva.",
+      "features": ["Next.js & React Core", "Server Components (RSC)", "Despliegue Global Edge", "Optimización Core Web Vitals"]
+    },
+    "ecommerce": {
+      "title": "E-commerce & Tiendas Online",
+      "description": "Plataformas de ventas profesionales para vender las 24 hs desde una página propia.",
+      "full_description": "Lleva tu tienda al siguiente nivel con una plataforma diseñada para convertir. Integramos sistemas de pago seguros, gestión de inventario en tiempo real y experiencias de usuario centradas en la venta.",
+      "features": ["Pasarelas de Pago Seguras", "SEO para E-commerce", "Dashboard de Administración", "Stock & Logística Sincronizada"]
+    },
+    "landing": {
+      "title": "Landing Pages Corporativas",
+      "description": "Posicionamiento digital de alto impacto para potenciar tu marca o empresa.",
+      "full_description": "La primera impresión es la que cuenta. Diseñamos landing pages optimizadas para la conversión, con un diseño visual disruptivo que captura la esencia de tu marca y genera leads de calidad.",
+      "features": ["UI/UX Disruptivo", "Animaciones de Altura", "Optimización de Conversión", "Mobile-First Design"]
+    },
+    "software_crm": {
+      "title": "Software & CRM",
+      "description": "Desarrollo a medida para PYMES y sistemas de gestión de clientes para grandes empresas.",
+      "full_description": "Centraliza la información de tus clientes y optimiza tus procesos de venta. Creamos CRMs y herramientas internas que eliminan las fricciones operativas y potencian la productividad de tu equipo.",
+      "features": ["Gestión de Leads", "Automatización de Tareas", "Análisis de Datos & Reportes", "Integración con Cloud-Tools"]
+    },
+    "cyber": {
+      "title": "Ciberseguridad",
+      "description": "Análisis de vulnerabilidades y protección de datos críticos personales o empresariales.",
+      "full_description": "Blindamos tu infraestructura digital. Realizamos auditorías exhaustivas para identificar y corregir fallos de seguridad antes de que puedan ser explotados, garantizando la privacidad de tus datos.",
+      "features": ["Auditorías de Seguridad", "Encriptación de Datos", "Firewall & WAF", "Pentesting Estratégico"]
+    },
+    "support": {
+      "title": "Soporte & Infraestructura",
+      "description": "Asistencia técnica, optimización de PCs y redes Wi-Fi de alta velocidad.",
+      "full_description": "Asistencia técnica de alto nivel para que tu infraestructura nunca sea un problema. Desde el mantenimiento preventivo hasta la arquitectura de redes empresariales robustas y sistemas IT estables.",
+      "features": ["Redes Empresariales", "Mantenimiento Preventivo", "Optimización de Rendimiento", "Sistemas Cloud & On-Prem"]
+    }
+  },
+  "About": {
+    "title": "Ingeniería de Primer Nivel",
+    "description": "En Norte Sistemas, no solo escribimos código; diseñamos el motor del éxito de nuestros clientes. Fusionamos precisión técnica con visión de negocio."
+  },
+  "Contact": {
+    "title": "¿Listo para el siguiente nivel?",
+    "description": "Transformamos tu visión en una realidad técnica impecable. Hablemos de tu próximo gran proyecto."
+  },
+  "Footer": {
+    "nav": {
+      "home": "Inicio",
+      "services": "Capacidades",
+      "about": "Origen"
+    }
+  },
+  "Founder": {
+    "title": "Visión detrás de Norte",
+    "name": "Luciano",
+    "role": "CEO & Founder",
+    "bio": "Comprometido directamente con la excelencia digital. Mi misión es transformar desafíos complejos en soluciones escalables y de alto rendimiento que impulsen el crecimiento de nuestros clientes.",
+    "cta": "Conecta conmigo"
+  }
+}

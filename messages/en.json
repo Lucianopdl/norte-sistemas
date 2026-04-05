@@ -1,0 +1,85 @@
+{
+  "Index": {
+    "title": "Norte Sistemas - Elite Software Development",
+    "description": "Premium software engineering for SMEs and Startups.",
+    "cta": "Get Started"
+  },
+  "Navigation": {
+    "home": "Home",
+    "services": "Capabilities",
+    "about": "Origins",
+    "contact": "Support"
+  },
+  "Services": {
+    "software": {
+      "title": "Custom Software",
+      "description": "Unique solutions designed for the specific problems of your company. No technological limits.",
+      "full_description": "We develop robust and scalable software architectures from scratch. Our focus prioritizes efficiency, maintainability, and optimal performance under heavy traffic loads.",
+      "features": ["Backend Development (Node.js/Go)", "Microservices & APIs", "Advanced Data Structures", "Critical Code Optimization"]
+    },
+    "ai": {
+      "title": "AI Engines",
+      "description": "Implementation of neural networks and intelligent automation to optimize critical processes.",
+      "full_description": "We integrate intelligent solutions that learn and evolve with your business. From natural language processing to computer vision and custom predictive models.",
+      "features": ["Custom LLMs", "Classification Models", "Cognitive Automation", "OpenAI/Gemini Integration"]
+    },
+    "web": {
+      "title": "Web Architecture",
+      "description": "High-performance SaaS platforms with modern architectures and infinite scalability.",
+      "full_description": "We create digital experiences that load in milliseconds. We use the most modern technologies to ensure every interaction is fluid and highly responsive.",
+      "features": ["Next.js & React Core", "Server Components (RSC)", "Global Edge Deployment", "Core Web Vitals Optimization"]
+    },
+    "ecommerce": {
+      "title": "E-commerce & Online Stores",
+      "description": "Professional sales platforms for 24/7 business from your own site.",
+      "full_description": "Take your store to the next level with a platform built to convert. We integrate secure payment systems, real-time inventory management, and sales-focused user experiences.",
+      "features": ["Secure Payment Gateways", "E-commerce SEO", "Admin Dashboard", "Synced Stock & Logistics"]
+    },
+    "landing": {
+      "title": "Corporate Landing Pages",
+      "description": "High-impact digital positioning for your brand or company.",
+      "full_description": "First impressions count. We design conversion-optimized landing pages with disruptive visual designs that capture your brand's essence and generate quality leads.",
+      "features": ["Disruptive UI/UX", "High-End Animations", "Conversion Optimization", "Mobile-First Design"]
+    },
+    "software_crm": {
+      "title": "Software & CRM",
+      "description": "Tailor-made solutions for SMEs and client management systems for large enterprises.",
+      "full_description": "Centralize your client information and optimize your sales processes. We create CRMs and internal tools that eliminate operational friction and boost team productivity.",
+      "features": ["Lead Management", "Task Automation", "Data Analytics & Reports", "Cloud-Tools Integration"]
+    },
+    "cyber": {
+      "title": "Cybersecurity",
+      "description": "Vulnerability analysis and critical data protection for users or companies.",
+      "full_description": "We shield your digital infrastructure. We perform exhaustive audits to identify and fix security flaws before they can be exploited, ensuring data privacy.",
+      "features": ["Security Audits", "Data Encryption", "Firewall & WAF", "Strategic Pentesting"]
+    },
+    "support": {
+      "title": "Support & Infrastructure",
+      "description": "Technical assistance, PC optimization, and high-speed Wi-Fi networking.",
+      "full_description": "Top-tier technical assistance so your infrastructure is never an issue. From preventive maintenance to robust enterprise network architecture and stable IT systems.",
+      "features": ["Enterprise Networking", "Preventive Maintenance", "Performance Optimization", "Cloud & On-Prem Systems"]
+    }
+  },
+  "About": {
+    "title": "Top-Tier Engineering",
+    "description": "At Norte Sistemas, we don't just write code; we design the success engine for our clients. We fuse technical precision with business vision."
+  },
+  "Contact": {
+    "title": "Ready for the next level?",
+    "description": "We transform your vision into impeccable technical reality. Let's talk about your next big project."
+  },
+  "Footer": {
+    "nav": {
+      "home": "Home",
+      "services": "Capabilities",
+      "about": "Origins"
+    }
+  },
+  "Founder": {
+    "title": "Visionary behind Norte",
+    "name": "Luciano",
+    "role": "CEO & Founder",
+    "bio": "Direct committed to digital excellence. My mission is to transform complex challenges into scalable, high-performance solutions that drive the growth of our clients.",
+    "cta": "Connect with me"
+  }
+}
