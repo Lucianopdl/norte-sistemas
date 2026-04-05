@@ -2,7 +2,9 @@
   "Index": {
     "title": "Norte Sistemas - Desarrollo de Software de Élite",
     "description": "Ingeniería de software premium para PyMEs y Startups.",
-    "cta": "Empezar"
+    "cta": "Empezar",
+    "hero_title_1": "INGENIERÍA",
+    "hero_title_2": "SUPERIOR."
   },
   "Navigation": {
     "home": "Inicio",
@@ -62,7 +64,12 @@
   },
   "About": {
     "title": "Ingeniería de Primer Nivel",
-    "description": "En Norte Sistemas, no solo escribimos código; diseñamos el motor del éxito de nuestros clientes. Fusionamos precisión técnica con visión de negocio."
+    "description": "En Norte Sistemas, no solo escribimos código; diseñamos el motor del éxito de nuestros clientes. Fusionamos precisión técnica con visión de negocio.",
+    "stats": {
+      "uptime": "Disponibilidad",
+      "projects": "Proyectos",
+      "support": "Soporte"
+    }
   },
   "Contact": {
     "title": "¿Listo para el siguiente nivel?",

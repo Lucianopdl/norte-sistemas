@@ -32,9 +32,9 @@ export const About = () => {
   const t = useTranslations('About');
 
   const stats = [
-    { label: "UPTIME", value: "99.9%", icon: <Zap className="w-4 h-4 text-primary" /> },
-    { label: "REPOS", value: "150+", icon: <Database className="w-4 h-4 text-cyan-400" /> },
-    { label: "SYSTEMS", value: "24/7", icon: <Globe className="w-4 h-4 text-blue-400" /> }
+    { label: t('stats.uptime'), value: "99.9%", icon: <Zap className="w-4 h-4 text-primary" /> },
+    { label: t('stats.projects'), value: "15+", icon: <Database className="w-4 h-4 text-cyan-400" /> },
+    { label: t('stats.support'), value: "24/7", icon: <Globe className="w-4 h-4 text-blue-400" /> }
   ];
 
   return (

@@ -59,30 +59,25 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="flex items-center gap-3 px-5 py-2 rounded-full glass-panel border-white/5 mb-14"
+            className="flex items-center gap-3 px-5 py-2 rounded-full glass-panel border-white/5 mb-8"
           >
             <Terminal className="w-4 h-4 text-primary" />
             <span className="label-tech text-primary/80 font-bold uppercase">NORTE_SISTEMA // STABLE_BUILD.24</span>
           </motion.div>
 
           {/* Main Title (Protagonist) */}
-          <div className="flex flex-col items-center text-center space-y-12 mb-20 cursor-default">
+          <div className="flex flex-col items-center text-center mb-16 cursor-default">
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-              className="group font-display text-7xl md:text-8xl lg:text-[10rem] font-black tracking-tighter leading-[0.8] max-w-7xl relative"
+              className="font-display text-6xl md:text-8xl lg:text-[9.5rem] font-black tracking-tighter leading-[0.9] max-w-7xl"
             >
-              {/* Fade Transition (Sharp) */}
-              <span className="block group-hover:opacity-0 transition-opacity duration-500 ease-in-out">
-                ENGINEERING <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-[#9db2ff] to-blue-400">
-                  PREMIUM.
-                </span>
+              <span className="block text-foreground/90">
+                {t('hero_title_1')}
               </span>
-              <span className="absolute inset-0 flex flex-col items-center justify-center translate-y-2 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-primary to-purple-500 pointer-events-none">
-                INGENIERÍA <br />
-                SUPERIOR.
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-[#9db2ff] to-blue-400">
+                {t('hero_title_2')}
               </span>
             </motion.h1>
           </div>
@@ -92,7 +87,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1, duration: 1 }}
-              className="absolute bottom-2 w-screen left-1/2 -translate-x-1/2"
+              className="absolute bottom-6 w-screen left-1/2 -translate-x-1/2"
           >
             <div className="text-center mb-4">
               <span className="text-[0.6rem] font-mono tracking-[0.6em] text-primary font-bold uppercase flex items-center justify-center gap-4">

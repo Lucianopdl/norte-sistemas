@@ -2,7 +2,9 @@
   "Index": {
     "title": "Norte Sistemas - Elite Software Development",
     "description": "Premium software engineering for SMEs and Startups.",
-    "cta": "Get Started"
+    "cta": "Get Started",
+    "hero_title_1": "ENGINEERING",
+    "hero_title_2": "PREMIUM."
   },
   "Navigation": {
     "home": "Home",
@@ -62,7 +64,12 @@
   },
   "About": {
     "title": "Top-Tier Engineering",
-    "description": "At Norte Sistemas, we don't just write code; we design the success engine for our clients. We fuse technical precision with business vision."
+    "description": "At Norte Sistemas, we don't just write code; we design the success engine for our clients. We fuse technical precision with business vision.",
+    "stats": {
+      "uptime": "Uptime",
+      "projects": "Projects",
+      "support": "Support"
+    }
   },
   "Contact": {
     "title": "Ready for the next level?",
