@@ -6,6 +6,7 @@ import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { Navbar } from "@/components/shared/Navbar";
 import { Footer } from "@/components/shared/Footer";
+import ElevenLabsAgent from "@/components/shared/ElevenLabsAgent";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -55,6 +56,7 @@ export default async function RootLayout({
           <Navbar />
           {children}
           <Footer />
+          <ElevenLabsAgent />
         </NextIntlClientProvider>
       </body>
     </html>
