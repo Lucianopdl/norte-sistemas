@@ -1,9 +1,12 @@
-import { DetailedHTMLProps, HTMLAttributes } from 'react';
+import React from 'react';
 
-declare global {
+declare module 'react' {
   namespace JSX {
     interface IntrinsicElements {
-      'elevenlabs-convai': DetailedHTMLProps<HTMLAttributes<HTMLElement> & { 'agent-id': string }, HTMLElement>;
+      'elevenlabs-convai': React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement> & { 'agent-id': string },
+        HTMLElement
+      >;
     }
   }
 }
