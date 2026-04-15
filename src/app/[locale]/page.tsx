@@ -9,6 +9,7 @@ import { About } from '@/components/shared/About';
 import { Founder } from '@/components/shared/Founder';
 import { ContactCTA } from '@/components/shared/ContactCTA';
 import { TechCarousel } from '@/components/shared/TechCarousel';
+import CyberneticGridShader from '@/components/ui/cybernetic-grid-shader';
 
 export default function Home() {
   const t = useTranslations('Index');
@@ -30,7 +31,9 @@ export default function Home() {
         style={{ scaleX }}
       />
 
-      {/* 🔮 BACKGROUND CLOUD + GRID + HYPER-PARALLAX */}
+      {/* 🔮 BACKGROUND: CYBERNETIC SHADER + HYPER-PARALLAX VIDEO */}
+      <CyberneticGridShader />
+
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
         <motion.div 
           style={{ y: useTransform(scrollYProgress, [0, 1], [0, -200]) }}
@@ -41,13 +44,11 @@ export default function Home() {
             muted 
             loop 
             playsInline
-            className="absolute inset-0 w-full h-full object-cover opacity-20 contrast-125 saturate-0 scale-110"
+            className="absolute inset-0 w-full h-full object-cover opacity-10 contrast-125 saturate-0 scale-110"
           >
             <source src="https://player.vimeo.com/external/370337605.sd.mp4?s=55d55b05a3f6285491295503410549cf05303960&profile_id=164" type="video/mp4" />
           </video>
         </motion.div>
-        
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
       </div>
 
       <main className="relative z-10">
