@@ -10,6 +10,7 @@ import { Founder } from '@/components/shared/Founder';
 import { ContactCTA } from '@/components/shared/ContactCTA';
 import { TechCarousel } from '@/components/shared/TechCarousel';
 import CyberneticGridShader from '@/components/ui/cybernetic-grid-shader';
+import { SplineScene } from '@/components/ui/spline-scene';
 
 export default function Home() {
   const t = useTranslations('Index');
@@ -117,6 +118,7 @@ export default function Home() {
         <About />
         <Founder />
         <ContactCTA />
+        <SplineScene />
         
       </main>
     </div>
