@@ -34,11 +34,30 @@ export default function ElevenLabsAgent() {
       <style jsx global>{`
         elevenlabs-convai {
           position: fixed;
-          bottom: 1.5rem;
-          left: 1.5rem;
+          bottom: 2rem;
+          left: 2rem;
           z-index: 9999;
-          transform: scale(0.7);
+          transform: scale(0.75);
           transform-origin: bottom left;
+          
+          /* EFECTO NORTE: Oscurecer y virar a azul cian */
+          filter: 
+            invert(0.9) 
+            hue-rotate(170deg) 
+            brightness(1.2)
+            drop-shadow(0 0 15px rgba(0, 240, 255, 0.4));
+          
+          transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+          border-radius: 50%;
+        }
+
+        elevenlabs-convai:hover {
+          transform: scale(0.8) translateY(-5px);
+          filter: 
+            invert(0.9) 
+            hue-rotate(170deg) 
+            brightness(1.5)
+            drop-shadow(0 0 25px rgba(0, 240, 255, 0.6));
         }
       `}</style>
     </div>
