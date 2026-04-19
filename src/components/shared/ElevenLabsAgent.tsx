@@ -35,10 +35,10 @@ export default function ElevenLabsAgent() {
         elevenlabs-convai {
           position: fixed;
           bottom: 1.5rem;
-          right: 1.5rem;
+          left: 1.5rem;
           z-index: 9999;
-          transform: scale(0.75);
-          transform-origin: bottom right;
+          transform: scale(0.7);
+          transform-origin: bottom left;
         }
       `}</style>
     </div>
