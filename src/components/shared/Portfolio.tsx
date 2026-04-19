@@ -71,7 +71,7 @@ export const ProjectCard = ({ project, index }: any) => {
 
         {/* Action Button */}
         <a 
-          href="https://wa.me/5493735609095"
+          href={project.link}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center justify-center w-full py-4 rounded-2xl bg-surface-bright border border-white/10 text-white font-bold text-sm tracking-[0.1em] uppercase hover:bg-primary hover:text-background hover:border-primary transition-all active:scale-[0.98]"

@@ -93,12 +93,12 @@ export default function Home() {
             </div>
 
             {/* RIGHT SIDE: FEATURED PROJECT */}
-            <div className="flex-1 w-full max-w-2xl lg:max-w-none">
+            <div className="w-full lg:w-[450px] shrink-0">
                <motion.div
                  initial={{ opacity: 0, x: 50, scale: 0.9 }}
                  animate={{ opacity: 1, x: 0, scale: 1 }}
                  transition={{ delay: 0.5, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                 className="relative"
+                 className="relative scale-90 lg:scale-100 origin-center lg:origin-right"
                >
                  {/* Decorative background glow for the card */}
                  <div className="absolute -inset-4 bg-primary/20 blur-3xl rounded-full opacity-50 animate-pulse" />

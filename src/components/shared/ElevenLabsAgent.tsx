@@ -34,9 +34,11 @@ export default function ElevenLabsAgent() {
       <style jsx global>{`
         elevenlabs-convai {
           position: fixed;
-          bottom: 2rem;
-          right: 2rem;
+          bottom: 1.5rem;
+          right: 1.5rem;
           z-index: 9999;
+          transform: scale(0.75);
+          transform-origin: bottom right;
         }
       `}</style>
     </div>
