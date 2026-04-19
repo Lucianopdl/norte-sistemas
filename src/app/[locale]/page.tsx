@@ -11,10 +11,12 @@ import { ContactCTA } from '@/components/shared/ContactCTA';
 import { TechCarousel } from '@/components/shared/TechCarousel';
 import { Portfolio } from '@/components/shared/Portfolio';
 import CyberneticGridShader from '@/components/ui/cybernetic-grid-shader';
+import { ProjectCard } from '@/components/shared/Portfolio';
 
 
 export default function Home() {
   const t = useTranslations('Index');
+  const t_portfolio = useTranslations('Portfolio');
   
   // Innovación: Scroll Progress Bar y Efectos de Inercia
   const { scrollYProgress } = useScroll();
@@ -56,35 +58,66 @@ export default function Home() {
       <main className="relative z-10">
         
         {/* HERO SECTION: THE MASTER VIEW (MINIMALIST) */}
-        <section className="relative min-h-screen flex flex-col items-center container mx-auto px-6 overflow-hidden pt-32 pb-12">
+        <section className="relative min-h-screen flex flex-col container mx-auto px-6 overflow-hidden pt-32 pb-12">
           
-          <div className="flex-1 flex flex-col items-center justify-center w-full">
-            {/* Top Label */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="flex items-center gap-3 px-5 py-2 rounded-full glass-panel border-white/5 mb-8"
-            >
-              <Terminal className="w-4 h-4 text-primary" />
-              <span className="label-tech text-primary/80 font-bold uppercase">NORTE_SISTEMA // STABLE_BUILD.24</span>
-            </motion.div>
-
-            {/* Main Title (Protagonist) */}
-            <div className="flex flex-col items-center text-center mb-0 cursor-default">
-              <motion.h1
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                className="font-display text-5xl md:text-8xl lg:text-[9rem] font-black tracking-tighter leading-tight max-w-7xl"
+          <div className="flex-1 flex flex-col lg:flex-row items-center justify-between w-full gap-12 lg:gap-24">
+            
+            {/* LEFT SIDE: TITLES */}
+            <div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left">
+              {/* Top Label */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="flex items-center gap-3 px-5 py-2 rounded-full glass-panel border-white/5 mb-8"
               >
-                <span className="block text-foreground/90">
-                  {t('hero_title_1')}
-                </span>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-[#9db2ff] to-blue-400">
-                  {t('hero_title_2')}
-                </span>
-              </motion.h1>
+                <Terminal className="w-4 h-4 text-primary" />
+                <span className="label-tech text-primary/80 font-bold uppercase">NORTE_SISTEMA // STABLE_BUILD.24</span>
+              </motion.div>
+
+              {/* Main Title (Protagonist) */}
+              <div className="flex flex-col cursor-default">
+                <motion.h1
+                  initial={{ opacity: 0, x: -50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                  className="font-display text-7xl md:text-9xl lg:text-[10rem] font-black tracking-tighter leading-[0.85] max-w-4xl"
+                >
+                  <span className="block text-foreground/90">
+                    {t('hero_title_1')}
+                  </span>
+                  <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary via-[#9db2ff] to-blue-400">
+                    {t('hero_title_2')}
+                  </span>
+                </motion.h1>
+              </div>
             </div>
+
+            {/* RIGHT SIDE: FEATURED PROJECT */}
+            <div className="flex-1 w-full max-w-2xl lg:max-w-none">
+               <motion.div
+                 initial={{ opacity: 0, x: 50, scale: 0.9 }}
+                 animate={{ opacity: 1, x: 0, scale: 1 }}
+                 transition={{ delay: 0.5, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                 className="relative"
+               >
+                 {/* Decorative background glow for the card */}
+                 <div className="absolute -inset-4 bg-primary/20 blur-3xl rounded-full opacity-50 animate-pulse" />
+                 
+                 <ProjectCard 
+                   project={{
+                     id: 'sahara-hero',
+                     title: t_portfolio('projects.sahara.title'),
+                     description: t_portfolio('projects.sahara.description'),
+                     features: t_portfolio.raw('projects.sahara.features'),
+                     cta: t_portfolio('projects.sahara.cta'),
+                     image: '/images/projects/sahara.png',
+                     link: 'https://landing-page-sahara.vercel.app/'
+                   }} 
+                   index={0} 
+                 />
+               </motion.div>
+            </div>
+
           </div>
 
           {/* TECH CAROUSEL ANCHORED AT BOTTOM (FLOW BASED) */}

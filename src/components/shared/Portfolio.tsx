@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { ExternalLink, CheckCircle2, Layout, Smartphone } from 'lucide-react';
 import Image from 'next/image';
 
-const ProjectCard = ({ project, index }: any) => {
+export const ProjectCard = ({ project, index }: any) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
