@@ -4,7 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { ExternalLink, ArrowUp } from 'lucide-react';
-import { Magnetic } from './Magnetic';
+import { Logo } from './Logo';
 
 export const Footer = () => {
   const t = useTranslations('Footer');
@@ -59,12 +59,7 @@ export const Footer = () => {
             transition={{ duration: 0.8 }}
             className="space-y-8 col-span-1 lg:col-span-2"
           >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary to-blue-500 flex items-center justify-center font-display font-black text-black">
-                N
-              </div>
-              <span className="font-display font-black text-2xl tracking-tighter uppercase italic">Sistemas</span>
-            </div>
+            <Logo />
             
             <p className="text-foreground/40 text-lg leading-relaxed max-w-sm font-body">
               Software Agency de nueva generación. Creamos soluciones digitales que impulsan el crecimiento de empresas y startups con ingeniería de grado militar.
