@@ -9,6 +9,7 @@ import { About } from '@/components/shared/About';
 import { Founder } from '@/components/shared/Founder';
 import { ContactCTA } from '@/components/shared/ContactCTA';
 import { TechCarousel } from '@/components/shared/TechCarousel';
+import { Portfolio } from '@/components/shared/Portfolio';
 import CyberneticGridShader from '@/components/ui/cybernetic-grid-shader';
 
 
@@ -114,6 +115,8 @@ export default function Home() {
         >
           <Services />
         </motion.section>
+
+        <Portfolio />
         
         <About />
         <Founder />

@@ -56,21 +56,21 @@ const CyberneticGridShader: React.FC = () => {
         vec2 gridUv = abs(fract(uv * 10.0) - 0.5);
         float line  = pow(1.0 - min(gridUv.x, gridUv.y), 50.0);
 
-        // base grid color pulsing (azul norte-sistemas)
-        vec3 gridColor = vec3(0.1, 0.5, 1.0);
+        // base grid color pulsing (azul oscuro norte-sistemas)
+        vec3 gridColor = vec3(0.0, 0.15, 0.6);
         vec3 color     = gridColor
                        * line
                        * (0.5 + sin(t * 2.0) * 0.2);
 
-        // energetic pulses along grid
+        // energetic pulses along grid (cyan claro)
         float energy = sin(uv.x * 20.0 + t * 5.0)
                      * sin(uv.y * 20.0 + t * 3.0);
         energy = smoothstep(0.8, 1.0, energy);
-        color += vec3(1.0, 0.2, 0.8) * energy * line;
+        color += vec3(0.0, 0.8, 1.0) * energy * line;
 
-        // glow around mouse
+        // glow around mouse (verde neón)
         float glow = smoothstep(0.1, 0.0, mouseDist);
-        color += vec3(1.0) * glow * 0.5;
+        color += vec3(0.2, 1.0, 0.3) * glow * 0.6;
 
         // subtle noise
         color += random(uv + t * 0.1) * 0.05;

@@ -9,6 +9,7 @@
   "Navigation": {
     "home": "Inicio",
     "services": "Capacidades",
+    "portfolio": "Proyectos",
     "about": "Origen",
     "contact": "Soporte"
   },
@@ -88,5 +89,18 @@
     "role": "CEO & Founder",
     "bio": "Comprometido directamente con la excelencia digital. Mi misión es transformar desafíos complejos en soluciones escalables y de alto rendimiento que impulsen el crecimiento de nuestros clientes.",
     "cta": "Conecta conmigo"
+  },
+  "Portfolio": {
+    "title": "Software a la Venta",
+    "subtitle": "Engineering Portfolio / 02",
+    "description": "Soluciones 'Ready-to-Use' desarrolladas con los más altos estándares de calidad e ingeniería de élite.",
+    "projects": {
+      "sahara": {
+        "title": "Sahara Academy",
+        "description": "El arte de gestionar. Administra clases, alumnos y finanzas con la elegancia que tu academia merece.",
+        "features": ["Gestión de Alumnos", "Control de Cobros", "Panel de Finanzas", "Web y App Móvil"],
+        "cta": "Ver Demo"
+      }
+    }
   }
 }

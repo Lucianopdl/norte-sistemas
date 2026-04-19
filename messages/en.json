@@ -9,6 +9,7 @@
   "Navigation": {
     "home": "Home",
     "services": "Capabilities",
+    "portfolio": "Projects",
     "about": "Origins",
     "contact": "Support"
   },
@@ -88,5 +89,18 @@
     "role": "CEO & Founder",
     "bio": "Direct committed to digital excellence. My mission is to transform complex challenges into scalable, high-performance solutions that drive the growth of our clients.",
     "cta": "Connect with me"
+  },
+  "Portfolio": {
+    "title": "Software for Sale",
+    "subtitle": "Engineering Portfolio / 02",
+    "description": "Ready-to-Use solutions developed with the highest quality standards and elite engineering.",
+    "projects": {
+      "sahara": {
+        "title": "Sahara Academy",
+        "description": "The art of managing. Manage classes, students, and finances with the elegance your academy deserves.",
+        "features": ["Student Management", "Payment Control", "Finance Dashboard", "Web & Mobile App"],
+        "cta": "View Demo"
+      }
+    }
   }
 }
