@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { ExternalLink, ArrowUp } from 'lucide-react';
 import { Logo } from './Logo';
+import { Magnetic } from './Magnetic';
 
 export const Footer = () => {
   const t = useTranslations('Footer');
