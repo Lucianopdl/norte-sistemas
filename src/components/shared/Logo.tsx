@@ -11,7 +11,7 @@ export const Logo = ({ className = "" }: { className?: string }) => {
         <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
       </div>
       <div className="flex flex-col font-display ml-1">
-        <span className="text-xl font-black text-white tracking-wider leading-none">
+        <span className="text-xl font-black text-foreground tracking-wider leading-none">
           NORTE
         </span>
         <span className="label-tech text-[8px] font-black text-[#5e5f5f] tracking-[0.4em] uppercase">

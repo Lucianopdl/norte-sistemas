@@ -26,10 +26,10 @@ export const Founder = () => {
             {/* Frame Decoration */}
             <div className="absolute -inset-4 bg-gradient-to-br from-primary/20 via-transparent to-blue-500/20 rounded-[48px] blur-2xl opacity-50" />
             
-            <div className="relative group rounded-[40px] overflow-hidden border border-white/10 bg-surface-low aspect-square shadow-2xl">
+            <div className="relative group rounded-[40px] overflow-hidden border border-outline bg-surface-low aspect-square shadow-2xl">
               <Image 
                 src="/images/founder.png"
-                alt="Luciano - Founder"
+                alt="Luciano - Fundador"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105 saturate-[0.85] group-hover:saturate-100"
               />
@@ -38,16 +38,16 @@ export const Founder = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-60" />
               
               {/* Tech Badge */}
-              <div className="absolute bottom-8 left-8 right-8 p-6 glass-panel border-white/10 rounded-2xl flex justify-between items-center transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+              <div className="absolute bottom-8 left-8 right-8 p-6 glass-panel border-outline rounded-2xl flex justify-between items-center transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
                 <div className="flex flex-col">
-                  <span className="text-[10px] font-mono text-primary font-bold tracking-widest uppercase">Lead Codebase</span>
-                  <span className="text-white font-display font-bold">L_PDL_ARCHITECT</span>
+                  <span className="text-[10px] font-mono text-primary font-bold tracking-widest uppercase">Arquitecto Principal</span>
+                  <span className="text-foreground font-display font-bold">L_PDL_ARCHITECT</span>
                 </div>
                 <div className="flex gap-3">
-                  <a href="https://github.com/Lucianopdl" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-white/5 hover:bg-primary hover:text-black transition-colors">
+                  <a href="https://github.com/Lucianopdl" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-foreground/5 hover:bg-primary hover:text-white transition-colors">
                     <Github className="w-4 h-4" />
                   </a>
-                  <a href="https://www.instagram.com/nortesistemasarg/" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-white/5 hover:bg-primary hover:text-black transition-colors">
+                  <a href="https://www.instagram.com/nortesistemasarg/" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-foreground/5 hover:bg-primary hover:text-white transition-colors">
                     <Instagram className="w-4 h-4" />
                   </a>
                 </div>
@@ -80,10 +80,10 @@ export const Founder = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="text-6xl md:text-7xl font-display font-black tracking-tighter text-white"
+                className="text-6xl md:text-7xl font-display font-black tracking-tighter text-foreground"
               >
                 {t('name')} <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-400">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-500">
                   {t('role')}
                 </span>
               </motion.h2>
@@ -93,7 +93,7 @@ export const Founder = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 }}
-                className="text-xl md:text-2xl text-foreground/50 leading-relaxed font-body font-light max-w-2xl"
+                className="text-xl md:text-2xl text-foreground/70 leading-relaxed font-body font-light max-w-2xl"
               >
                 {t('bio')}
               </motion.p>
@@ -110,17 +110,17 @@ export const Founder = () => {
                 <a 
                   href="https://github.com/Lucianopdl"
                   target="_blank"
-                  className="inline-flex items-center gap-4 bg-white text-black px-10 py-5 rounded-full font-display font-bold text-lg hover:bg-primary transition-colors group"
+                  className="inline-flex items-center gap-4 bg-foreground text-background px-10 py-5 rounded-full font-display font-bold text-lg hover:bg-primary hover:text-white transition-colors group"
                 >
                   {t('cta')}
                   <ArrowUpRight className="w-5 h-5 group-hover:rotate-45 transition-transform" />
                 </a>
               </Magnetic>
               
-              <div className="h-12 w-[1px] bg-white/10" />
+              <div className="h-12 w-[1px] bg-foreground/10" />
               
               <div className="flex gap-6 items-center">
-                 <span className="text-[10px] font-mono text-white/30 tracking-widest uppercase">Verified Expert</span>
+                 <span className="text-[10px] font-mono text-foreground/50 tracking-widest uppercase">Experto Verificado</span>
                  <svg className="w-6 h-6 text-primary fill-current" viewBox="0 0 24 24">
                    <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1.707-6.293l6.414-6.414-1.414-1.414-5 5-2.293-2.293-1.414 1.414 3.707 3.707z" />
                  </svg>

@@ -56,8 +56,8 @@ const CyberneticGridShader: React.FC = () => {
         vec2 gridUv = abs(fract(uv * 10.0) - 0.5);
         float line  = pow(1.0 - min(gridUv.x, gridUv.y), 50.0);
 
-        // base grid color pulsing (azul oscuro norte-sistemas)
-        vec3 gridColor = vec3(0.0, 0.15, 0.6);
+        // base grid color pulsing (azul suave norte-sistemas)
+        vec3 gridColor = vec3(0.0, 0.35, 0.85);
         vec3 color     = gridColor
                        * line
                        * (0.5 + sin(t * 2.0) * 0.2);
@@ -66,16 +66,18 @@ const CyberneticGridShader: React.FC = () => {
         float energy = sin(uv.x * 20.0 + t * 5.0)
                      * sin(uv.y * 20.0 + t * 3.0);
         energy = smoothstep(0.8, 1.0, energy);
-        color += vec3(0.0, 0.8, 1.0) * energy * line;
+        color += vec3(0.0, 0.6, 0.95) * energy * line;
 
-        // glow around mouse (verde neón)
+        // glow around mouse (azul/céleste suave)
         float glow = smoothstep(0.1, 0.0, mouseDist);
-        color += vec3(0.2, 1.0, 0.3) * glow * 0.6;
+        color += vec3(0.0, 0.5, 1.0) * glow * 0.5;
 
         // subtle noise
-        color += random(uv + t * 0.1) * 0.05;
+        color += random(uv + t * 0.1) * 0.01;
 
-        gl_FragColor = vec4(color, 1.0);
+        // Alpha calculation: transparent except where there's grid lines or mouse glow
+        float alpha = max(line * 0.3, glow * 0.4);
+        gl_FragColor = vec4(color, alpha);
       }
     `;
 
@@ -97,6 +99,7 @@ const CyberneticGridShader: React.FC = () => {
       vertexShader,
       fragmentShader,
       uniforms,
+      transparent: true,
     });
 
     const geometry = new THREE.PlaneGeometry(2, 2);
@@ -157,7 +160,7 @@ const CyberneticGridShader: React.FC = () => {
         height:        '100vh',
         zIndex:        0,
         pointerEvents: 'none',
-        opacity:       0.18, // sutil: no compite con el contenido
+        opacity:       0.35, // ajustado para theme claro con transparencias
       }}
     />
   );

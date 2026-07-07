@@ -68,7 +68,7 @@ export default function Home() {
               className="flex items-center gap-3 px-5 py-2 rounded-full glass-panel border-white/5 mb-8"
             >
               <Terminal className="w-4 h-4 text-primary" />
-              <span className="label-tech text-primary/80 font-bold uppercase">NORTE_SISTEMA // STABLE_BUILD.24</span>
+              <span className="label-tech text-primary/80 font-bold uppercase">NORTE_SISTEMAS // VERSION_ESTABLE.26</span>
             </motion.div>
 
             {/* Main Title (Protagonist) */}
@@ -99,7 +99,7 @@ export default function Home() {
             <div className="text-center mb-4">
               <span className="text-[0.6rem] font-mono tracking-[0.6em] text-primary font-bold uppercase flex items-center justify-center gap-4">
                 <span className="w-12 h-[1px] bg-primary/20" />
-                Industry standard STACK
+                STACK TECNOLÓGICO DE ÉLITE
                 <span className="w-12 h-[1px] bg-primary/20" />
               </span>
             </div>

@@ -40,12 +40,12 @@ export const Footer = () => {
   const socialLinks = [
     { icon: officialLogos.gmail, href: "mailto:nortesistemas@gmail.com", color: "text-[#EA4335]", borderColor: "group-hover:border-[#EA4335]/50" },
     { icon: officialLogos.whatsapp, href: "https://wa.me/5493735609095", color: "text-[#25D366]", borderColor: "group-hover:border-[#25D366]/50" },
-    { icon: officialLogos.github, href: "https://github.com/Lucianopdl", color: "text-white", borderColor: "group-hover:border-white/50" },
+    { icon: officialLogos.github, href: "https://github.com/Lucianopdl", color: "text-foreground", borderColor: "group-hover:border-foreground/50" },
     { icon: officialLogos.instagram, href: "https://www.instagram.com/nortesistemasarg/", color: "text-[#E4405F]", borderColor: "group-hover:border-[#E4405F]/50" }
   ];
 
   return (
-    <footer className="relative bg-background border-t border-white/5 pt-32 pb-16 px-6 overflow-hidden">
+    <footer className="relative bg-background border-t border-outline pt-32 pb-16 px-6 overflow-hidden">
       
       {/* Background Glow */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary/10 blur-[120px] rounded-full pointer-events-none" />
@@ -62,7 +62,7 @@ export const Footer = () => {
           >
             <Logo />
             
-            <p className="text-foreground/40 text-lg leading-relaxed max-w-sm font-body">
+            <p className="text-foreground/60 text-lg leading-relaxed max-w-sm font-body">
               Software Agency de nueva generación. Creamos soluciones digitales que impulsan el crecimiento de empresas y startups con ingeniería de grado militar.
             </p>
 
@@ -78,7 +78,7 @@ export const Footer = () => {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`group w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-foreground/40 transition-all duration-300 ${social.borderColor} hover:bg-white/10 shadow-lg`}
+                    className={`group w-12 h-12 rounded-2xl bg-foreground/5 border border-outline flex items-center justify-center text-foreground/40 transition-all duration-300 ${social.borderColor} hover:bg-foreground/10 shadow-lg`}
                   >
                     <span className={social.color}>
                       {social.icon}
@@ -95,7 +95,7 @@ export const Footer = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="space-y-8"
           >
-            <h4 className="font-mono text-primary text-[0.65rem] font-bold tracking-[0.4em] uppercase">Navigation</h4>
+            <h4 className="font-mono text-primary text-[0.65rem] font-bold tracking-[0.4em] uppercase">Navegación</h4>
             <div className="flex flex-col gap-4">
               {[
                 { label: t('nav.home'), href: '/' },
@@ -108,7 +108,7 @@ export const Footer = () => {
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.5 + (idx * 0.1) }}
                     href={link.href} 
-                    className="text-foreground/40 hover:text-white transition-colors flex items-center gap-2 group font-mono text-sm underline-offset-4 hover:underline"
+                    className="text-foreground/60 hover:text-primary transition-colors flex items-center gap-2 group font-mono text-sm underline-offset-4 hover:underline"
                   >
                     {link.label} <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </motion.a>
@@ -124,23 +124,23 @@ export const Footer = () => {
             transition={{ duration: 0.8, delay: 0.6 }}
             className="space-y-8 text-right hidden lg:block"
           >
-            <h4 className="font-mono text-primary text-[0.65rem] font-bold tracking-[0.4em] uppercase">Contact</h4>
+            <h4 className="font-mono text-primary text-[0.65rem] font-bold tracking-[0.4em] uppercase">Contacto</h4>
             <div className="space-y-6">
               <div>
-                <p className="text-white/20 text-[0.6rem] uppercase tracking-widest mb-1">Email</p>
+                <p className="text-foreground/30 text-[0.6rem] uppercase tracking-widest mb-1">Email</p>
                 <a 
                   href="mailto:nortesistemas@gmail.com" 
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white font-body hover:text-primary transition-colors italic group flex items-center justify-end gap-2"
+                  className="text-foreground font-body hover:text-primary transition-colors italic group flex items-center justify-end gap-2"
                 >
                   nortesistemas@gmail.com
                   <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
                 </a>
               </div>
               <div>
-                <p className="text-white/20 text-[0.6rem] uppercase tracking-widest mb-1">Local Node</p>
-                <p className="text-white font-body italic">Chaco- Argentina</p>
+                <p className="text-foreground/30 text-[0.6rem] uppercase tracking-widest mb-1">Nodo Local</p>
+                <p className="text-foreground font-body italic">Chaco - Argentina</p>
               </div>
             </div>
           </motion.div>
@@ -151,12 +151,12 @@ export const Footer = () => {
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
-          className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8"
+          className="pt-12 border-t border-outline flex flex-col md:flex-row justify-between items-center gap-8"
         >
-          <div className="text-foreground/20 text-[0.65rem] font-mono tracking-widest space-x-6">
-            <span>© 2026 NORTE_SISTEMAS // ALL_RIGHTS_RESERVED</span>
-            <span className="hidden md:inline cursor-pointer hover:text-primary transition-colors">PRIVACY_POLICY</span>
-            <span className="hidden md:inline cursor-pointer hover:text-primary transition-colors">TERMS_OF_SERVICE</span>
+          <div className="text-foreground/40 text-[0.65rem] font-mono tracking-widest space-x-6">
+            <span>© 2026 NORTE_SISTEMAS // TODOS_LOS_DERECHOS_RESERVADOS</span>
+            <span className="hidden md:inline cursor-pointer hover:text-primary transition-colors">POLÍTICA_DE_PRIVACIDAD</span>
+            <span className="hidden md:inline cursor-pointer hover:text-primary transition-colors">TÉRMINOS_DE_SERVICIO</span>
           </div>
 
           <Magnetic>
@@ -164,7 +164,7 @@ export const Footer = () => {
               onClick={scrollToTop}
               className="flex items-center gap-3 text-primary font-mono text-[0.65rem] font-bold tracking-[0.3em] uppercase group"
             >
-              Back to top <ArrowUp className="w-4 h-4 group-hover:-translate-y-1 transition-transform" />
+              Volver arriba <ArrowUp className="w-4 h-4 group-hover:-translate-y-1 transition-transform" />
             </button>
           </Magnetic>
         </motion.div>

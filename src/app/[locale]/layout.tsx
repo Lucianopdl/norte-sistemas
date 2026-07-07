@@ -6,7 +6,6 @@ import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { Navbar } from "@/components/shared/Navbar";
 import { Footer } from "@/components/shared/Footer";
-import ElevenLabsAgent from "@/components/shared/ElevenLabsAgent";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -54,12 +53,11 @@ export default async function RootLayout({
       className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-screen bg-[#131313] text-[#e5e2e1] selection:bg-[#00f0ff]/30 selection:text-[#00f0ff]">
+      <body className="min-h-screen bg-background text-foreground selection:bg-primary/20 selection:text-primary">
         <NextIntlClientProvider messages={messages}>
           <Navbar />
           {children}
           <Footer />
-          <ElevenLabsAgent />
         </NextIntlClientProvider>
       </body>
     </html>

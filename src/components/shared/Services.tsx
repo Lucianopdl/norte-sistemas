@@ -41,27 +41,27 @@ const ServiceCard = ({ service, index, onClick }: any) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.1 }}
-      className="glass-card group p-8 rounded-[32px] relative overflow-hidden flex flex-col h-full border-white/5 bg-surface-low/30 cursor-pointer active:scale-[0.98] transition-transform"
+      className="glass-card group p-8 rounded-[32px] relative overflow-hidden flex flex-col h-full border-outline bg-surface-low/30 cursor-pointer active:scale-[0.98] transition-transform"
     >
       <div 
         style={{ transform: "translateZ(75px)", transformStyle: "preserve-3d" }}
         className="relative z-10 flex flex-col h-full"
       >
-        <div className="mb-6 p-3 w-fit rounded-xl bg-surface-bright/50 border border-white/5 group-hover:border-primary/30 group-hover:bg-primary/5 transition-colors">
+        <div className="mb-6 p-3 w-fit rounded-xl bg-surface-bright/20 border border-outline group-hover:border-primary/30 group-hover:bg-primary/5 transition-colors">
           {service.icon}
         </div>
         
-        <h3 className="text-2xl font-display font-bold mb-3 text-white tracking-tight">
+        <h3 className="text-2xl font-display font-bold mb-3 text-foreground tracking-tight">
           {service.title}
         </h3>
         
-        <p className="text-foreground/50 text-sm leading-relaxed mb-10 flex-grow font-body">
+        <p className="text-foreground/60 text-sm leading-relaxed mb-10 flex-grow font-body">
           {service.desc}
         </p>
 
         <Magnetic>
-          <div className="flex items-center gap-2 text-[10px] font-mono font-bold text-primary/40 group-hover:text-primary transition-all tracking-[0.2em] w-fit">
-            <span>DISCOVER_MORE</span>
+          <div className="flex items-center gap-2 text-[10px] font-mono font-bold text-primary/60 group-hover:text-primary transition-all tracking-[0.2em] w-fit">
+            <span>VER_MÁS</span>
             <Rocket className="w-3 h-3 translate-y-[1px]" />
           </div>
         </Magnetic>
@@ -88,7 +88,7 @@ export const Services = () => {
     },
     {
       id: 'ai',
-      icon: <Cpu className="w-8 h-8 text-[#9db2ff]" />,
+      icon: <Cpu className="w-8 h-8 text-secondary" />,
       title: t('ai.title'),
       desc: t('ai.description'),
       full_desc: t('ai.full_description'),
@@ -96,7 +96,7 @@ export const Services = () => {
     },
     {
       id: 'web',
-      icon: <Globe className="w-8 h-8 text-[#00f0ff]" />,
+      icon: <Globe className="w-8 h-8 text-primary" />,
       title: t('web.title'),
       desc: t('web.description'),
       full_desc: t('web.full_description'),
@@ -104,7 +104,7 @@ export const Services = () => {
     },
     {
       id: 'ecommerce',
-      icon: <ShoppingBag className="w-8 h-8 text-[#facc15]" />,
+      icon: <ShoppingBag className="w-8 h-8 text-yellow-600" />,
       title: t('ecommerce.title'),
       desc: t('ecommerce.description'),
       full_desc: t('ecommerce.full_description'),
@@ -112,7 +112,7 @@ export const Services = () => {
     },
     {
       id: 'landing',
-      icon: <Layout className="w-8 h-8 text-[#3b82f6]" />,
+      icon: <Layout className="w-8 h-8 text-blue-600" />,
       title: t('landing.title'),
       desc: t('landing.description'),
       full_desc: t('landing.full_description'),
@@ -120,7 +120,7 @@ export const Services = () => {
     },
     {
       id: 'software_crm',
-      icon: <Layers className="w-8 h-8 text-[#a855f7]" />,
+      icon: <Layers className="w-8 h-8 text-purple-600" />,
       title: t('software_crm.title'),
       desc: t('software_crm.description'),
       full_desc: t('software_crm.full_description'),
@@ -128,7 +128,7 @@ export const Services = () => {
     },
     {
       id: 'cyber',
-      icon: <ShieldCheck className="w-8 h-8 text-[#22c55e]" />,
+      icon: <ShieldCheck className="w-8 h-8 text-green-600" />,
       title: t('cyber.title'),
       desc: t('cyber.description'),
       full_desc: t('cyber.full_description'),
@@ -136,7 +136,7 @@ export const Services = () => {
     },
     {
       id: 'support',
-      icon: <Settings2 className="w-8 h-8 text-[#f97316]" />,
+      icon: <Settings2 className="w-8 h-8 text-orange-600" />,
       title: t('support.title'),
       desc: t('support.description'),
       full_desc: t('support.full_description'),
@@ -154,17 +154,17 @@ export const Services = () => {
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="label-tech text-primary/50 mb-4"
+            className="label-tech text-primary/80 mb-4"
           >
-            Engineering Portfolio / 01
+            Portafolio de Ingeniería / 01
           </motion.div>
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-5xl md:text-6xl font-display font-bold mb-6 text-white tracking-tighter leading-tight"
+            className="text-5xl md:text-6xl font-display font-bold mb-6 text-foreground tracking-tighter leading-tight"
           >
-            Capabilities for <span className="text-primary">high-demand</span> infrastructure.
+            Capacidades para infraestructura de <span className="text-primary">alta demanda</span>.
           </motion.h2>
         </div>
 
@@ -199,23 +199,23 @@ export const Services = () => {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-2xl bg-surface-low border border-white/10 rounded-[40px] overflow-hidden shadow-2xl p-8 md:p-12"
+              className="relative w-full max-w-2xl bg-surface border border-outline rounded-[40px] overflow-hidden shadow-2xl p-8 md:p-12"
             >
               <button 
                 onClick={() => setSelectedId(null)}
-                className="absolute top-8 right-8 p-2 rounded-full bg-white/5 hover:bg-white/10 text-white/50 hover:text-white transition-all z-10"
+                className="absolute top-8 right-8 p-2 rounded-full bg-foreground/5 hover:bg-foreground/10 text-foreground/50 hover:text-foreground transition-all z-10"
               >
                 <X className="w-6 h-6" />
               </button>
 
               <div className="flex flex-col gap-8">
                 <div className="flex items-center gap-6">
-                  <div className="p-4 rounded-2xl bg-white/5 border border-white/5">
+                  <div className="p-4 rounded-2xl bg-surface-low border border-outline">
                     {selectedService.icon}
                   </div>
                   <div>
-                    <h4 className="text-primary font-mono text-xs font-bold tracking-[0.3em] uppercase mb-1">Service Detail</h4>
-                    <h3 className="text-3xl md:text-4xl font-display font-bold text-white">{selectedService.title}</h3>
+                    <h4 className="text-primary font-mono text-xs font-bold tracking-[0.3em] uppercase mb-1">Detalle del Servicio</h4>
+                    <h3 className="text-3xl md:text-4xl font-display font-bold text-foreground">{selectedService.title}</h3>
                   </div>
                 </div>
 
@@ -224,9 +224,9 @@ export const Services = () => {
                     {selectedService.full_desc}
                   </p>
 
-                  <div className="pt-6 border-t border-white/5">
-                    <h5 className="text-white font-display font-bold mb-6 flex items-center gap-2">
-                       <Layers className="w-4 h-4 text-primary" /> Key Features
+                  <div className="pt-6 border-t border-outline">
+                    <h5 className="text-foreground font-display font-bold mb-6 flex items-center gap-2">
+                       <Layers className="w-4 h-4 text-primary" /> Características Clave
                     </h5>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {selectedService.features.map((feature: string, i: number) => (
@@ -235,7 +235,7 @@ export const Services = () => {
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: i * 0.1 }}
                           key={i} 
-                          className="flex items-center gap-3 p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/20 transition-colors"
+                          className="flex items-center gap-3 p-4 rounded-2xl bg-surface-low border border-outline hover:border-primary/20 transition-colors"
                         >
                           <CheckCircle2 className="w-5 h-5 text-primary shrink-0" />
                           <span className="text-foreground/80 text-sm font-medium">{feature}</span>
@@ -248,9 +248,9 @@ export const Services = () => {
                 <div className="mt-4">
                   <button 
                     onClick={() => setSelectedId(null)}
-                    className="w-full py-4 rounded-2xl bg-primary text-background font-bold text-sm tracking-[0.1em] uppercase hover:bg-primary/90 transition-all active:scale-[0.98]"
+                    className="w-full py-4 rounded-2xl bg-primary text-white font-bold text-sm tracking-[0.1em] uppercase hover:bg-primary/90 transition-all active:scale-[0.98]"
                   >
-                    Close Information
+                    Cerrar Información
                   </button>
                 </div>
               </div>

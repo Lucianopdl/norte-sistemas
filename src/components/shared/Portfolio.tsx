@@ -3,7 +3,7 @@
 import React from 'react';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
-import { ExternalLink, CheckCircle2, Layout, Smartphone } from 'lucide-react';
+import { ExternalLink, CheckCircle2, Layout } from 'lucide-react';
 import Image from 'next/image';
 
 export const ProjectCard = ({ project, index }: any) => {
@@ -13,7 +13,7 @@ export const ProjectCard = ({ project, index }: any) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.2 }}
-      className="group relative glass-card rounded-[32px] overflow-hidden border border-white/5 bg-surface-low/30 hover:border-primary/30 transition-all duration-500 max-w-xl mx-auto"
+      className="group relative glass-card rounded-[32px] overflow-hidden border border-outline bg-surface-low/30 hover:border-primary/30 transition-all duration-500 max-w-xl mx-auto"
     >
       {/* Image Container - Más compacto */}
       <div className="relative aspect-[16/8] overflow-hidden">
@@ -38,20 +38,20 @@ export const ProjectCard = ({ project, index }: any) => {
       {/* Content - Padding reducido */}
       <div className="p-6 md:p-8 relative z-20">
         <div className="flex justify-between items-start mb-3">
-          <h3 className="text-2xl font-display font-bold text-white tracking-tight group-hover:text-primary transition-colors">
+          <h3 className="text-2xl font-display font-bold text-foreground tracking-tight group-hover:text-primary transition-colors">
             {project.title}
           </h3>
           <a 
             href={project.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-2 rounded-xl bg-white/5 border border-white/5 hover:bg-primary hover:text-background transition-all"
+            className="p-2 rounded-xl bg-foreground/5 border border-outline hover:bg-primary hover:text-white transition-all"
           >
             <ExternalLink className="w-4 h-4" />
           </a>
         </div>
 
-        <p className="text-foreground/50 text-sm leading-relaxed mb-6 font-body line-clamp-2">
+        <p className="text-foreground/60 text-sm leading-relaxed mb-6 font-body line-clamp-2">
           {project.description}
         </p>
 
@@ -70,7 +70,7 @@ export const ProjectCard = ({ project, index }: any) => {
           href={project.link}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center w-full py-3.5 rounded-xl bg-surface-bright border border-white/10 text-white font-bold text-xs tracking-[0.1em] uppercase hover:bg-primary hover:text-background hover:border-primary transition-all active:scale-[0.98]"
+          className="inline-flex items-center justify-center w-full py-3.5 rounded-xl bg-surface-low border border-outline text-foreground hover:bg-primary hover:text-white hover:border-primary font-bold text-xs tracking-[0.1em] uppercase transition-all active:scale-[0.98]"
         >
           {project.cta}
         </a>
@@ -105,7 +105,7 @@ export const Portfolio = () => {
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="label-tech text-primary/50 mb-4"
+            className="label-tech text-primary/80 mb-4"
           >
             {t('subtitle')}
           </motion.div>
@@ -113,7 +113,7 @@ export const Portfolio = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-5xl md:text-6xl font-display font-bold mb-6 text-white tracking-tighter leading-tight"
+            className="text-5xl md:text-6xl font-display font-bold mb-6 text-foreground tracking-tighter leading-tight"
           >
             {t('title').split(' ')[0]} <span className="text-primary">{t('title').split(' ').slice(1).join(' ')}</span>
           </motion.h2>
@@ -122,7 +122,7 @@ export const Portfolio = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-xl text-foreground/50 max-w-2xl font-body"
+            className="text-xl text-foreground/70 max-w-2xl font-body"
           >
             {t('description')}
           </motion.p>
