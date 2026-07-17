@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, MessageCircle } from 'lucide-react';
+import { Menu, X, MessageCircle, Sun, Moon } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { Logo } from './Logo';
 
@@ -11,14 +11,35 @@ export const Navbar = () => {
   const t = useTranslations('Navigation');
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
     window.addEventListener('scroll', handleScroll);
+
+    // Initial theme detection
+    if (document.documentElement.classList.contains('dark')) {
+      setTheme('dark');
+    } else {
+      setTheme('light');
+    }
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const toggleTheme = () => {
+    if (theme === 'light') {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+      setTheme('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+      setTheme('light');
+    }
+  };
 
   const navLinks = [
     { name: t('home'), href: '/' },
@@ -53,6 +74,19 @@ export const Navbar = () => {
               <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full" />
             </Link>
           ))}
+
+          {/* Theme Toggle Switcher (Desktop) */}
+          <button
+            onClick={toggleTheme}
+            className="p-2.5 rounded-full hover:bg-foreground/5 text-foreground/75 hover:text-foreground transition-all border border-outline/10 flex items-center justify-center active:scale-95 cursor-pointer"
+            aria-label="Toggle Theme"
+          >
+            {theme === 'dark' ? (
+              <Sun className="w-[18px] h-[18px] text-yellow-500 fill-yellow-500/20" />
+            ) : (
+              <Moon className="w-[18px] h-[18px] text-[#4285F4] fill-[#4285F4]/20" />
+            )}
+          </button>
           
           <div className="flex items-center gap-8 border-l border-foreground/10 pl-8">
             <a 
@@ -74,14 +108,27 @@ export const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Toggle */}
-        <button 
-          className="lg:hidden p-2 text-foreground z-50 absolute right-6"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          aria-label="Menu"
-        >
-          {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
+        {/* Mobile Actions: Theme Switcher & Toggle */}
+        <div className="lg:hidden flex items-center gap-2 absolute right-6 z-50">
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-full hover:bg-foreground/5 text-foreground/75 flex items-center justify-center border border-outline/10 active:scale-95 cursor-pointer"
+            aria-label="Toggle Theme"
+          >
+            {theme === 'dark' ? (
+              <Sun className="w-[18px] h-[18px] text-yellow-500 fill-yellow-500/20" />
+            ) : (
+              <Moon className="w-[18px] h-[18px] text-[#4285F4] fill-[#4285F4]/20" />
+            )}
+          </button>
+          <button 
+            className="p-2 text-foreground"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Menu"
+          >
+            {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
+        </div>
       </nav>
 
       {/* Mobile Menu */}

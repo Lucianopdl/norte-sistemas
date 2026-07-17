@@ -6,56 +6,56 @@ import { Magnetic } from './Magnetic';
 
 const colorMap = {
   blue: {
-    text: 'text-[#1967D2]',
-    bg: 'bg-[#E8F0FE]',
-    border: 'border-[#1967D2]/20',
-    hoverBorder: 'group-hover:border-[#1967D2]/45',
-    hoverBg: 'group-hover:bg-[#d2e3fc]',
-    containerBg: 'bg-[#d2e3fc]',
-    onContainerText: 'text-[#1967D2]',
-    chipBg: 'bg-[#1967D2]/10 border-[#1967D2]/15',
-    chipText: 'text-[#1a3d7c]',
-    inkBg: 'bg-[#1967D2]/5',
-    cardBg: 'bg-[#E8F0FE]'
+    text: 'text-[#1967D2] dark:text-[#8ab4f8]',
+    bg: 'bg-[#E8F0FE] dark:bg-[#1b2f56]',
+    border: 'border-[#1967D2]/20 dark:border-[#8ab4f8]/30',
+    hoverBorder: 'group-hover:border-[#1967D2]/45 dark:group-hover:border-[#8ab4f8]/50',
+    hoverBg: 'group-hover:bg-[#d2e3fc] dark:group-hover:bg-[#203767]',
+    containerBg: 'bg-[#d2e3fc] dark:bg-[#203767]',
+    onContainerText: 'text-[#1967D2] dark:text-[#8ab4f8]',
+    chipBg: 'bg-[#1967D2]/10 dark:bg-[#8ab4f8]/10 border-[#1967D2]/15 dark:border-[#8ab4f8]/20',
+    chipText: 'text-[#1a3d7c] dark:text-[#d2e3fc]',
+    inkBg: 'bg-[#1967D2]/5 dark:bg-[#8ab4f8]/5',
+    cardBg: 'bg-[#E8F0FE] dark:bg-[#131a26]'
   },
   red: {
-    text: 'text-[#C5221F]',
-    bg: 'bg-[#FCE8E6]',
-    border: 'border-[#C5221F]/20',
-    hoverBorder: 'group-hover:border-[#C5221F]/45',
-    hoverBg: 'group-hover:bg-[#fad2cf]',
-    containerBg: 'bg-[#fad2cf]',
-    onContainerText: 'text-[#C5221F]',
-    chipBg: 'bg-[#C5221F]/10 border-[#C5221F]/15',
-    chipText: 'text-[#7a1c12]',
-    inkBg: 'bg-[#C5221F]/5',
-    cardBg: 'bg-[#FCE8E6]'
+    text: 'text-[#C5221F] dark:text-[#f28b82]',
+    bg: 'bg-[#FCE8E6] dark:bg-[#3c1e1a]',
+    border: 'border-[#C5221F]/20 dark:border-[#f28b82]/30',
+    hoverBorder: 'group-hover:border-[#C5221F]/45 dark:group-hover:border-[#f28b82]/50',
+    hoverBg: 'group-hover:bg-[#fad2cf] dark:group-hover:bg-[#522722]',
+    containerBg: 'bg-[#fad2cf] dark:bg-[#522722]',
+    onContainerText: 'text-[#C5221F] dark:text-[#f28b82]',
+    chipBg: 'bg-[#C5221F]/10 dark:bg-[#f28b82]/10 border-[#C5221F]/15 dark:border-[#f28b82]/20',
+    chipText: 'text-[#7a1c12] dark:text-[#fad2cf]',
+    inkBg: 'bg-[#C5221F]/5 dark:bg-[#f28b82]/5',
+    cardBg: 'bg-[#FCE8E6] dark:bg-[#251515]'
   },
   green: {
-    text: 'text-[#137333]',
-    bg: 'bg-[#E6F4EA]',
-    border: 'border-[#137333]/20',
-    hoverBorder: 'group-hover:border-[#137333]/45',
-    hoverBg: 'group-hover:bg-[#ceead6]',
-    containerBg: 'bg-[#ceead6]',
-    onContainerText: 'text-[#137333]',
-    chipBg: 'bg-[#137333]/10 border-[#137333]/15',
-    chipText: 'text-[#125827]',
-    inkBg: 'bg-[#137333]/5',
-    cardBg: 'bg-[#E6F4EA]'
+    text: 'text-[#137333] dark:text-[#81c995]',
+    bg: 'bg-[#E6F4EA] dark:bg-[#15341c]',
+    border: 'border-[#137333]/20 dark:border-[#81c995]/30',
+    hoverBorder: 'group-hover:border-[#137333]/45 dark:group-hover:border-[#81c995]/50',
+    hoverBg: 'group-hover:bg-[#ceead6] dark:group-hover:bg-[#204e2b]',
+    containerBg: 'bg-[#ceead6] dark:bg-[#204e2b]',
+    onContainerText: 'text-[#137333] dark:text-[#81c995]',
+    chipBg: 'bg-[#137333]/10 dark:bg-[#81c995]/10 border-[#137333]/15 dark:border-[#81c995]/20',
+    chipText: 'text-[#125827] dark:text-[#ceead6]',
+    inkBg: 'bg-[#137333]/5 dark:bg-[#81c995]/5',
+    cardBg: 'bg-[#E6F4EA] dark:bg-[#111f16]'
   },
   yellow: {
-    text: 'text-[#B06000]',
-    bg: 'bg-[#FEF7E0]',
-    border: 'border-[#B06000]/20',
-    hoverBorder: 'group-hover:border-[#B06000]/45',
-    hoverBg: 'group-hover:bg-[#feefc3]',
-    containerBg: 'bg-[#feefc3]',
-    onContainerText: 'text-[#B06000]',
-    chipBg: 'bg-[#B06000]/10 border-[#B06000]/15',
-    chipText: 'text-[#6e4e00]',
-    inkBg: 'bg-[#B06000]/5',
-    cardBg: 'bg-[#FEF7E0]'
+    text: 'text-[#B06000] dark:text-[#fdd663]',
+    bg: 'bg-[#FEF7E0] dark:bg-[#3d2a06]',
+    border: 'border-[#B06000]/20 dark:border-[#fdd663]/30',
+    hoverBorder: 'group-hover:border-[#B06000]/45 dark:group-hover:border-[#fdd663]/50',
+    hoverBg: 'group-hover:bg-[#feefc3] dark:group-hover:bg-[#523b0f]',
+    containerBg: 'bg-[#feefc3] dark:bg-[#523b0f]',
+    onContainerText: 'text-[#B06000] dark:text-[#fdd663]',
+    chipBg: 'bg-[#B06000]/10 dark:bg-[#fdd663]/10 border-[#B06000]/15 dark:border-[#fdd663]/20',
+    chipText: 'text-[#6e4e00] dark:text-[#feefc3]',
+    inkBg: 'bg-[#B06000]/5 dark:bg-[#fdd663]/5',
+    cardBg: 'bg-[#FEF7E0] dark:bg-[#211b11]'
   }
 };
 
@@ -114,7 +114,7 @@ const ServiceCard = ({ service, index, onClick }: any) => {
           {/* Volumetric base sheet */}
           <div 
             style={{ transform: "translateZ(20px)", transformStyle: "preserve-3d" }}
-            className={`absolute inset-0 rounded-[8px] bg-white border ${colors.border} shadow-[0_6px_12px_rgba(0,0,0,0.08)] flex items-center justify-center transition-all duration-300`}
+            className={`absolute inset-0 rounded-[8px] bg-white dark:bg-[#1a1d24] border ${colors.border} shadow-[0_6px_12px_rgba(0,0,0,0.08)] flex items-center justify-center transition-all duration-300`}
           >
             {/* The icon floating/pulsing above base */}
             <motion.div
@@ -132,7 +132,7 @@ const ServiceCard = ({ service, index, onClick }: any) => {
           {service.title}
         </h3>
         
-        <p className="text-[#3c4043] text-sm leading-relaxed mb-10 flex-grow font-body font-medium">
+        <p className="text-[#3c4043] dark:text-foreground/75 text-sm leading-relaxed mb-10 flex-grow font-body font-medium">
           {service.desc}
         </p>
 
@@ -289,7 +289,7 @@ export const Services = () => {
             >
               <button 
                 onClick={() => setSelectedId(null)}
-                className={`absolute top-8 right-8 p-2.5 rounded-full bg-surface-low hover:${selectedColors.containerBg} text-foreground/60 hover:${selectedColors.text} transition-all z-10 border border-outline`}
+                className={`absolute top-8 right-8 p-2.5 rounded-full bg-surface-low hover:${selectedColors.containerBg} text-foreground/60 hover:${selectedColors.text} dark:text-foreground/80 transition-all z-10 border border-outline`}
               >
                 <X className="w-5 h-5" />
               </button>
@@ -299,7 +299,7 @@ export const Services = () => {
                   {/* Square icon container inside modal */}
                   <div 
                     style={{ transformStyle: "preserve-3d" }}
-                    className={`p-4 rounded-[8px] bg-white border ${selectedColors.border} shadow-sm`}
+                    className={`p-4 rounded-[8px] bg-white dark:bg-[#1a1d24] border ${selectedColors.border} shadow-sm`}
                   >
                     {React.cloneElement(selectedService.icon, { className: `w-8 h-8 ${selectedColors.text}` })}
                   </div>
@@ -310,7 +310,7 @@ export const Services = () => {
                 </div>
 
                 <div className="space-y-6">
-                  <p className="text-[#3c4043] text-lg leading-relaxed font-body font-medium">
+                  <p className="text-[#3c4043] dark:text-foreground/75 text-lg leading-relaxed font-body font-medium">
                     {selectedService.full_desc}
                   </p>
 

@@ -28,6 +28,34 @@
   --surface-bright: #cbd5e1;
 }
 
+.dark {
+  --background: #0b0c0e; /* Matte pure black/slate */
+  --foreground: #f1f5f9; /* Off-white */
+  
+  --primary-variant: #4285F4;
+  --tertiary: #cbd5e1;
+  
+  /* Material 3 Color Tokens */
+  --md-sys-color-primary: #4285F4;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #1b2f56;
+  --md-sys-color-on-primary-container: #d2e3fc;
+  --md-sys-color-secondary: #a8b3e5;
+  --md-sys-color-secondary-container: #2e3966;
+  --md-sys-color-surface: #121418;
+  --md-sys-color-surface-variant: #1a1d24;
+  --md-sys-color-on-surface: #f1f5f9;
+  --md-sys-color-on-surface-variant: #c4c7d0;
+  --md-sys-color-outline: rgba(255, 255, 255, 0.12);
+  --md-sys-color-outline-variant: rgba(255, 255, 255, 0.06);
+
+  /* Layering Strategy */
+  --surface: #121418;
+  --surface-low: #1a1d24;
+  --surface-high: #242933;
+  --surface-bright: #383f4d;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
