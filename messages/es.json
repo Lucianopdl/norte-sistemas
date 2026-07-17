@@ -1,10 +1,10 @@
 {
   "Index": {
-    "title": "Norte Sistemas - Desarrollo de Software de Élite",
+    "title": "AtlaSys - Desarrollo de Software de Élite",
     "description": "Ingeniería de software premium para PyMEs y Startups.",
     "cta": "Empezar",
-    "hero_title_1": "NORTE",
-    "hero_title_2": "SISTEMAS"
+    "hero_title_1": "ATLA",
+    "hero_title_2": "SYS"
   },
   "Navigation": {
     "home": "Inicio",
@@ -65,7 +65,7 @@
   },
   "About": {
     "title": "Ingeniería de Primer Nivel",
-    "description": "En Norte Sistemas, no solo escribimos código; diseñamos el motor del éxito de nuestros clientes. Fusionamos precisión técnica con visión de negocio.",
+    "description": "En AtlaSys, no solo escribimos código; diseñamos el motor del éxito de nuestros clientes. Fusionamos precisión técnica con visión de negocio.",
     "stats": {
       "uptime": "Disponibilidad",
       "projects": "Proyectos",
@@ -84,7 +84,7 @@
     }
   },
   "Founder": {
-    "title": "Visión detrás de Norte",
+    "title": "Visión detrás de AtlaSys",
     "name": "Luciano",
     "role": "CEO & Founder",
     "bio": "Comprometido directamente con la excelencia digital. Mi misión es transformar desafíos complejos en soluciones escalables y de alto rendimiento que impulsen el crecimiento de nuestros clientes.",

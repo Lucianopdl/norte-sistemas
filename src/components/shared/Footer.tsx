@@ -50,7 +50,7 @@ export const Footer = () => {
       {/* Background Glow */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary/10 blur-[120px] rounded-full pointer-events-none" />
 
-      <div className="container mx-auto max-w-7xl relative z-10">
+      <div className="container mx-auto relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 lg:gap-24 mb-24">
           
           {/* Brand Identity */}
@@ -154,7 +154,7 @@ export const Footer = () => {
           className="pt-12 border-t border-outline flex flex-col md:flex-row justify-between items-center gap-8"
         >
           <div className="text-foreground/40 text-[0.65rem] font-mono tracking-widest space-x-6">
-            <span>© 2026 NORTE_SISTEMAS // TODOS_LOS_DERECHOS_RESERVADOS</span>
+            <span>© 2026 ATLASYS // TODOS_LOS_DERECHOS_RESERVADOS</span>
             <span className="hidden md:inline cursor-pointer hover:text-primary transition-colors">POLÍTICA_DE_PRIVACIDAD</span>
             <span className="hidden md:inline cursor-pointer hover:text-primary transition-colors">TÉRMINOS_DE_SERVICIO</span>
           </div>

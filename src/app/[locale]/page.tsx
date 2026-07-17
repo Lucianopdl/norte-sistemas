@@ -2,10 +2,10 @@
 
 import React, { useEffect } from 'react';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { Terminal } from 'lucide-react';
 import { Services } from '@/components/shared/Services';
-import { About } from '@/components/shared/About';
 import { Founder } from '@/components/shared/Founder';
 import { ContactCTA } from '@/components/shared/ContactCTA';
 import { TechCarousel } from '@/components/shared/TechCarousel';
@@ -57,35 +57,46 @@ export default function Home() {
 
       <main className="relative z-10">
         
-        {/* HERO SECTION: THE MASTER VIEW (MINIMALIST) */}
-        <section className="relative min-h-screen flex flex-col items-center container mx-auto px-6 overflow-hidden pt-32 pb-12">
+        {/* HERO SECTION: THE MASTER VIEW (TWO-COLUMN GRID) */}
+        <section className="relative min-h-screen flex flex-col justify-center container mx-auto px-6 overflow-hidden pt-32 pb-12">
           
-          <div className="flex-1 flex flex-col items-center justify-center w-full">
-            {/* Top Label */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="flex items-center gap-3 px-5 py-2 rounded-full glass-panel border-white/5 mb-8"
-            >
-              <Terminal className="w-4 h-4 text-primary" />
-              <span className="label-tech text-primary/80 font-bold uppercase">NORTE_SISTEMAS // VERSION_ESTABLE.26</span>
-            </motion.div>
+          <div className="flex-1 flex flex-col lg:flex-row items-center justify-center w-full gap-12 lg:gap-16 my-auto">
+            <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center w-full">
+                    {/* LEFT COLUMN: BRAND TITLE */}
+              <div className="lg:col-start-3 lg:col-span-5 flex flex-col justify-center items-start text-left space-y-6 md:space-y-8">
+                {/* Top Label */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex items-center gap-3 px-5 py-2 rounded-full glass-panel border-white/5"
+                >
+                  <Terminal className="w-4 h-4 text-primary" />
+                  <span className="label-tech text-primary/80 font-bold uppercase">ATLASYS // VERSION_ESTABLE.26</span>
+                </motion.div>
 
-            {/* Main Title (Protagonist) */}
-            <div className="flex flex-col items-center text-center mb-0 cursor-default">
-              <motion.h1
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                className="font-display text-7xl md:text-9xl lg:text-[10rem] font-black tracking-tighter leading-[0.85] max-w-7xl"
-              >
-                <span className="block text-foreground/90">
-                  {t('hero_title_1')}
-                </span>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-[#9db2ff] to-blue-400">
-                  {t('hero_title_2')}
-                </span>
-              </motion.h1>
+                {/* Main Title (Protagonist) */}
+                <div className="cursor-default">
+                  <motion.h1
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                    className="font-display text-8xl md:text-[10rem] lg:text-[11.5rem] xl:text-[13rem] 2xl:text-[15rem] font-black tracking-tighter leading-[0.8] text-left"
+                  >
+                    <span className="block text-foreground/90">
+                      {t('hero_title_1')}
+                    </span>
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-[#9db2ff] to-blue-400">
+                      {t('hero_title_2')}
+                    </span>
+                  </motion.h1>
+                </div>
+              </div>
+
+              {/* RIGHT COLUMN: FOUNDER */}
+              <div className="lg:col-span-5 w-full">
+                <Founder />
+              </div>
+              
             </div>
           </div>
 
@@ -94,7 +105,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1, duration: 1 }}
-              className="w-screen mt-auto pt-16"
+              className="w-full mt-auto pt-16"
           >
             <div className="text-center mb-4">
               <span className="text-[0.6rem] font-mono tracking-[0.6em] text-primary font-bold uppercase flex items-center justify-center gap-4">
@@ -120,8 +131,6 @@ export default function Home() {
 
         <Portfolio />
         
-        <About />
-        <Founder />
         <ContactCTA />
 
         

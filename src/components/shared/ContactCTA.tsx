@@ -18,7 +18,7 @@ export const ContactCTA = () => {
         <div className="absolute bottom-1/4 left-[10%] w-[500px] h-[500px] bg-purple-500/5 blur-[140px] rounded-full" />
       </div>
 
-      <div className="container mx-auto max-w-7xl relative z-10">
+      <div className="container mx-auto relative z-10">
         <div className="flex flex-col items-center text-center space-y-12">
           
           {/* Header Label */}
@@ -59,30 +59,30 @@ export const ContactCTA = () => {
                 href="https://wa.me/5493735609095"
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="group relative flex flex-col md:flex-row items-center gap-8 p-4 pr-12 rounded-[40px] bg-surface-low border border-outline hover:border-primary/30 transition-all shadow-xl overflow-hidden"
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.99 }}
+                className="group relative flex flex-col md:flex-row items-center gap-8 p-6 pr-12 rounded-[28px] bg-surface border border-outline hover:border-primary/20 transition-all duration-300 elevation-1 hover:elevation-3 overflow-hidden"
             >
                 {/* Brand Icon Container */}
-                <div className="relative w-24 h-24 rounded-[32px] bg-primary flex items-center justify-center shadow-[0_0_40px_rgba(0,102,255,0.2)] shrink-0 z-10 transition-transform group-hover:scale-105">
-                    <MessageCircle className="w-12 h-12 text-white" />
-                    <div className="absolute inset-0 rounded-[32px] border-2 border-primary/50 animate-[ping_2s_infinite]" />
+                <div className="relative w-20 h-20 rounded-[20px] bg-primary flex items-center justify-center shrink-0 z-10 transition-transform group-hover:scale-105">
+                    <MessageCircle className="w-10 h-10 text-white" />
+                    <div className="absolute inset-0 rounded-[20px] border-2 border-primary/50 animate-[ping_2s_infinite]" />
                 </div>
                 
                 <div className="flex flex-col text-center md:text-left z-10">
-                    <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
+                    <div className="flex items-center justify-center md:justify-start gap-2 mb-1.5">
                         <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                         <span className="text-[10px] font-mono text-primary font-bold tracking-[0.3em] uppercase">Estado: En línea</span>
                     </div>
-                    <span className="text-4xl md:text-5xl font-display font-black text-foreground group-hover:text-primary transition-colors flex items-center gap-4">
+                    <span className="text-3xl md:text-4xl lg:text-5xl font-display font-black text-foreground group-hover:text-primary transition-colors flex items-center gap-4">
                         LÍNEA_DIRECTA
                         <ArrowUpRight className="w-8 h-8 opacity-40 group-hover:opacity-100 group-hover:translate-x-2 group-hover:-translate-y-2 transition-all text-primary" />
                     </span>
-                    <span className="text-foreground/50 text-sm font-mono tracking-widest mt-1 uppercase">Protocolo: Chat_Seguro_v2.1</span>
+                    <span className="text-foreground/50 text-[10px] font-mono tracking-widest mt-1 uppercase">Protocolo: Chat_Seguro_v2.1</span>
                 </div>
 
-                {/* Light Sweep */}
-                <div className="absolute inset-0 opacity-10 bg-gradient-to-r from-transparent via-white to-transparent translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out pointer-events-none" />
+                {/* Ink Hover State Overlay */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-primary/5 transition-opacity duration-300 pointer-events-none" />
             </motion.a>
           </div>
 

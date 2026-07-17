@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, MessageCircle } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
+import { Logo } from './Logo';
 
 export const Navbar = () => {
   const t = useTranslations('Navigation');
@@ -31,10 +32,15 @@ export const Navbar = () => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'glass-panel border-b border-outline py-4' : 'bg-transparent py-8'
+        isScrolled ? 'bg-surface/90 backdrop-blur-md border-b border-outline elevation-1 py-3' : 'bg-transparent py-6'
       }`}
     >
-      <nav className="container mx-auto px-6 flex items-center justify-center relative">
+      <nav className="container mx-auto px-6 flex items-center justify-between relative">
+        {/* Brand Logo Link */}
+        <Link href="/" className="z-50">
+          <Logo />
+        </Link>
+
         {/* Desktop Navigation */}
         <div className="hidden lg:flex items-center gap-10">
           {navLinks.map((link) => (
@@ -53,17 +59,16 @@ export const Navbar = () => {
               href="https://wa.me/5493735609095"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative flex items-center gap-4 px-6 py-3 rounded-2xl glass-panel border border-outline hover:border-primary/50 transition-all bg-surface-low/30 backdrop-blur-xl"
+              className="group relative flex items-center gap-3 px-5 py-2.5 rounded-full bg-primary-container text-on-primary-container hover:shadow-md hover:brightness-95 transition-all duration-300 border border-outline"
             >
-              <div className="relative">
-                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                <div className="absolute inset-0 rounded-full border-2 border-green-500/50 animate-ping opacity-0 group-hover:opacity-100" />
+              <div className="relative shrink-0">
+                <div className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse" />
               </div>
-              <span className="label-tech text-[11px] font-black text-primary group-hover:text-foreground transition-colors">
+              <span className="font-mono text-[11px] font-black tracking-wider text-primary">
                 {t('contact').toUpperCase()}_EN_VIVO
               </span>
-              <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(0,86,224,0.3)]">
-                <MessageCircle className="w-4 h-4 text-white" />
+              <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center shrink-0">
+                <MessageCircle className="w-3.5 h-3.5 text-white" />
               </div>
             </a>
           </div>
@@ -71,8 +76,9 @@ export const Navbar = () => {
 
         {/* Mobile Toggle */}
         <button 
-          className="lg:hidden p-2 text-foreground absolute right-6"
+          className="lg:hidden p-2 text-foreground z-50 absolute right-6"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Menu"
         >
           {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
@@ -88,7 +94,8 @@ export const Navbar = () => {
             className="fixed inset-0 z-40 bg-background lg:hidden h-screen overflow-y-auto"
           >
             <div className="flex flex-col h-full p-8">
-               <div className="flex justify-end items-center mb-16">
+               <div className="flex justify-between items-center mb-16">
+                  <Logo />
                   <button className="text-foreground" onClick={() => setIsMobileMenuOpen(false)}>
                      <X size={32} />
                   </button>

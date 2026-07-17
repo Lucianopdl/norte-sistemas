@@ -23,10 +23,10 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Norte Sistemas | Software Development",
+  title: "AtlaSys | Software Development",
   description: "Elite software engineering for SMEs and Startups.",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/images/logoatlas.png",
   },
 };
 

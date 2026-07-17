@@ -2,34 +2,47 @@
 
 :root {
   --background: #f8fafc; /* Soft slate white */
-  --foreground: #0f172a; /* Slate 900 */
+  --foreground: #1a1c1e; /* Material dark charcoal */
   
-  --primary: #0056e0; /* Premium Royal Blue */
   --primary-variant: #0036a3;
-  --secondary: #6366f1; /* Indigo 500 */
   --tertiary: #1e293b;
   
+  /* Material 3 Color Tokens */
+  --md-sys-color-primary: #0056e0;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #e0e2ec;
+  --md-sys-color-on-primary-container: #001d36;
+  --md-sys-color-secondary: #4f5b92;
+  --md-sys-color-secondary-container: #e0e2ec;
+  --md-sys-color-surface: #ffffff;
+  --md-sys-color-surface-variant: #f1f5f9;
+  --md-sys-color-on-surface: #1a1c1e;
+  --md-sys-color-on-surface-variant: #43474e;
+  --md-sys-color-outline: rgba(0, 0, 0, 0.12);
+  --md-sys-color-outline-variant: rgba(0, 0, 0, 0.06);
+
   /* Layering Strategy */
   --surface: #ffffff;
-  --surface-low: #f1f5f9; /* Slate 100 */
-  --surface-high: #e2e8f0; /* Slate 200 */
-  --surface-bright: #cbd5e1; /* Slate 300 */
-  
-  --outline: rgba(15, 23, 42, 0.08);
-  --outline-glow: rgba(0, 86, 224, 0.15);
+  --surface-low: #f1f5f9;
+  --surface-high: #e2e8f0;
+  --surface-bright: #cbd5e1;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
+  --color-primary: var(--md-sys-color-primary);
   --color-primary-variant: var(--primary-variant);
-  --color-secondary: var(--secondary);
+  --color-secondary: var(--md-sys-color-secondary);
   --color-tertiary: var(--tertiary);
   
-  --color-surface-low: var(--surface-low);
+  /* M3 Tokens */
+  --color-primary-container: var(--md-sys-color-primary-container);
+  --color-on-primary-container: var(--md-sys-color-on-primary-container);
+  --color-surface-low: var(--md-sys-color-surface-variant);
   --color-surface-high: var(--surface-high);
   --color-surface-bright: var(--surface-bright);
+  --color-outline: var(--md-sys-color-outline);
   
   --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui;
   --font-body: var(--font-inter), ui-sans-serif, system-ui;
@@ -72,26 +85,51 @@ html {
   scrollbar-width: thin;
 }
 
-/* Premium Effects */
+/* Redefine container to occupy full width and adapt on all screens */
+.container {
+  width: 100% !important;
+  max-width: 94vw !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Material 3 Elevations */
+.elevation-1 {
+  box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.30);
+}
+.elevation-2 {
+  box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.30);
+}
+.elevation-3 {
+  box-shadow: 0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.30);
+}
+.elevation-4 {
+  box-shadow: 0px 6px 10px 4px rgba(0, 0, 0, 0.15), 0px 2px 3px 0px rgba(0, 0, 0, 0.30);
+}
+.elevation-5 {
+  box-shadow: 0px 8px 12px 6px rgba(0, 0, 0, 0.15), 0px 3px 4px 0px rgba(0, 0, 0, 0.30);
+}
+
+/* Premium Effects (Aligned with M3 Surfaces) */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(15, 23, 42, 0.08);
+  border: 1px solid var(--md-sys-color-outline);
 }
 
 .glass-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.4) 100%);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+  background: var(--md-sys-color-surface);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1);
 }
 
 .glass-card:hover {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.7) 100%);
-  border-color: rgba(0, 86, 224, 0.3);
+  background: var(--md-sys-color-surface-variant);
+  border-color: var(--md-sys-color-outline);
   transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(0, 86, 224, 0.08);
+  box-shadow: 0px 4px 8px 3px rgba(0, 0, 0, 0.12);
 }
 
 .label-tech {

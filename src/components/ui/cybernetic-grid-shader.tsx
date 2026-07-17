@@ -56,7 +56,7 @@ const CyberneticGridShader: React.FC = () => {
         vec2 gridUv = abs(fract(uv * 10.0) - 0.5);
         float line  = pow(1.0 - min(gridUv.x, gridUv.y), 50.0);
 
-        // base grid color pulsing (azul suave norte-sistemas)
+        // base grid color pulsing (azul suave AtlaSys)
         vec3 gridColor = vec3(0.0, 0.35, 0.85);
         vec3 color     = gridColor
                        * line

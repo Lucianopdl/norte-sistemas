@@ -4,7 +4,63 @@ import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from
 import { Code2, Cpu, Globe, Rocket, ShoppingBag, Layout, Layers, ShieldCheck, Settings2, X, CheckCircle2 } from 'lucide-react';
 import { Magnetic } from './Magnetic';
 
+const colorMap = {
+  blue: {
+    text: 'text-[#1967D2]',
+    bg: 'bg-[#E8F0FE]',
+    border: 'border-[#1967D2]/20',
+    hoverBorder: 'group-hover:border-[#1967D2]/45',
+    hoverBg: 'group-hover:bg-[#d2e3fc]',
+    containerBg: 'bg-[#d2e3fc]',
+    onContainerText: 'text-[#1967D2]',
+    chipBg: 'bg-[#1967D2]/10 border-[#1967D2]/15',
+    chipText: 'text-[#1a3d7c]',
+    inkBg: 'bg-[#1967D2]/5',
+    cardBg: 'bg-[#E8F0FE]'
+  },
+  red: {
+    text: 'text-[#C5221F]',
+    bg: 'bg-[#FCE8E6]',
+    border: 'border-[#C5221F]/20',
+    hoverBorder: 'group-hover:border-[#C5221F]/45',
+    hoverBg: 'group-hover:bg-[#fad2cf]',
+    containerBg: 'bg-[#fad2cf]',
+    onContainerText: 'text-[#C5221F]',
+    chipBg: 'bg-[#C5221F]/10 border-[#C5221F]/15',
+    chipText: 'text-[#7a1c12]',
+    inkBg: 'bg-[#C5221F]/5',
+    cardBg: 'bg-[#FCE8E6]'
+  },
+  green: {
+    text: 'text-[#137333]',
+    bg: 'bg-[#E6F4EA]',
+    border: 'border-[#137333]/20',
+    hoverBorder: 'group-hover:border-[#137333]/45',
+    hoverBg: 'group-hover:bg-[#ceead6]',
+    containerBg: 'bg-[#ceead6]',
+    onContainerText: 'text-[#137333]',
+    chipBg: 'bg-[#137333]/10 border-[#137333]/15',
+    chipText: 'text-[#125827]',
+    inkBg: 'bg-[#137333]/5',
+    cardBg: 'bg-[#E6F4EA]'
+  },
+  yellow: {
+    text: 'text-[#B06000]',
+    bg: 'bg-[#FEF7E0]',
+    border: 'border-[#B06000]/20',
+    hoverBorder: 'group-hover:border-[#B06000]/45',
+    hoverBg: 'group-hover:bg-[#feefc3]',
+    containerBg: 'bg-[#feefc3]',
+    onContainerText: 'text-[#B06000]',
+    chipBg: 'bg-[#B06000]/10 border-[#B06000]/15',
+    chipText: 'text-[#6e4e00]',
+    inkBg: 'bg-[#B06000]/5',
+    cardBg: 'bg-[#FEF7E0]'
+  }
+};
+
 const ServiceCard = ({ service, index, onClick }: any) => {
+  const colors = colorMap[service.color as keyof typeof colorMap] || colorMap.blue;
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
@@ -41,34 +97,55 @@ const ServiceCard = ({ service, index, onClick }: any) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.1 }}
-      className="glass-card group p-8 rounded-[32px] relative overflow-hidden flex flex-col h-full border-outline bg-surface-low/30 cursor-pointer active:scale-[0.98] transition-transform"
+      className={`elevation-1 hover:elevation-3 ${colors.cardBg} border ${colors.border} ${colors.hoverBorder} p-8 rounded-[4px] relative overflow-hidden flex flex-col h-full cursor-pointer active:scale-[0.98] transition-all duration-300 hover:-translate-y-1 group`}
     >
       <div 
         style={{ transform: "translateZ(75px)", transformStyle: "preserve-3d" }}
-        className="relative z-10 flex flex-col h-full"
+        className="relative z-10 flex flex-col h-full items-start"
       >
-        <div className="mb-6 p-3 w-fit rounded-xl bg-surface-bright/20 border border-outline group-hover:border-primary/30 group-hover:bg-primary/5 transition-colors">
-          {service.icon}
+        {/* 3D Volumetric Animated Icon Container */}
+        <div 
+          style={{ transformStyle: "preserve-3d" }}
+          className="mb-6 relative h-16 w-16 flex items-center justify-center group-hover:scale-105 transition-transform duration-300"
+        >
+          {/* 3D Glow overlay */}
+          <div className={`absolute -inset-1.5 rounded-[8px] ${colors.containerBg} blur-md opacity-30 group-hover:opacity-85 transition-opacity duration-300`} />
+          
+          {/* Volumetric base sheet */}
+          <div 
+            style={{ transform: "translateZ(20px)", transformStyle: "preserve-3d" }}
+            className={`absolute inset-0 rounded-[8px] bg-white border ${colors.border} shadow-[0_6px_12px_rgba(0,0,0,0.08)] flex items-center justify-center transition-all duration-300`}
+          >
+            {/* The icon floating/pulsing above base */}
+            <motion.div
+              animate={{ y: [0, -3, 0] }}
+              transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut", delay: index * 0.2 }}
+              style={{ transform: "translateZ(40px)" }}
+              className="transition-transform duration-300"
+            >
+              {React.cloneElement(service.icon, { className: `w-9 h-9 ${colors.text}` })}
+            </motion.div>
+          </div>
         </div>
         
-        <h3 className="text-2xl font-display font-bold mb-3 text-foreground tracking-tight">
+        <h3 className={`text-2xl font-display font-black mb-3 ${colors.text} tracking-tight`}>
           {service.title}
         </h3>
         
-        <p className="text-foreground/60 text-sm leading-relaxed mb-10 flex-grow font-body">
+        <p className="text-[#3c4043] text-sm leading-relaxed mb-10 flex-grow font-body font-medium">
           {service.desc}
         </p>
 
         <Magnetic>
-          <div className="flex items-center gap-2 text-[10px] font-mono font-bold text-primary/60 group-hover:text-primary transition-all tracking-[0.2em] w-fit">
+          <div className={`flex items-center gap-2 text-[10px] font-mono font-bold ${colors.text} transition-all tracking-[0.2em] w-fit`}>
             <span>VER_MÁS</span>
-            <Rocket className="w-3 h-3 translate-y-[1px]" />
+            <Rocket className="w-3.5 h-3.5 translate-y-[1px]" />
           </div>
         </Magnetic>
       </div>
 
-      {/* Dynamic Inner Glow */}
-      <div className="absolute inset-0 pointer-events-none bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+      {/* Ink hover overlay effect */}
+      <div className={`absolute inset-0 pointer-events-none ${colors.inkBg} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
     </motion.div>
   );
 };
@@ -80,71 +157,80 @@ export const Services = () => {
   const services = [
     {
       id: 'software',
-      icon: <Code2 className="w-8 h-8 text-primary" />,
+      icon: <Code2 />,
       title: t('software.title'),
       desc: t('software.description'),
       full_desc: t('software.full_description'),
-      features: t.raw('software.features')
+      features: t.raw('software.features'),
+      color: 'blue'
     },
     {
       id: 'ai',
-      icon: <Cpu className="w-8 h-8 text-secondary" />,
+      icon: <Cpu />,
       title: t('ai.title'),
       desc: t('ai.description'),
       full_desc: t('ai.full_description'),
-      features: t.raw('ai.features')
+      features: t.raw('ai.features'),
+      color: 'red'
     },
     {
       id: 'web',
-      icon: <Globe className="w-8 h-8 text-primary" />,
+      icon: <Globe />,
       title: t('web.title'),
       desc: t('web.description'),
       full_desc: t('web.full_description'),
-      features: t.raw('web.features')
+      features: t.raw('web.features'),
+      color: 'blue'
     },
     {
       id: 'ecommerce',
-      icon: <ShoppingBag className="w-8 h-8 text-yellow-600" />,
+      icon: <ShoppingBag />,
       title: t('ecommerce.title'),
       desc: t('ecommerce.description'),
       full_desc: t('ecommerce.full_description'),
-      features: t.raw('ecommerce.features')
+      features: t.raw('ecommerce.features'),
+      color: 'yellow'
     },
     {
       id: 'landing',
-      icon: <Layout className="w-8 h-8 text-blue-600" />,
+      icon: <Layout />,
       title: t('landing.title'),
       desc: t('landing.description'),
       full_desc: t('landing.full_description'),
-      features: t.raw('landing.features')
+      features: t.raw('landing.features'),
+      color: 'green'
     },
     {
       id: 'software_crm',
-      icon: <Layers className="w-8 h-8 text-purple-600" />,
+      icon: <Layers />,
       title: t('software_crm.title'),
       desc: t('software_crm.description'),
       full_desc: t('software_crm.full_description'),
-      features: t.raw('software_crm.features')
+      features: t.raw('software_crm.features'),
+      color: 'blue'
     },
     {
       id: 'cyber',
-      icon: <ShieldCheck className="w-8 h-8 text-green-600" />,
+      icon: <ShieldCheck />,
       title: t('cyber.title'),
       desc: t('cyber.description'),
       full_desc: t('cyber.full_description'),
-      features: t.raw('cyber.features')
+      features: t.raw('cyber.features'),
+      color: 'green'
     },
     {
       id: 'support',
-      icon: <Settings2 className="w-8 h-8 text-orange-600" />,
+      icon: <Settings2 />,
       title: t('support.title'),
       desc: t('support.description'),
       full_desc: t('support.full_description'),
-      features: t.raw('support.features')
+      features: t.raw('support.features'),
+      color: 'red'
     }
   ];
 
   const selectedService = services.find(s => s.id === selectedId);
+  const selectedColors = selectedService ? (colorMap[selectedService.color as keyof typeof colorMap] || colorMap.blue) : colorMap.blue;
 
   return (
     <section id="services" className="py-24 relative overflow-hidden bg-background">
@@ -199,46 +285,50 @@ export const Services = () => {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-2xl bg-surface border border-outline rounded-[40px] overflow-hidden shadow-2xl p-8 md:p-12"
+              className="relative w-full max-w-2xl bg-surface border border-outline rounded-[4px] overflow-hidden shadow-2xl p-8 md:p-12"
             >
               <button 
                 onClick={() => setSelectedId(null)}
-                className="absolute top-8 right-8 p-2 rounded-full bg-foreground/5 hover:bg-foreground/10 text-foreground/50 hover:text-foreground transition-all z-10"
+                className={`absolute top-8 right-8 p-2.5 rounded-full bg-surface-low hover:${selectedColors.containerBg} text-foreground/60 hover:${selectedColors.text} transition-all z-10 border border-outline`}
               >
-                <X className="w-6 h-6" />
+                <X className="w-5 h-5" />
               </button>
 
               <div className="flex flex-col gap-8">
                 <div className="flex items-center gap-6">
-                  <div className="p-4 rounded-2xl bg-surface-low border border-outline">
-                    {selectedService.icon}
+                  {/* Square icon container inside modal */}
+                  <div 
+                    style={{ transformStyle: "preserve-3d" }}
+                    className={`p-4 rounded-[8px] bg-white border ${selectedColors.border} shadow-sm`}
+                  >
+                    {React.cloneElement(selectedService.icon, { className: `w-8 h-8 ${selectedColors.text}` })}
                   </div>
                   <div>
-                    <h4 className="text-primary font-mono text-xs font-bold tracking-[0.3em] uppercase mb-1">Detalle del Servicio</h4>
-                    <h3 className="text-3xl md:text-4xl font-display font-bold text-foreground">{selectedService.title}</h3>
+                    <h4 className={`font-mono text-xs font-bold tracking-[0.3em] uppercase mb-1 ${selectedColors.text}`}>Detalle del Servicio</h4>
+                    <h3 className="text-3xl md:text-4xl font-display font-black text-foreground">{selectedService.title}</h3>
                   </div>
                 </div>
 
                 <div className="space-y-6">
-                  <p className="text-foreground/70 text-lg leading-relaxed font-body">
+                  <p className="text-[#3c4043] text-lg leading-relaxed font-body font-medium">
                     {selectedService.full_desc}
                   </p>
 
                   <div className="pt-6 border-t border-outline">
                     <h5 className="text-foreground font-display font-bold mb-6 flex items-center gap-2">
-                       <Layers className="w-4 h-4 text-primary" /> Características Clave
+                       <Layers className={`w-4 h-4 ${selectedColors.text}`} /> Características Clave
                     </h5>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {selectedService.features.map((feature: string, i: number) => (
                         <motion.div 
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: i * 0.1 }}
+                          initial={{ opacity: 0, scale: 0.95 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: i * 0.05 }}
                           key={i} 
-                          className="flex items-center gap-3 p-4 rounded-2xl bg-surface-low border border-outline hover:border-primary/20 transition-colors"
+                          className={`flex items-center gap-2.5 px-4 py-2.5 rounded-full ${selectedColors.chipBg} border text-foreground/80 hover:bg-opacity-80 transition-colors duration-200`}
                         >
-                          <CheckCircle2 className="w-5 h-5 text-primary shrink-0" />
-                          <span className="text-foreground/80 text-sm font-medium">{feature}</span>
+                          <CheckCircle2 className={`w-4 h-4 ${selectedColors.text} shrink-0`} />
+                          <span className={`text-xs font-semibold tracking-wide font-mono ${selectedColors.chipText}`}>{feature}</span>
                         </motion.div>
                       ))}
                     </div>
@@ -248,7 +338,7 @@ export const Services = () => {
                 <div className="mt-4">
                   <button 
                     onClick={() => setSelectedId(null)}
-                    className="w-full py-4 rounded-2xl bg-primary text-white font-bold text-sm tracking-[0.1em] uppercase hover:bg-primary/90 transition-all active:scale-[0.98]"
+                    className={`w-full py-3.5 rounded-full ${selectedColors.containerBg} ${selectedColors.onContainerText} font-bold text-xs tracking-wider uppercase hover:shadow-md transition-all active:scale-[0.98]`}
                   >
                     Cerrar Información
                   </button>
