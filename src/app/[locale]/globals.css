@@ -138,6 +138,22 @@ html {
   box-shadow: 0px 8px 12px 6px rgba(0, 0, 0, 0.15), 0px 3px 4px 0px rgba(0, 0, 0, 0.30);
 }
 
+/* BLUEPRINT FILM — scoped palette for the scroll-film hero (Concept: THE BLUEPRINT) */
+.blueprint-film {
+  --bp-void: #05070c;
+  --bp-void-deep: #020306;
+  --bp-grid: #1c3d8f;
+  --bp-grid-bright: #3a6cff;
+  --bp-cyan: #5fd4ff;
+  --bp-steel: #0d121c;
+  --bp-steel-light: #1a2233;
+  --bp-panel: #131a26;
+  --bp-amber: #ffb454;
+  --bp-amber-soft: #ffd9a0;
+  --bp-dawn-mid: #3a6cff;
+  --bp-dawn-light: #eaf1ff;
+}
+
 /* Premium Effects (Aligned with M3 Surfaces) */
 .glass-panel {
   background: rgba(255, 255, 255, 0.85);

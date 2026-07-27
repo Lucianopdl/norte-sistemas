@@ -6,6 +6,14 @@
     "hero_title_1": "ATLA",
     "hero_title_2": "SYS"
   },
+  "Hero": {
+    "hero_ch1": "Inicializando_Sistema",
+    "hero_ch2": "Trazando_La_Arquitectura",
+    "hero_ch3": "Ensamblando_Módulos",
+    "hero_ch4": "Desplegando_A_Producción",
+    "hero_ch5": "Sistema_En_Línea",
+    "arrival_subtitle": "Cada proyecto empieza como un plano en blanco. Lo convertimos en infraestructura real, módulo por módulo, hasta que el sistema queda en línea."
+  },
   "Navigation": {
     "home": "Inicio",
     "services": "Capacidades",
@@ -92,7 +100,6 @@
   },
   "Portfolio": {
     "title": "Software a la Venta",
-    "subtitle": "Portafolio de Ingeniería / 02",
     "description": "Soluciones 'Listas para Usar' desarrolladas con los más altos estándares de calidad e ingeniería de élite.",
     "projects": {
       "sahara": {

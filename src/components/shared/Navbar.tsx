@@ -59,7 +59,7 @@ export const Navbar = () => {
       <nav className="container mx-auto px-6 flex items-center justify-between relative">
         {/* Brand Logo Link */}
         <Link href="/" className="z-50">
-          <Logo />
+          <Logo variant={isScrolled ? 'auto' : 'light'} />
         </Link>
 
         {/* Desktop Navigation */}
@@ -68,7 +68,7 @@ export const Navbar = () => {
             <Link
               key={link.name}
               href={link.href}
-              className="label-tech text-[11px] font-bold text-foreground/70 hover:text-primary transition-colors relative group"
+              className={`label-tech text-[11px] font-bold transition-colors relative group ${isScrolled ? 'text-foreground/70 hover:text-primary' : 'text-white/80 hover:text-white'}`}
             >
               {link.name}
               <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full" />
@@ -78,7 +78,7 @@ export const Navbar = () => {
           {/* Theme Toggle Switcher (Desktop) */}
           <button
             onClick={toggleTheme}
-            className="p-2.5 rounded-full hover:bg-foreground/5 text-foreground/75 hover:text-foreground transition-all border border-outline/10 flex items-center justify-center active:scale-95 cursor-pointer"
+            className={`p-2.5 rounded-full transition-all border flex items-center justify-center active:scale-95 cursor-pointer ${isScrolled ? 'hover:bg-foreground/5 text-foreground/75 hover:text-foreground border-outline/10' : 'hover:bg-white/10 text-white/80 hover:text-white border-white/15'}`}
             aria-label="Toggle Theme"
           >
             {theme === 'dark' ? (
@@ -112,7 +112,7 @@ export const Navbar = () => {
         <div className="lg:hidden flex items-center gap-2 absolute right-6 z-50">
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-full hover:bg-foreground/5 text-foreground/75 flex items-center justify-center border border-outline/10 active:scale-95 cursor-pointer"
+            className={`p-2 rounded-full flex items-center justify-center border active:scale-95 cursor-pointer ${isScrolled || isMobileMenuOpen ? 'hover:bg-foreground/5 text-foreground/75 border-outline/10' : 'hover:bg-white/10 text-white/80 border-white/15'}`}
             aria-label="Toggle Theme"
           >
             {theme === 'dark' ? (
@@ -121,8 +121,8 @@ export const Navbar = () => {
               <Moon className="w-[18px] h-[18px] text-[#4285F4] fill-[#4285F4]/20" />
             )}
           </button>
-          <button 
-            className="p-2 text-foreground"
+          <button
+            className={isScrolled || isMobileMenuOpen ? 'p-2 text-foreground' : 'p-2 text-white'}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Menu"
           >
