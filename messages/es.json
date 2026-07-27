@@ -100,6 +100,7 @@
   },
   "Portfolio": {
     "title": "Software a la Venta",
+    "subtitle": "Portfolio de Ingeniería / 02",
     "description": "Soluciones 'Listas para Usar' desarrolladas con los más altos estándares de calidad e ingeniería de élite.",
     "projects": {
       "sahara": {
@@ -107,6 +108,24 @@
         "description": "El arte de gestionar. Administra clases, alumnos y finanzas con la elegancia que tu academia merece.",
         "features": ["Gestión de Alumnos", "Control de Cobros", "Panel de Finanzas", "Web y App Móvil"],
         "cta": "Ver Demo"
+      },
+      "ganadero": {
+        "title": "Ganadero Sync",
+        "description": "Tu gestor de feedlot y ganado. Control total de hacienda, vacunas, peso y alimentación en tiempo real.",
+        "features": ["Control de Hacienda", "Módulo Veterinario", "Gestión de Feedlot", "Reportes & KPIs"],
+        "cta": "Ver Producto"
+      },
+      "automotion": {
+        "title": "AutoMotion",
+        "description": "Tu concesionaria en línea. Catálogo web de vehículos con stock en tiempo real y agenda de citas.",
+        "features": ["Catálogo 24/7", "Filtros Avanzados", "Agenda de Citas", "Panel de Stock"],
+        "cta": "Ver Producto"
+      },
+      "quotemaster": {
+        "title": "QuoteMaster",
+        "description": "Presupuestos profesionales en segundos. Cotizador adaptable para eventos y múltiples rubros.",
+        "features": ["Cotizador Rápido", "Exportación a PDF", "Historial & CRM", "Calendario Integrado"],
+        "cta": "Ver Producto"
       }
     }
   }

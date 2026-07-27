@@ -100,6 +100,24 @@
         "description": "The art of managing. Manage classes, students, and finances with the elegance your academy deserves.",
         "features": ["Student Management", "Payment Control", "Finance Dashboard", "Web & Mobile App"],
         "cta": "View Demo"
+      },
+      "ganadero": {
+        "title": "Ganadero Sync",
+        "description": "Your feedlot and cattle manager. Complete control over livestock, vaccines, weight, and feeding in real-time.",
+        "features": ["Livestock Control", "Veterinary Module", "Feedlot Management", "Reports & KPIs"],
+        "cta": "View Product"
+      },
+      "automotion": {
+        "title": "AutoMotion",
+        "description": "Your online dealership. Web vehicle catalog with real-time stock and appointment scheduling.",
+        "features": ["24/7 Catalog", "Advanced Filters", "Appointment Booking", "Stock Dashboard"],
+        "cta": "View Product"
+      },
+      "quotemaster": {
+        "title": "QuoteMaster",
+        "description": "Professional quotes in seconds. Adaptable proposal tool for events and multiple industries.",
+        "features": ["Fast Quoting", "PDF Export", "History & CRM", "Built-in Calendar"],
+        "cta": "View Product"
       }
     }
   }
