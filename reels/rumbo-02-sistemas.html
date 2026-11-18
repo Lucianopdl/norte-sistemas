@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rumbo 02 Sistemas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Geist:wght@300..800&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#05070C; --fg:#EEF1F8; --muted:#95A0B8; --line:rgba(238,241,248,.12); }
+  html, body { margin:0; background:var(--bg); color:var(--fg); font-family:Geist, system-ui, sans-serif; }
+  header { display:flex; gap:12px; align-items:center; justify-content:center; flex-wrap:wrap; padding:16px; }
+  button { font:600 14px Geist, system-ui; color:var(--fg); background:#4D63FF; border:0; border-radius:999px; padding:9px 18px; cursor:pointer; }
+  #status { font:500 13px ui-monospace, monospace; color:var(--muted); }
+  #grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap:16px; padding:0 16px 32px; max-width:1400px; margin:0 auto; }
+  canvas { width:100%; height:auto; aspect-ratio:4/5; border-radius:12px; box-shadow:0 0 0 1px var(--line); }
+</style>
+</head>
+<body>
+<header><button id="exp">Exportar PNG</button><span id="status"></span></header>
+<div id="grid"></div>
+<script type="module">
+/* Norte Sistemas · Carrusel "Rumbo 02 · Sistemas y plataformas" (1080x1350, 4:5)
+   Serie "Rumbo": mismo layout que Rumbo 01; acento = color de la rama (Sistemas cian, IA violeta). */
+const W = 1080, H = 1350, M = 72, N = 7;
+const C = { bg:'#0A0F1F', bg2:'#070B16', fg:'#EEF1F8', muted:'#95A0B8', dim:'#5E6884', primary:'#4D63FF', primarySoft:'#7C8CFF' };
+const RAMA = {
+  sistemas:{ main:'#4CC9F0', soft:'#8FDDF6', grad:['#4CC9F0', '#7C8CFF'], tint:'rgba(76,201,240,' },
+  ia:{ main:'#B794FF', soft:'#CDB6FF', grad:['#B794FF', '#7C8CFF'], tint:'rgba(183,148,255,' },
+};
+const MARK = new Path2D('M6 96 L6 34 L24 34 L70 80 L70 28 L62 28 L79 2 L96 28 L88 28 L88 96 L70 96 L24 50 L24 96 Z');
+const D = '"Bricolage Grotesque"', B = 'Geist', MONO = '"Geist Mono"';
+await Promise.all([`800 100px ${D}`, `400 30px ${B}`, `500 30px ${B}`, `600 30px ${B}`, `700 30px ${B}`, `500 28px ${MONO}`].map(f => document.fonts.load(f)));
+
+/* ---------- helpers ---------- */
+const rr = (g, x, y, w, h, r, fill, stroke, lw = 2) => { g.beginPath(); g.roundRect(x, y, w, h, r); if (fill) { g.fillStyle = fill; g.fill(); } if (stroke) { g.strokeStyle = stroke; g.lineWidth = lw; g.stroke(); } };
+const circ = (g, x, y, r, fill) => { g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fillStyle = fill; g.fill(); };
+function mark(g, x, y, size, color) { g.save(); g.translate(x, y); g.scale(size / 100, size / 100); g.fillStyle = color; g.fill(MARK); g.restore(); }
+function glow(g, x, y, r, rgba, a) { const gr = g.createRadialGradient(x, y, 0, x, y, r); gr.addColorStop(0, rgba + a + ')'); gr.addColorStop(1, rgba + '0)'); g.fillStyle = gr; g.fillRect(0, 0, W, H); }
+function text(g, s, x, y, font, color, opts = {}) {
+  g.font = font; g.fillStyle = color; g.textAlign = opts.align || 'left'; g.textBaseline = opts.base || 'alphabetic';
+  g.letterSpacing = opts.ls || '0px'; g.fillText(s, x, y); g.letterSpacing = '0px'; g.textAlign = 'left';
+}
+function wrap(g, s, x, y, maxW, lh, font, color) {
+  g.font = font; const words = s.split(' '); let line = '', yy = y;
+  for (const w of words) { const t = line ? line + ' ' + w : w; if (g.measureText(t).width > maxW && line) { text(g, line, x, yy, font, color); line = w; yy += lh; } else line = t; }
+  if (line) text(g, line, x, yy, font, color); return yy;
+}
+// título estilo Rumbo: minúsculas, apretado; las líneas con grad:true van en el degradé de la rama
+function headline(g, lines, y, rama, size = 108) {
+  g.font = `800 ${size}px ${D}`; g.letterSpacing = `${-size * .035}px`;
+  const maxW = Math.max(...lines.map(l => g.measureText(l.t).width));
+  if (maxW > W - 2 * M) size = Math.floor(size * (W - 2 * M) / maxW);
+  g.font = `800 ${size}px ${D}`; g.letterSpacing = `${-size * .035}px`;
+  lines.forEach((l, i) => {
+    const yy = y + i * size * .98;
+    if (l.grad) { const w = g.measureText(l.t).width, gr = g.createLinearGradient(M, 0, M + w, 0); gr.addColorStop(0, RAMA[rama].grad[0]); gr.addColorStop(1, RAMA[rama].grad[1]); g.fillStyle = gr; }
+    else g.fillStyle = C.fg;
+    g.fillText(l.t, M, yy);
+  });
+  g.letterSpacing = '0px';
+  return y + (lines.length - 1) * size * .98;
+}
+function eyebrow(g, s, y, rama) { text(g, s.toUpperCase(), M, y, `500 26px ${MONO}`, RAMA[rama].soft, { ls:'6px' }); }
+
+function frame(g, i, rama, glows) {
+  const bg = g.createLinearGradient(0, 0, 0, H); bg.addColorStop(0, C.bg); bg.addColorStop(1, C.bg2);
+  g.fillStyle = bg; g.fillRect(0, 0, W, H);
+  for (const [x, y, r, rgba, a] of glows) glow(g, x, y, r, rgba, a);
+  // header
+  mark(g, M, 74, 44, C.primary);
+  text(g, 'norte', M + 58, 110, `700 38px ${B}`, C.fg);
+  g.font = `700 38px ${B}`; const nw = g.measureText('norte ').width;
+  text(g, 'sistemas', M + 58 + nw, 110, `400 38px ${B}`, '#C8CFDD');
+  text(g, `${String(i + 1).padStart(2, '0')} / ${String(N).padStart(2, '0')}`, W - M, 108, `500 26px ${MONO}`, C.muted, { align:'right', ls:'3px' });
+  // footer
+  const fy = H - 78, gap = 10, sw = (W - 2 * M - gap * (N - 1)) / N;
+  for (let k = 0; k < N; k++) rr(g, M + k * (sw + gap), fy, sw, 4, 2, k === i ? RAMA[rama].main : 'rgba(238,241,248,.14)');
+  if (i < N - 1) text(g, 'DESLIZÁ  →', W - M, fy - 30, `500 24px ${MONO}`, C.muted, { align:'right', ls:'4px' });
+  else text(g, 'NORTESISTEMAS.NET', W - M, fy - 30, `500 24px ${MONO}`, RAMA[rama].soft, { align:'right', ls:'4px' });
+}
+
+/* ---------- íconos simples ---------- */
+function icon(g, kind, cx, cy, s, color) {
+  g.save(); g.strokeStyle = color; g.fillStyle = color; g.lineWidth = s * .09; g.lineCap = 'round'; g.lineJoin = 'round';
+  const h = s / 2;
+  if (kind === 'box') { g.strokeRect(cx - h * .8, cy - h * .5, h * 1.6, h * 1.3); g.beginPath(); g.moveTo(cx - h * .8, cy - h * .5); g.lineTo(cx - h * .5, cy - h * .9); g.lineTo(cx + h * .5, cy - h * .9); g.lineTo(cx + h * .8, cy - h * .5); g.moveTo(cx - h * .25, cy - h * .1); g.lineTo(cx + h * .25, cy - h * .1); g.stroke(); }
+  if (kind === 'user') { g.beginPath(); g.arc(cx, cy - h * .35, h * .38, 0, 7); g.stroke(); g.beginPath(); g.arc(cx, cy + h * .85, h * .75, Math.PI * 1.15, Math.PI * 1.85); g.stroke(); }
+  if (kind === 'cal') { g.strokeRect(cx - h * .8, cy - h * .6, h * 1.6, h * 1.45); g.beginPath(); g.moveTo(cx - h * .8, cy - h * .15); g.lineTo(cx + h * .8, cy - h * .15); g.moveTo(cx - h * .4, cy - h * .85); g.lineTo(cx - h * .4, cy - h * .45); g.moveTo(cx + h * .4, cy - h * .85); g.lineTo(cx + h * .4, cy - h * .45); g.stroke(); circ(g, cx - h * .3, cy + h * .3, h * .12, color); circ(g, cx + h * .2, cy + h * .3, h * .12, color); }
+  if (kind === 'chart') { g.beginPath(); g.moveTo(cx - h * .8, cy + h * .8); g.lineTo(cx + h * .8, cy + h * .8); g.stroke(); [[-.5, .5], [0, 1.0], [.5, 1.5]].forEach(([dx, hh]) => g.fillRect(cx + dx * h - h * .15, cy + h * .65 - hh * h * .9, h * .3, hh * h * .9)); }
+  if (kind === 'chat') { g.beginPath(); g.roundRect(cx - h * .85, cy - h * .7, h * 1.7, h * 1.2, h * .35); g.stroke(); g.beginPath(); g.moveTo(cx - h * .35, cy + h * .5); g.lineTo(cx - h * .55, cy + h * .9); g.lineTo(cx + h * .05, cy + h * .5); g.stroke(); }
+  if (kind === 'cash') { g.beginPath(); g.roundRect(cx - h * .9, cy - h * .55, h * 1.8, h * 1.1, h * .15); g.stroke(); g.beginPath(); g.arc(cx, cy, h * .28, 0, 7); g.stroke(); }
+  if (kind === 'web') { g.beginPath(); g.arc(cx, cy, h * .8, 0, 7); g.stroke(); g.beginPath(); g.ellipse(cx, cy, h * .35, h * .8, 0, 0, 7); g.stroke(); g.beginPath(); g.moveTo(cx - h * .8, cy); g.lineTo(cx + h * .8, cy); g.stroke(); }
+  if (kind === 'check') { g.beginPath(); g.moveTo(cx - h * .5, cy); g.lineTo(cx - h * .1, cy + h * .4); g.lineTo(cx + h * .55, cy - h * .45); g.stroke(); }
+  if (kind === 'x') { g.beginPath(); g.moveTo(cx - h * .4, cy - h * .4); g.lineTo(cx + h * .4, cy + h * .4); g.moveTo(cx + h * .4, cy - h * .4); g.lineTo(cx - h * .4, cy + h * .4); g.stroke(); }
+  g.restore();
+}
+
+/* ---------- slides ---------- */
+const S = [];
+// 01 · portada
+S.push(g => {
+  const r = 'sistemas', A = RAMA[r];
+  frame(g, 0, r, [[W * .85, 120, 760, A.tint, .22], [80, H * .62, 620, 'rgba(124,140,255,', .14]]);
+  // diagrama: todo conectado al sistema
+  // cada nodo en el color de su rama: la web (verde) y el bot (violeta) se conectan al sistema (cian)
+  const hub = [W / 2, 420], nodes = [['Tu web', 'web', 210, 250, '#4BE3A0'], ['WhatsApp', 'chat', 870, 250, RAMA.ia.main], ['Clientes', 'user', 210, 590, A.main], ['Stock', 'box', 870, 590, A.main]];
+  for (const [, , x, y, col] of nodes) {
+    const gr = g.createLinearGradient(hub[0], hub[1], x, y); gr.addColorStop(0, A.tint + '.7)'); gr.addColorStop(1, col);
+    g.strokeStyle = gr; g.lineWidth = 3; g.setLineDash([2, 12]); g.lineCap = 'round';
+    g.beginPath(); g.moveTo(hub[0], hub[1]); g.bezierCurveTo((hub[0] + x) / 2, hub[1], (hub[0] + x) / 2, y, x, y); g.stroke(); g.setLineDash([]);
+    circ(g, (hub[0] + x) / 2, (hub[1] + y) / 2, 6, col);
+  }
+  for (const [label, ic, x, y, col] of nodes) {
+    const w = 280, h = 92;
+    rr(g, x - w / 2, y - h / 2, w, h, 26, '#111A30', 'rgba(238,241,248,.1)');
+    rr(g, x - w / 2 + 16, y - 30, 60, 60, 18, col === RAMA.ia.main ? 'rgba(183,148,255,.16)' : col === '#4BE3A0' ? 'rgba(75,227,160,.14)' : A.tint + '.14)');
+    icon(g, ic, x - w / 2 + 46, y + 2, 38, col);
+    text(g, label, x - w / 2 + 92, y + 11, `600 32px ${B}`, C.fg);
+  }
+  rr(g, hub[0] - 170, hub[1] - 92, 340, 184, 40, '#0F1A33', A.tint + '.55)', 3);
+  glow(g, hub[0], hub[1], 260, A.tint, .16);
+  mark(g, hub[0] - 46, hub[1] - 70, 92, A.main);
+  text(g, 'tu sistema', hub[0], hub[1] + 68, `600 30px ${B}`, A.soft, { align:'center' });
+  eyebrow(g, 'Rumbo 02 · Sistemas y plataformas', 790, r);
+  const yb = headline(g, [{ t:'tu negocio,' }, { t:'todo conectado.', grad:true }], 910, r, 120);
+  wrap(g, 'Tu web, tu WhatsApp, tus clientes y tu stock trabajando juntos en un mismo sistema.', M, yb + 82, W - 2 * M, 44, `400 34px ${B}`, C.muted);
+});
+// 02 · el problema
+S.push(g => {
+  const r = 'sistemas', A = RAMA[r];
+  frame(g, 1, r, [[W, 0, 700, A.tint, .14], [0, H, 700, 'rgba(255,122,154,', .08]]);
+  eyebrow(g, 'El problema', 230, r);
+  headline(g, [{ t:'tu negocio corre' }, { t:'en planillas y chats.', grad:true }], 340, r);
+  const items = [
+    ['Pedidos por WhatsApp, anotados a mano', 'Y siempre alguno se pierde.'],
+    ['Stock en un Excel que nadie actualiza', 'Terminás vendiendo lo que no tenés.'],
+    ['Las mismas preguntas, todos los días', 'Precio, horario, si hay stock…'],
+    ['Los números, recién a fin de mes', 'Ahí te enterás si te fue bien.'],
+  ];
+  items.forEach(([t, d], i) => {
+    const y = 560 + i * 158;
+    g.fillStyle = 'rgba(238,241,248,.1)'; g.fillRect(M, y - 50, W - 2 * M, 2);
+    rr(g, M, y - 16, 64, 64, 18, 'rgba(255,122,154,.12)'); icon(g, 'x', M + 32, y + 16, 34, '#FF7A9A');
+    text(g, t, M + 92, y + 14, `600 38px ${B}`, C.fg);
+    text(g, d, M + 92, y + 60, `400 30px ${B}`, C.muted);
+  });
+});
+// 03 · qué construimos
+S.push(g => {
+  const r = 'sistemas', A = RAMA[r];
+  frame(g, 2, r, [[0, 300, 700, A.tint, .14], [W, H, 700, 'rgba(124,140,255,', .12]]);
+  eyebrow(g, 'Qué construimos', 230, r);
+  headline(g, [{ t:'sistemas que' }, { t:'ordenan tu negocio.', grad:true }], 340, r);
+  const cards = [
+    ['box', 'Gestión', 'Stock, ventas, caja y facturación en un solo lugar.'],
+    ['user', 'CRM', 'Clientes, presupuestos y seguimiento al día.'],
+    ['cal', 'Turnos y reservas', 'Una agenda online que se completa sola.'],
+    ['chart', 'Paneles', 'Los números del día, en tu celular.'],
+  ];
+  const cw = (W - 2 * M - 28) / 2, ch = 310;
+  cards.forEach(([ic, t, d], i) => {
+    const x = M + (i % 2) * (cw + 28), y = 505 + Math.floor(i / 2) * (ch + 28);
+    rr(g, x, y, cw, ch, 32, A.tint + '.06)', A.tint + '.22)');
+    rr(g, x + 34, y + 34, 84, 84, 24, A.tint + '.14)'); icon(g, ic, x + 76, y + 78, 50, A.main);
+    text(g, t, x + 34, y + 186, `700 40px ${B}`, C.fg);
+    wrap(g, d, x + 34, y + 236, cw - 68, 40, `400 29px ${B}`, C.muted);
+  });
+});
+// 04 · bots de WhatsApp (rama IA)
+S.push(g => {
+  const r = 'ia', A = RAMA[r];
+  frame(g, 3, r, [[W, 200, 760, A.tint, .2], [0, H, 600, 'rgba(76,201,240,', .1]]);
+  eyebrow(g, 'Bots de WhatsApp · IA', 230, r);
+  headline(g, [{ t:'tu WhatsApp,' }, { t:'atendiendo solo.', grad:true }], 340, r);
+  // chat
+  const px = M, pw = W - 2 * M, py = 490, ph = 600;
+  rr(g, px, py, pw, ph, 36, '#0E1529', 'rgba(238,241,248,.1)');
+  rr(g, px, py, pw, 86, [36, 36, 0, 0], '#131D38');
+  circ(g, px + 56, py + 43, 24, A.tint + '.25)'); mark(g, px + 40, py + 27, 32, A.main);
+  text(g, 'Tu negocio', px + 96, py + 40, `600 28px ${B}`, C.fg);
+  text(g, 'en línea · responde al instante', px + 96, py + 68, `400 22px ${B}`, '#4BE3A0');
+  const msgs = [
+    ['in', '¿Tienen stock del taladro 650 W?'],
+    ['out', '¡Hola! Sí, nos quedan 3. Sale $ 89.900. ¿Te lo reservo?'],
+    ['in', 'Dale, a nombre de Martín.'],
+    ['out', 'Listo ✓ Reservado hasta las 19 h. Te esperamos en el local.'],
+  ];
+  let y = py + 122;
+  for (const [dir, s] of msgs) {
+    g.font = `400 29px ${B}`;
+    const maxW = pw * .66, words = s.split(' '), lines = []; let line = '';
+    for (const w of words) { const t = line ? line + ' ' + w : w; if (g.measureText(t).width > maxW - 52 && line) { lines.push(line); line = w; } else line = t; }
+    lines.push(line);
+    const bw = Math.max(...lines.map(l => g.measureText(l).width)) + 52, bh = lines.length * 38 + 34;
+    const bx = dir === 'in' ? px + 28 : px + pw - 28 - bw;
+    rr(g, bx, y, bw, bh, 24, dir === 'in' ? '#1C2642' : A.tint + '.22)', dir === 'out' ? A.tint + '.35)' : null);
+    lines.forEach((l, k) => text(g, l, bx + 26, y + 46 + k * 38, `400 29px ${B}`, C.fg));
+    if (dir === 'out') text(g, 'bot', bx + bw - 14, y + bh + 24, `500 19px ${MONO}`, A.soft, { align:'right', ls:'2px' });
+    y += bh + (dir === 'out' ? 36 : 16);
+  }
+  const pts = ['Ve tu stock real', 'Toma pedidos', 'Deriva a humanos'], gap = 16, cw = (W - 2 * M - gap * 2) / 3;
+  pts.forEach((p, i) => {
+    const x = M + i * (cw + gap), yy = py + ph + 28;
+    rr(g, x, yy, cw, 66, 33, A.tint + '.1)', A.tint + '.3)');
+    icon(g, 'check', x + 34, yy + 33, 28, A.main); text(g, p, x + 58, yy + 43, `500 26px ${B}`, C.fg);
+  });
+});
+// 05 · por qué no lo hace cualquiera
+S.push(g => {
+  const r = 'sistemas', A = RAMA[r];
+  frame(g, 4, r, [[W, H * .45, 700, A.tint, .14], [0, 0, 600, 'rgba(124,140,255,', .12]]);
+  eyebrow(g, 'Por qué no es una plantilla', 230, r);
+  headline(g, [{ t:'es tu negocio,' }, { t:'hecho software.', grad:true }], 340, r);
+  const items = [
+    ['Hecho sobre tu forma de trabajar', 'No adaptás tu negocio a un programa: el programa se adapta a vos.'],
+    ['Conectado con lo que ya usás', 'WhatsApp, medios de pago, planillas y facturación.'],
+    ['Seguro y con respaldo', 'Usuarios con permisos y copias de seguridad.'],
+    ['Crece con vos', 'Sumamos módulos a medida que los necesitás.'],
+  ];
+  items.forEach(([t, d], i) => {
+    const y = 550 + i * 165;
+    text(g, String(i + 1).padStart(2, '0'), M, y, `500 26px ${MONO}`, A.soft, { ls:'4px' });
+    if (i < items.length - 1) { g.fillStyle = A.tint + '.25)'; g.fillRect(M + 16, y + 22, 2, 120); }
+    text(g, t, M + 110, y + 4, `700 38px ${B}`, C.fg);
+    wrap(g, d, M + 110, y + 50, W - 2 * M - 110, 40, `400 29px ${B}`, C.muted);
+  });
+});
+// 06 · cómo arrancamos
+S.push(g => {
+  const r = 'sistemas', A = RAMA[r];
+  frame(g, 5, r, [[0, H * .4, 700, A.tint, .12], [W, H, 700, 'rgba(75,227,160,', .1]]);
+  eyebrow(g, 'Cómo arrancamos', 230, r);
+  headline(g, [{ t:'primero el mapa,' }, { t:'después el código.', grad:true }], 340, r);
+  const steps = [
+    ['Charla inicial', 'Nos contás cómo trabajás hoy, sin compromiso.'],
+    ['Detectamos qué automatizar', 'Empezamos por lo que más tiempo te come.'],
+    ['Construimos por módulos', 'Lo usás desde el primer módulo, no al final.'],
+    ['Te acompañamos', 'Capacitamos a tu equipo y lo vamos mejorando.'],
+  ];
+  steps.forEach(([t, d], i) => {
+    const y = 545 + i * 168, cx = M + 34;
+    if (i < steps.length - 1) { g.fillStyle = A.tint + '.3)'; g.fillRect(cx - 1, y + 36, 2, 136); }
+    circ(g, cx, y + 2, 34, '#0F1A33'); g.strokeStyle = A.main; g.lineWidth = 3; g.beginPath(); g.arc(cx, y + 2, 34, 0, 7); g.stroke();
+    text(g, String(i + 1), cx, y + 14, `700 32px ${B}`, A.main, { align:'center' });
+    text(g, t, M + 100, y + 8, `700 38px ${B}`, C.fg);
+    wrap(g, d, M + 100, y + 54, W - 2 * M - 100, 40, `400 29px ${B}`, C.muted);
+  });
+});
+// 07 · cierre
+S.push(g => {
+  const r = 'sistemas', A = RAMA[r];
+  frame(g, 6, r, [[W * .5, H * .45, 820, A.tint, .16], [W, H, 600, 'rgba(124,140,255,', .14]]);
+  g.save(); g.globalAlpha = .07; mark(g, W - 520, 560, 560, A.main); g.restore();
+  eyebrow(g, 'Tu turno', 300, r);
+  const yb = headline(g, [{ t:'¿qué tarea' }, { t:'querés dejar' }, { t:'de hacer a mano?', grad:true }], 420, r, 112);
+  wrap(g, 'Contanos por DM y te decimos cómo la automatizaríamos.', M, yb + 90, W - 2 * M - 80, 46, `400 36px ${B}`, C.muted);
+  const by = yb + 210, bw = 520, bh = 112;
+  g.save(); g.shadowColor = A.tint + '.45)'; g.shadowBlur = 50; rr(g, M, by, bw, bh, bh / 2, A.main); g.restore();
+  text(g, 'Escribinos por DM  →', M + bw / 2, by + bh / 2 + 2, `700 38px ${B}`, C.bg, { align:'center', base:'middle' });
+  text(g, 'CHACO · ARGENTINA', M, by + bh + 80, `500 26px ${MONO}`, C.muted, { ls:'4px' });
+});
+
+/* ---------- render y exportación ---------- */
+const grid = document.getElementById('grid');
+const canvases = S.map((draw, i) => { const c = document.createElement('canvas'); c.width = W; c.height = H; draw(c.getContext('2d')); grid.appendChild(c); return c; });
+document.getElementById('exp').onclick = async () => {
+  const st = document.getElementById('status'); let ok = 0;
+  for (let i = 0; i < canvases.length; i++) {
+    const blob = await new Promise(r => canvases[i].toBlob(r, 'image/png'));
+    const name = `rumbo-02-sistemas-${String(i + 1).padStart(2, '0')}.png`;
+    try { const res = await fetch('/save?name=' + name, { method:'POST', body:blob }); if (res.ok) ok++; else throw 0; }
+    catch { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click(); }
+  }
+  st.textContent = ok ? `Guardadas ${ok} slides en reels/out/` : 'Descargadas';
+  window.__exported = ok;
+};
+</script>
+</body>
+</html>

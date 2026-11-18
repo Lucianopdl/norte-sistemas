@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reel Negocio sin web</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Geist:wght@300..800&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#05070C; --fg:#EEF1F8; --muted:#95A0B8; --primary:#4D63FF; --line:rgba(238,241,248,.12); }
+  * { box-sizing:border-box; }
+  html, body { margin:0; height:100%; background:var(--bg); color:var(--fg); font-family:Geist, system-ui, sans-serif; }
+  #app { min-height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; padding:16px; }
+  #out { height:min(84vh, calc((100vw - 32px) * 16 / 9)); aspect-ratio:9/16; border-radius:20px; background:#06080D; box-shadow:0 30px 80px rgba(0,0,0,.5), 0 0 0 1px var(--line); }
+  #ui { display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:center; max-width:720px; }
+  button { font:600 14px Geist, system-ui; color:var(--fg); background:#121A2E; border:1px solid var(--line); border-radius:999px; padding:9px 16px; cursor:pointer; }
+  button.primary { background:var(--primary); border-color:transparent; }
+  button:disabled { opacity:.5; cursor:wait; }
+  input[type=range] { width:min(360px, 60vw); accent-color:var(--primary); }
+  #time, #status { font:500 13px ui-monospace, monospace; color:var(--muted); }
+  #status a { color:#7C8CFF; }
+  body.clean #ui { display:none; }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div id="app">
+  <canvas id="out" width="1080" height="1920"></canvas>
+  <div id="ui">
+    <button id="play">Pausa</button>
+    <input id="scrub" type="range" min="0" max="21" step="0.01" value="0">
+    <span id="time">0.00s</span>
+    <button id="exp" class="primary">Exportar MP4</button>
+    <span id="status"></span>
+  </div>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+/* =========================================================
+   Norte Sistemas · Reel "Tu negocio sin web"
+   Formato creador: caja-gancho arriba + CTA "Comentá" + subtítulos en caja.
+   B-roll con dispositivos realistas en 3D. 1080x1920 · 30fps · 21s.
+   ========================================================= */
+// ?br=2.8 → exporta a 2,8 Mbps (versión liviana para subir) y sin grano, que se come el bitrate
+const QS = new URLSearchParams(location.search);
+const W = 1080, H = 1920, FPS = 30, DUR = 22.6, BITRATE = QS.has('br') ? Math.round(+QS.get('br') * 1e6) : 18_000_000;
+const GRAIN = !QS.has('br');
+const NAME = QS.has('br') ? 'norte-reel-negocio-sin-web-ig.mp4' : 'norte-reel-negocio-sin-web.mp4';
+// Locución: [inicio en segundos, archivo sin extensión]. Si dejás 01.m4a / 01.mp3 en la carpeta, se usa antes que el 01.wav sintético.
+const VOICE = [[0.05, '01'], [2.45, '02'], [6.75, '03'], [10.2, '04'], [15.35, '05'], [18.6, '06']]
+  .map(([t, f]) => [t, 'voz/negocio-sin-web/' + f]);
+const VOICE_EXT = ['.m4a', '.mp3', '.wav'];
+const C = {
+  bg:'#06080D', fg:'#EEF1F8', muted:'#95A0B8', ink:'#0A0F1F', inkMuted:'#55607A',
+  primary:'#4D63FF', primaryDay:'#2E46E6', primarySoft:'#7C8CFF', red:'#E5383B', green:'#22C55E', star:'#F5A524',
+};
+const T = { s2:6.4, s3:10.0, s4:15.2, s5:18.4 };
+
+// Gancho fijo arriba + CTA (estilo creador)
+const HOOK = 'Tu negocio sin web';
+const HOOK_CTA = 'Comentá “WEB” 👇';
+// Subtítulos: [inicio, texto]. *palabra* = resaltado. Sirven de guion para grabar la voz en off.
+const CAPS = [
+  // tiempos tomados de las marcas por palabra de la voz Tomás (inicio de frase + offset de la palabra)
+  [0.1, 'Cada día alguien busca'], [1.17, 'lo que vendés'], [1.75, 'en *Google*.'],
+  [2.5, 'Si no tenés web,'], [3.5, 'ese cliente'], [4.19, 'entra a la web'], [4.77, 'de tu *competencia*.'],
+  [6.8, 'Una web bien hecha'], [7.69, '*trabaja*'], [8.07, 'mientras dormís.'],
+  [10.25, 'Muestra tus servicios,'], [11.66, 'responde dudas'], [12.67, 'y te manda consultas'], [13.65, 'directo a *WhatsApp*.'],
+  [15.4, 'No es un gasto.'], [17.09, 'Es tu *mejor vendedor*.'],
+  [18.65, 'Comentá *WEB*'], [19.47, 'y te mando un análisis'], [20.5, '*gratis* de tu negocio.'],
+];
+const MARK_PTS = [[6,96],[6,34],[24,34],[70,80],[70,28],[62,28],[79,2],[96,28],[88,28],[88,96],[70,96],[24,50],[24,96]];
+const markPath = new Path2D('M' + MARK_PTS.map(p => p.join(' ')).join(' L') + ' Z');
+
+/* ---------- utils ---------- */
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const lerp = (a, b, p) => a + (b - a) * p;
+const eOut = p => 1 - Math.pow(1 - p, 3);
+const eIn = p => p * p * p;
+const eInOut = p => p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+const eBack = (p, s = 1.4) => p <= 0 ? 0 : 1 + (s + 1) * Math.pow(p - 1, 3) + s * Math.pow(p - 1, 2);
+function mulberry32(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const rand = mulberry32(42);
+const rr = (g, x, y, w, h, r, fill) => { g.beginPath(); g.roundRect(x, y, w, h, r); g.fillStyle = fill; g.fill(); };
+const rrS = (g, x, y, w, h, r, stroke, lw) => { g.beginPath(); g.roundRect(x, y, w, h, r); g.strokeStyle = stroke; g.lineWidth = lw; g.stroke(); };
+const circ = (g, x, y, r, fill) => { g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fillStyle = fill; g.fill(); };
+function hexA(hex, a) { const n = parseInt(hex.slice(1), 16); return `rgba(${n >> 16 & 255},${n >> 8 & 255},${n & 255},${a})`; }
+const fmt = n => Math.round(n).toLocaleString('es-AR');
+const DISPLAY = '"Bricolage Grotesque"', BODY = 'Geist';
+
+await Promise.all([700, 800].map(w => document.fonts.load(`${w} 80px ${DISPLAY}`))
+  .concat([400, 500, 600, 700, 800].map(w => document.fonts.load(`${w} 40px ${BODY}`))));
+
+/* ---------- three ---------- */
+const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true, preserveDrawingBuffer:true });
+renderer.setPixelRatio(1); renderer.setSize(W, H, false); renderer.setClearColor(0, 0);
+renderer.toneMapping = THREE.NeutralToneMapping; renderer.outputColorSpace = THREE.SRGBColorSpace;
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+const camera = new THREE.PerspectiveCamera(30, W / H, .1, 100);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x0a0f1f, .5));
+const key = new THREE.DirectionalLight(0xffffff, 2.2); key.position.set(-3, 5, 6); scene.add(key);
+const rim = new THREE.PointLight(C.primary, 35, 14); rim.position.set(3, 2, -3); scene.add(rim);
+const stage = new THREE.Group(); stage.position.y = .25; scene.add(stage);
+
+const M = (geo, mat) => new THREE.Mesh(geo, mat);
+const metal = (color, r = .32) => new THREE.MeshPhysicalMaterial({ color, metalness:.85, roughness:r, clearcoat:.4, clearcoatRoughness:.2, envMapIntensity:1 });
+const gloss = (color, o = {}) => new THREE.MeshPhysicalMaterial({ color, metalness:.1, roughness:o.r ?? .3, clearcoat:1, clearcoatRoughness:.08, envMapIntensity:.9, emissive:new THREE.Color(o.em ?? '#000'), emissiveIntensity:o.ei ?? 0 });
+function rrShape(w, h, r) {
+  const s = new THREE.Shape(), x = -w / 2, y = -h / 2; r = Math.min(r, w / 2, h / 2);
+  s.moveTo(x + r, y); s.lineTo(x + w - r, y); s.absarc(x + w - r, y + r, r, -Math.PI / 2, 0, false);
+  s.lineTo(x + w, y + h - r); s.absarc(x + w - r, y + h - r, r, 0, Math.PI / 2, false);
+  s.lineTo(x + r, y + h); s.absarc(x + r, y + h - r, r, Math.PI / 2, Math.PI, false);
+  s.lineTo(x, y + r); s.absarc(x + r, y + r, r, Math.PI, Math.PI * 1.5, false);
+  return s;
+}
+function slab(w, h, d, r) {
+  const b = Math.min(.035, d * .3);
+  const g = new THREE.ExtrudeGeometry(rrShape(w - 2 * b, h - 2 * b, Math.max(.001, r - b)),
+    { depth:d - 2 * b, bevelEnabled:true, bevelThickness:b, bevelSize:b, bevelSegments:5, curveSegments:18 });
+  g.translate(0, 0, -(d - 2 * b) / 2); return g;
+}
+function screen(pw, ph, draw, res) {
+  const c = document.createElement('canvas'); c.width = Math.round(pw * res); c.height = Math.round(ph * res);
+  const g = c.getContext('2d');
+  const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 8;
+  const m = M(new THREE.PlaneGeometry(pw, ph), new THREE.MeshBasicMaterial({ map:tex, toneMapped:false }));
+  m.userData.redraw = (...a) => { draw(g, c.width, c.height, ...a); tex.needsUpdate = true; };
+  return m;
+}
+function textPlane(pw, ph, txt, font, color, align = 'center', res = 300) {
+  const c = document.createElement('canvas'); c.width = Math.round(pw * res); c.height = Math.round(ph * res);
+  const g = c.getContext('2d'); g.font = font; g.fillStyle = color; g.textBaseline = 'middle'; g.textAlign = align;
+  g.fillText(txt, align === 'left' ? 4 : c.width / 2, c.height / 2);
+  const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace;
+  return M(new THREE.PlaneGeometry(pw, ph), new THREE.MeshBasicMaterial({ map:tex, transparent:true, toneMapped:false, depthWrite:false }));
+}
+
+/* ---------- pantallas (canvas 2D) ---------- */
+const QUERY = 'ferretería cerca de mí';
+const RESULTS = [
+  { name:'Ferretería Central', rating:'4,7', rev:'(312)', meta:'Ferretería · 1,2 km · Abierto', web:true, ph:['#C9B79C', '#8D7A5F'] },
+  { name:'Tu negocio', rating:'4,8', rev:'(96)', meta:'Ferretería · 800 m · Abierto', web:false, ph:['#AEB7C9', '#6E7891'] },
+  { name:'Pinturería del Sur', rating:'4,5', rev:'(208)', meta:'Pinturería · 2,1 km · Cierra 20 h', web:true, ph:['#B9C9B5', '#6F8A6B'] },
+];
+function statusBar(g, w, time, col) {
+  g.fillStyle = col; g.font = `600 26px ${BODY}`; g.textAlign = 'left'; g.fillText(time, 52, 54);
+  rrS(g, w - 104, 34, 50, 24, 7, col, 2.5); rr(g, w - 100, 38, 36, 16, 4, col);
+}
+function drawSearch(g, w, h, t) {
+  g.fillStyle = '#FFFFFF'; g.fillRect(0, 0, w, h);
+  statusBar(g, w, '10:42', C.ink);
+  rr(g, 28, 92, w - 56, 88, 44, '#F1F3F8');
+  g.strokeStyle = C.inkMuted; g.lineWidth = 4; g.beginPath(); g.arc(78, 132, 14, 0, 7); g.stroke();
+  g.beginPath(); g.moveTo(88, 143); g.lineTo(98, 153); g.stroke();
+  const n = Math.floor(QUERY.length * seg(t, .3, 1.5)), s = QUERY.slice(0, n);
+  g.font = `500 30px ${BODY}`; g.fillStyle = n ? C.ink : '#8A93A8'; g.fillText(n ? s : 'Buscar', 118, 145);
+  if (t < 1.9 && Math.floor(t * 2.5) % 2 === 0) rr(g, 118 + g.measureText(s).width + 4, 118, 3, 36, 1, C.primaryDay);
+  const tabs = ['Todo', 'Maps', 'Imágenes', 'Noticias']; let x = 40;
+  g.font = `600 25px ${BODY}`;
+  tabs.forEach(tb => { g.fillStyle = tb === 'Maps' ? C.primaryDay : C.inkMuted; g.fillText(tb, x, 238); if (tb === 'Maps') rr(g, x, 252, g.measureText(tb).width, 5, 2, C.primaryDay); x += g.measureText(tb).width + 38; });
+  g.fillStyle = '#E4E8F0'; g.fillRect(0, 258, w, 2);
+  g.fillStyle = C.ink; g.font = `700 30px ${BODY}`; g.fillText('Negocios cerca', 40, 318);
+  RESULTS.forEach((r, i) => {
+    const p = eOut(seg(t, 1.75 + i * .18, 2.25 + i * .18)); if (p <= 0) return;
+    const y = 345 + i * 272 + (1 - p) * 40;
+    g.save(); g.globalAlpha = p;
+    rr(g, 24, y, w - 48, 252, 26, '#FFFFFF'); rrS(g, 24, y, w - 48, 252, 26, '#E4E8F0', 2);
+    const pg = g.createLinearGradient(w - 190, y + 24, w - 46, y + 168); pg.addColorStop(0, r.ph[0]); pg.addColorStop(1, r.ph[1]);
+    rr(g, w - 190, y + 24, 144, 144, 18, pg);
+    g.fillStyle = C.ink; g.font = `700 31px ${BODY}`; g.fillText(r.name, 50, y + 60);
+    g.font = `500 24px ${BODY}`; g.fillStyle = C.inkMuted; g.fillText(r.rating, 50, y + 100);
+    const rw = g.measureText(r.rating + ' ').width; g.fillStyle = C.star; g.fillText('★★★★★', 50 + rw, y + 100);
+    const sw = g.measureText('★★★★★ ').width; g.fillStyle = C.inkMuted; g.fillText(r.rev, 50 + rw + sw, y + 100);
+    g.fillText(r.meta, 50, y + 136);
+    let bx = 50; const btns = r.web ? ['Sitio web', 'Cómo llegar', 'Llamar'] : ['Cómo llegar', 'Llamar'];
+    g.font = `600 22px ${BODY}`;
+    btns.forEach(b => { const bw = g.measureText(b).width + 40; rrS(g, bx, y + 176, bw, 50, 25, b === 'Sitio web' ? C.primaryDay : '#C9D0DD', 2.5); g.fillStyle = b === 'Sitio web' ? C.primaryDay : C.ink; g.fillText(b, bx + 20, y + 209); r['bx_' + b] = [bx + bw / 2, y + 201]; bx += bw + 12; });
+    if (!r.web) { g.fillStyle = '#A0A8B8'; g.font = `500 22px ${BODY}`; g.fillText('Sin sitio web', bx + 6, y + 209); }
+    g.restore();
+    if (!r.web && t > 2.55) { g.save(); g.globalAlpha = eOut(seg(t, 2.55, 2.9)); rrS(g, 20, y - 4, w - 40, 260, 30, C.red, 6); g.restore(); }
+  });
+  if (t > 3.7 && t < 4.4) {   // toque en "Sitio web" de la competencia
+    const [x, y] = RESULTS[0]['bx_Sitio web'] || [120, 546], p = seg(t, 3.75, 4.3);
+    g.save(); g.globalAlpha = (1 - p) * .9; circ(g, x, y, 22 + p * 70, 'rgba(46,70,230,.25)'); g.restore();
+    g.save(); g.globalAlpha = 1 - seg(t, 4.1, 4.4); circ(g, x, y, 26, 'rgba(10,15,31,.35)'); g.restore();
+  }
+}
+function drawCompetitor(g, w, h, t) {
+  g.fillStyle = '#F6F4EF'; g.fillRect(0, 0, w, h);
+  g.fillStyle = '#1F2328'; g.fillRect(0, 0, w, 150);
+  statusBar(g, w, '10:43', '#FFFFFF');
+  g.fillStyle = '#FFFFFF'; g.font = `700 30px ${BODY}`; g.fillText('Ferretería Central', 40, 118);
+  for (let k = 0; k < 3; k++) rr(g, w - 84, 96 + k * 12, 40, 5, 2, '#FFFFFF');
+  const hg = g.createLinearGradient(0, 180, w, 600); hg.addColorStop(0, '#2F343B'); hg.addColorStop(1, '#6B5B45');
+  rr(g, 24, 176, w - 48, 420, 28, hg);
+  g.fillStyle = '#FFFFFF'; g.font = `800 56px ${DISPLAY}`; g.fillText('Todo para', 60, 300); g.fillText('tu obra.', 60, 364);
+  g.font = `500 24px ${BODY}`; g.fillStyle = 'rgba(255,255,255,.75)'; g.fillText('Envíos en el día · Presupuestos sin cargo', 60, 412);
+  rr(g, 60, 466, 300, 76, 38, '#E8833A'); g.fillStyle = '#FFFFFF'; g.font = `700 26px ${BODY}`; g.fillText('Pedir presupuesto', 88, 513);
+  rr(g, 24, 626, w - 48, 500, 28, '#FFFFFF');
+  g.fillStyle = C.ink; g.font = `700 32px ${BODY}`; g.fillText('Pedí tu presupuesto', 56, 690);
+  const vals = ['Martín', '351 555 0142', 'Chapas y tornillería'], ph = ['Nombre', 'Teléfono', '¿Qué necesitás?'];
+  vals.forEach((v, i) => {
+    const y = 724 + i * 112; rr(g, 56, y, w - 112, 84, 18, '#F1F3F8');
+    const n = Math.floor(v.length * seg(t, 4.6 + i * .25, 4.85 + i * .25));
+    g.font = `500 26px ${BODY}`; g.fillStyle = n ? C.ink : '#8A93A8'; g.fillText(n ? v.slice(0, n) : ph[i], 82, y + 52);
+  });
+  rr(g, 56, 1050, w - 112, 56, 28, '#1F2328'); g.fillStyle = '#FFFFFF'; g.font = `700 24px ${BODY}`; g.textAlign = 'center'; g.fillText('Enviar', w / 2, 1086); g.textAlign = 'left';
+  const tp = eOut(seg(t, 5.55, 5.9));
+  if (tp > 0) {
+    const y = h - 40 - tp * 150;
+    rr(g, 28, y, w - 56, 120, 26, C.ink);
+    circ(g, 92, y + 60, 26, C.green);
+    g.strokeStyle = '#FFFFFF'; g.lineWidth = 5; g.lineCap = 'round'; g.lineJoin = 'round';
+    g.beginPath(); g.moveTo(80, y + 60); g.lineTo(89, y + 70); g.lineTo(105, y + 51); g.stroke();
+    g.fillStyle = '#FFFFFF'; g.font = `700 28px ${BODY}`; g.fillText('Consulta enviada', 136, y + 54);
+    g.fillStyle = C.muted; g.font = `500 22px ${BODY}`; g.fillText('a Ferretería Central', 136, y + 88);
+  }
+}
+const NOTI = [
+  ['Martín G.', 'Hola! Vi su web, ¿hacen envíos a Córdoba?'],
+  ['Laura P.', '¿Tienen turno para el jueves a la tarde?'],
+  ['Diego R.', 'Quiero el presupuesto que vi en la web'],
+  ['Ana M.', '¿Cuál es el horario del sábado?'],
+  ['Pablo S.', 'Hola, ¿me pasás precio del combo?'],
+];
+function drawLock(g, w, h, t) {
+  const bg = g.createRadialGradient(w * .3, h * .2, 50, w * .5, h * .5, h * .8);
+  bg.addColorStop(0, '#26306A'); bg.addColorStop(.5, '#111733'); bg.addColorStop(1, '#05070D');
+  g.fillStyle = bg; g.fillRect(0, 0, w, h);
+  statusBar(g, w, '', '#FFFFFF');
+  g.textAlign = 'center'; g.fillStyle = 'rgba(255,255,255,.85)'; g.font = `600 28px ${BODY}`; g.fillText('martes 18 de noviembre', w / 2, 170);
+  g.fillStyle = '#FFFFFF'; g.font = `600 150px ${BODY}`; g.fillText('02:14', w / 2, 320); g.textAlign = 'left';
+  NOTI.forEach(([name, msg], i) => {
+    const s = 10.4 + i * .8, p = eOut(seg(t, s, s + .35)); if (p <= 0) return;
+    const y = 400 + i * 164 - (1 - p) * 50;
+    g.save(); g.globalAlpha = p;
+    rr(g, 22, y, w - 44, 148, 30, 'rgba(244,246,251,.92)');
+    rr(g, 44, y + 22, 54, 54, 15, C.green);
+    circ(g, 71, y + 47, 15, '#FFFFFF'); g.beginPath(); g.moveTo(60, y + 58); g.lineTo(57, y + 66); g.lineTo(67, y + 61); g.fill();
+    g.fillStyle = C.inkMuted; g.font = `600 21px ${BODY}`; g.fillText('WHATSAPP', 114, y + 46);
+    g.textAlign = 'right'; g.font = `500 21px ${BODY}`; g.fillText('ahora', w - 50, y + 46); g.textAlign = 'left';
+    g.fillStyle = C.ink; g.font = `700 25px ${BODY}`; g.fillText(name, 114, y + 86);
+    g.fillStyle = '#2A3142'; g.font = `500 23px ${BODY}`; g.fillText(msg, 114, y + 122);
+    g.restore();
+  });
+}
+const HOURS = [3, 2, 2, 1, 1, 1, 2, 4, 7, 9, 11, 12, 10, 11, 12, 10, 9, 8, 7, 6, 5, 4, 4, 3];
+function drawDash(g, w, h, t) {
+  g.fillStyle = '#0B1020'; g.fillRect(0, 0, w, h);
+  g.fillStyle = '#0E1428'; g.fillRect(0, 0, 92, h);
+  g.save(); g.translate(26, 30); g.scale(.4, .4); g.fillStyle = C.primary; g.fill(markPath); g.restore();
+  for (let k = 0; k < 4; k++) rr(g, 32, 130 + k * 64, 28, 28, 8, k === 0 ? 'rgba(124,140,255,.5)' : 'rgba(238,241,248,.1)');
+  g.fillStyle = C.fg; g.font = `700 34px ${BODY}`; g.fillText('Tu web', 130, 66);
+  g.fillStyle = C.muted; g.font = `500 22px ${BODY}`; g.fillText('Últimas 24 horas', 130, 100);
+  rr(g, w - 196, 42, 156, 46, 23, 'rgba(34,197,94,.14)');
+  circ(g, w - 168, 65, 7 + Math.sin(t * 6) * 1.5, C.green); g.fillStyle = C.green; g.font = `600 22px ${BODY}`; g.fillText('En vivo', w - 150, 73);
+  const p = eOut(seg(t, 7.1, 9.3));
+  const kpis = [['Visitas', fmt(1284 * p)], ['Consultas', fmt(23 * p)], ['Mientras dormías', fmt(9 * p) + ' consultas']];
+  const kw = (w - 130 - 40 - 48) / 3;
+  kpis.forEach(([k, v], i) => {
+    const x = 130 + i * (kw + 24);
+    rr(g, x, 136, kw, 150, 22, '#121A2E'); rrS(g, x, 136, kw, 150, 22, 'rgba(238,241,248,.08)', 2);
+    g.fillStyle = C.muted; g.font = `500 22px ${BODY}`; g.fillText(k, x + 26, 180);
+    g.fillStyle = i === 2 ? C.primarySoft : C.fg; g.font = `700 50px ${BODY}`; g.fillText(v, x + 26, 250);
+  });
+  rr(g, 130, 314, w - 170, 452, 22, '#121A2E'); rrS(g, 130, 314, w - 170, 452, 22, 'rgba(238,241,248,.08)', 2);
+  g.fillStyle = C.fg; g.font = `600 24px ${BODY}`; g.fillText('Consultas por hora', 158, 358);
+  const x0 = 168, x1 = w - 76, y0 = 400, y1 = 712, X = i => x0 + (x1 - x0) * i / 23, Y = v => y1 - (y1 - y0) * v / 13;
+  g.fillStyle = 'rgba(124,140,255,.08)'; g.fillRect(X(0), y0 - 6, X(7) - X(0), y1 - y0 + 6);
+  g.fillStyle = C.primarySoft; g.font = `600 19px ${BODY}`; g.fillText('MIENTRAS DORMÍAS', X(0) + 14, y0 + 22);
+  g.fillStyle = 'rgba(238,241,248,.07)'; for (let k = 0; k < 4; k++) g.fillRect(x0, y0 + k * (y1 - y0) / 3, x1 - x0, 1.5);
+  g.fillStyle = C.muted; g.font = `500 19px ${BODY}`; g.textAlign = 'center';
+  [0, 6, 12, 18, 23].forEach(i => g.fillText(String(i === 23 ? 24 : i).padStart(2, '0'), X(i), y1 + 34)); g.textAlign = 'left';
+  const k = eInOut(seg(t, 7.0, 9.4)) * 23;
+  if (k > 0) {
+    const pts = []; for (let i = 0; i <= Math.floor(k); i++) pts.push([X(i), Y(HOURS[i])]);
+    const fi = Math.floor(k), fr = k - fi; if (fi < 23) pts.push([lerp(X(fi), X(fi + 1), fr), Y(lerp(HOURS[fi], HOURS[fi + 1], fr))]);
+    const ag = g.createLinearGradient(0, y0, 0, y1); ag.addColorStop(0, 'rgba(77,99,255,.45)'); ag.addColorStop(1, 'rgba(77,99,255,0)');
+    g.beginPath(); g.moveTo(pts[0][0], y1); pts.forEach(([x, y]) => g.lineTo(x, y)); g.lineTo(pts[pts.length - 1][0], y1); g.closePath(); g.fillStyle = ag; g.fill();
+    g.beginPath(); pts.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.strokeStyle = C.primarySoft; g.lineWidth = 4; g.lineJoin = 'round'; g.stroke();
+    const [lx, ly] = pts[pts.length - 1]; circ(g, lx, ly, 8, '#FFFFFF');
+  }
+  const tp = eOut(seg(t, 8.4, 8.8));
+  if (tp > 0) {
+    const x = X(2.2), y = Y(2);
+    circ(g, x, y, 9 + Math.sin(t * 7) * 2, C.primarySoft);
+    g.save(); g.globalAlpha = tp;
+    rr(g, x - 20, y - 112 + (1 - tp) * 14, 300, 80, 16, '#FFFFFF');
+    g.fillStyle = C.ink; g.font = `700 22px ${BODY}`; g.fillText('02:14 · Nueva consulta', x, y - 76 + (1 - tp) * 14);
+    g.fillStyle = C.inkMuted; g.font = `500 19px ${BODY}`; g.fillText('desde el formulario web', x, y - 48 + (1 - tp) * 14);
+    g.restore();
+  }
+}
+
+/* ---------- dispositivos ---------- */
+const phone = new THREE.Group(); stage.add(phone);
+const phoneScreen = screen(1.46, 3.1, (g, w, h, t) => {
+  if (t >= T.s3) return drawLock(g, w, h, t);
+  drawSearch(g, w, h, t);
+  if (t > 4.3) { const p = eOut(seg(t, 4.3, 4.7)); g.save(); g.translate(w * (1 - p), 0); drawCompetitor(g, w, h, t); g.restore(); }
+}, 430);
+{
+  phone.add(M(slab(1.56, 3.2, .17, .25), metal('#23262D')));
+  phoneScreen.position.z = .087; phone.add(phoneScreen);
+  const island = M(slab(.4, .11, .01, .055), new THREE.MeshBasicMaterial({ color:'#000' })); island.position.set(0, 1.42, .093); phone.add(island);
+  for (const [y, hh] of [[.85, .32], [.4, .32], [1.0, .12]]) { const b = M(new RoundedBoxGeometry(.04, hh, .07, 3, .018), metal('#2C3038')); b.position.set(y === 1.0 ? .8 : -.8, y, 0); phone.add(b); }
+}
+const laptop = new THREE.Group(); stage.add(laptop);
+const lid = new THREE.Group();
+const dashScreen = screen(3.2, 2.0, drawDash, 400);
+{
+  const alu = metal('#9AA1AC', .38);
+  const base = M(slab(3.4, 2.3, .1, .14), alu); base.rotation.x = -Math.PI / 2; base.position.y = .05; laptop.add(base);
+  const kb = document.createElement('canvas'); kb.width = 1200; kb.height = 480;
+  { const g = kb.getContext('2d'); g.fillStyle = '#2A2E35'; g.fillRect(0, 0, 1200, 480);
+    for (let r = 0; r < 5; r++) for (let c = 0; c < 14; c++) rr(g, 18 + c * 83, 18 + r * 90, 74, 80, 10, '#121418'); }
+  const kt = new THREE.CanvasTexture(kb); kt.colorSpace = THREE.SRGBColorSpace;
+  const deck = M(new THREE.PlaneGeometry(3.0, 1.2), new THREE.MeshStandardMaterial({ map:kt, roughness:.7 })); deck.rotation.x = -Math.PI / 2; deck.position.set(0, .102, -.35); laptop.add(deck);
+  const pad = M(new THREE.PlaneGeometry(1.1, .62), new THREE.MeshStandardMaterial({ color:'#8F96A1', roughness:.5, metalness:.5 })); pad.rotation.x = -Math.PI / 2; pad.position.set(0, .102, .67); laptop.add(pad);
+  lid.position.set(0, .1, -1.13); laptop.add(lid);
+  const shell = M(slab(3.4, 2.2, .06, .14), alu); shell.position.set(0, 1.1, -.03); lid.add(shell);
+  const bezel = M(new THREE.PlaneGeometry(3.32, 2.12), new THREE.MeshBasicMaterial({ color:'#050608' })); bezel.position.set(0, 1.1, .001); lid.add(bezel);
+  dashScreen.position.set(0, 1.12, .003); lid.add(dashScreen);
+}
+const chart = new THREE.Group(); stage.add(chart);
+const bars = [];
+{
+  const ug = new RoundedBoxGeometry(.42, 1, .42, 4, .05); ug.translate(0, .5, 0);
+  const H6 = [.55, .6, .5, 1.05, 1.55, 2.15], months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'];
+  H6.forEach((hh, i) => {
+    const on = i >= 3;
+    const b = M(ug, on ? gloss(C.primary, { r:.22, em:C.primary, ei:.25 }) : gloss('#2B3247', { r:.45 }));
+    b.position.set(-1.45 + i * .58, -1.2, 0); b.userData.h = hh; chart.add(b); bars.push(b);
+    const lb = textPlane(.5, .2, months[i], `600 44px ${BODY}`, on ? '#C8CFFF' : '#7A84A0'); lb.position.set(b.position.x, -1.38, .25); chart.add(lb);
+  });
+  const line = M(new THREE.PlaneGeometry(.015, 2.75), new THREE.MeshBasicMaterial({ color:'#FFFFFF', transparent:true, opacity:.35 })); line.position.set(-.29, .12, .1); chart.add(line);
+  const chip = new THREE.Group(); chip.position.set(-.29, 1.62, .3); chart.add(chip); chart.userData.chip = chip;
+  chip.add(M(slab(1.15, .3, .08, .15), gloss('#FFFFFF', { r:.3 })));
+  const ct = textPlane(1.1, .26, 'Web online', `700 56px ${BODY}`, C.ink); ct.position.z = .045; chip.add(ct);
+  const title = textPlane(2.4, .24, 'Consultas por mes', `600 58px ${BODY}`, '#95A0B8'); title.position.set(0, -1.72, .25); chart.add(title);
+  const tags = [textPlane(1.2, .2, 'Sin web', `600 46px ${BODY}`, '#7A84A0'), textPlane(1.2, .2, 'Con web', `700 46px ${BODY}`, '#C8CFFF')];
+  tags[0].position.set(-.87, -.3, .25); tags[1].position.set(.87, 1.2, .25); tags.forEach(x => chart.add(x)); chart.userData.tags = tags;
+}
+const logo = new THREE.Group(); stage.add(logo);
+{
+  const shape = new THREE.Shape();
+  MARK_PTS.forEach(([px, py], i) => { const x = (px - 51) / 47, y = (49 - py) / 47; i ? shape.lineTo(x, y) : shape.moveTo(x, y); });
+  const geo = new THREE.ExtrudeGeometry(shape, { depth:.3, bevelEnabled:true, bevelThickness:.05, bevelSize:.03, bevelSegments:8, curveSegments:2 }); geo.center();
+  const m = M(geo, new THREE.MeshPhysicalMaterial({ color:C.primary, metalness:.25, roughness:.25, clearcoat:1, clearcoatRoughness:.05, envMapIntensity:1.1 }));
+  m.scale.setScalar(.62); logo.add(m);
+}
+
+/* ---------- animación 3D ---------- */
+function cutPunch(t) { let z = 0; for (const tb of [T.s2, T.s3, T.s4, T.s5]) if (t >= tb) z = Math.exp(-(t - tb) * 5); return z; }
+function update(t) {
+  const punch = cutPunch(t);
+  const sc = t < T.s2 ? 1 : t < T.s3 ? 2 : t < T.s4 ? 3 : t < T.s5 ? 4 : 5;
+  phone.visible = sc === 1 || sc === 3; laptop.visible = sc === 2; chart.visible = sc === 4; logo.visible = sc === 5;
+  let cx = 0, cy = .25, cz = 12, lx = 0, ly = .25, lz = 0;
+
+  if (phone.visible) {
+    const t0 = sc === 1 ? 0 : T.s3, p = eOut(seg(t, t0, t0 + .7));
+    phoneScreen.userData.redraw(t);
+    phone.scale.setScalar(.96);
+    if (sc === 1) {
+      const push = eInOut(seg(t, 0, T.s2));
+      phone.position.set(0, -.15 + (1 - p) * -.5 + Math.sin(t * 1.2) * .03, 0);
+      phone.rotation.set(-.06, lerp(-.42, -.1, push) + Math.sin(t * .8) * .03, .02);
+      cz = lerp(11.6, 10.3, push) - (t > 4.3 ? .5 * eInOut(seg(t, 4.3, 5.2)) : 0);
+    } else {
+      const push = eInOut(seg(t, T.s3, T.s4));
+      phone.position.set(0, -.15 + (1 - p) * -.5 + Math.sin(t * 1.2) * .03, 0);
+      phone.rotation.set(-.05, lerp(.32, .06, push) + Math.sin(t * .8) * .03, -.02);
+      cz = lerp(11.2, 10.2, push);
+    }
+  }
+  if (laptop.visible) {
+    const o = eInOut(seg(t, T.s2 + .1, T.s2 + 1.0)), push = eInOut(seg(t, T.s2 + .9, T.s3));
+    lid.rotation.x = lerp(Math.PI / 2 - .02, -.24, o);
+    dashScreen.userData.redraw(t);
+    dashScreen.material.color.setScalar(lerp(.04, 1, seg(t, T.s2 + .6, T.s2 + 1.1)));
+    laptop.scale.setScalar(.92);
+    laptop.position.set(0, -1.0, 0);
+    laptop.rotation.set(0, lerp(.42, .12, push), 0);
+    cx = lerp(.5, 0, push); cy = lerp(2.7, 1.35, push); cz = lerp(11.5, 8.6, push); ly = lerp(-.2, .25, push);
+  }
+  if (chart.visible) {
+    bars.forEach((b, i) => { const s = T.s4 + .25 + i * .22, p = eBack(seg(t, s, s + .6), 1.1); b.scale.set(1, Math.max(.001, b.userData.h * p), 1); });
+    const cp = eBack(seg(t, T.s4 + 1.0, T.s4 + 1.4));
+    chart.userData.chip.scale.setScalar(Math.max(.001, cp)); chart.userData.chip.position.y = 1.62 + Math.sin(t * 1.5) * .03;
+    chart.userData.tags[0].material.opacity = seg(t, T.s4 + .6, T.s4 + 1);
+    chart.userData.tags[1].material.opacity = seg(t, T.s4 + 1.6, T.s4 + 2);
+    chart.rotation.y = lerp(-.35, .15, eInOut(seg(t, T.s4, T.s5)));
+    chart.position.y = .2; chart.scale.setScalar(.72);
+    cy = .6; cz = lerp(11.8, 10.8, eInOut(seg(t, T.s4, T.s5))); ly = .2;
+  }
+  if (logo.visible) {
+    const p = seg(t, T.s5, T.s5 + 1.3);
+    logo.scale.setScalar(Math.max(.001, eBack(seg(t, T.s5, T.s5 + .6))));
+    logo.position.set(0, .45 + Math.sin(t * 1.2) * .04, 0);
+    logo.rotation.set(Math.sin(t * .7) * .06, lerp(-Math.PI * 1.5, 0, eOut(p)) + Math.sin(t * .8) * .2 * p, 0);
+    cz = 11;
+  }
+  camera.position.set(cx + Math.sin(t * .4) * .12, cy + Math.cos(t * .35) * .06, cz - punch * 1.4);
+  camera.lookAt(lx, ly, lz);
+}
+
+/* ---------- capa 2D ---------- */
+const out = document.getElementById('out');
+const ctx = out.getContext('2d', { alpha:false });
+const grain = (() => {
+  const c = document.createElement('canvas'); c.width = c.height = 256;
+  const g = c.getContext('2d'), d = g.createImageData(256, 256);
+  for (let i = 0; i < d.data.length; i += 4) { const v = rand() * 255; d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = 255; }
+  g.putImageData(d, 0, 0); return ctx.createPattern(c, 'repeat');
+})();
+function glow(x, y, r, col, a) {
+  const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+  g.addColorStop(0, hexA(col, a)); g.addColorStop(.6, hexA(col, a * .3)); g.addColorStop(1, hexA(col, 0));
+  ctx.fillStyle = g; ctx.fillRect(x - r, y - r, r * 2, r * 2);
+}
+function richWidth(parts, fontW) { return parts.reduce((a, [s]) => a + ctx.measureText(s).width, 0); }
+function drawBoxText(text, cx, cy, size, weight, s, alpha) {
+  const parts = text.split('*').map((s, i) => [s, i % 2 === 1]).filter(([s]) => s);
+  ctx.font = `${weight} ${size}px ${BODY}`;
+  const tw = richWidth(parts), padX = size * .42, padY = size * .26, bw = tw + padX * 2, bh = size * 1.0 + padY * 2;
+  ctx.save(); ctx.globalAlpha = alpha; ctx.translate(cx, cy); ctx.scale(s, s);
+  ctx.shadowColor = 'rgba(0,0,0,.35)'; ctx.shadowBlur = 30; ctx.shadowOffsetY = 8;
+  rr(ctx, -bw / 2, -bh / 2, bw, bh, size * .24, '#FFFFFF'); ctx.shadowColor = 'transparent';
+  let x = -tw / 2; ctx.textBaseline = 'middle';
+  for (const [str, em] of parts) { ctx.fillStyle = em ? C.primaryDay : C.ink; ctx.fillText(str, x, size * .04); x += ctx.measureText(str).width; }
+  ctx.restore();
+  return bh;
+}
+function drawHook(t) {
+  const p = eBack(seg(t, 0, .35), 1.2);
+  const bh = drawBoxText(HOOK, W / 2, 262, 66, 800, .85 + .15 * p, seg(t, 0, .15));
+  const q = eBack(seg(t, .2, .55), 1.2), pulse = t > T.s5 ? 1 + .04 * Math.sin((t - T.s5) * 7) : 1;
+  ctx.save(); ctx.globalAlpha = seg(t, .2, .35); ctx.translate(W / 2, 262 + bh / 2 + 52); ctx.scale((.85 + .15 * q) * pulse, (.85 + .15 * q) * pulse);
+  ctx.font = `700 40px ${BODY}`; const tw = ctx.measureText(HOOK_CTA).width, w = tw + 44, h = 64;
+  rr(ctx, -w / 2, -h / 2, w, h, 14, C.red);
+  ctx.fillStyle = '#FFFFFF'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(HOOK_CTA, 0, 2);
+  ctx.restore();
+}
+function drawCaptions(t) {
+  for (let i = CAPS.length - 1; i >= 0; i--) {
+    const [t0, txt] = CAPS[i], next = CAPS[i + 1] ? CAPS[i + 1][0] : DUR + 1;
+    const end = Math.min(next, t0 + 2.2);
+    if (t >= t0 && t < end) { drawBoxText(txt, W / 2, 1352, 60, 800, .9 + .1 * eBack(seg(t, t0, t0 + .16), 2), seg(t, t0, t0 + .06) * (1 - seg(t, end - .08, end))); return; }
+  }
+}
+const tv = new THREE.Vector3();
+function screenOf(o) { o.getWorldPosition(tv); tv.project(camera); return [(tv.x + 1) / 2 * W, (1 - tv.y) / 2 * H]; }
+
+function drawFrame(t) {
+  update(t);
+  scene.updateMatrixWorld(); camera.updateMatrixWorld();
+  renderer.render(scene, camera);
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1;
+  ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
+  glow(W / 2, 860, 1100, '#1B2444', .9);
+  const focus = phone.visible ? phone : laptop.visible ? dashScreen : chart.visible ? chart : logo;
+  const [fx, fy] = screenOf(focus);
+  glow(fx, fy, 720, C.primary, logo.visible ? .4 : .22);
+  ctx.drawImage(renderer.domElement, 0, 0, W, H);
+  if (logo.visible) {
+    const p = eOut(seg(t, T.s5 + .5, T.s5 + 1.1));
+    ctx.save(); ctx.globalAlpha = p; ctx.textAlign = 'center';
+    ctx.fillStyle = C.fg; ctx.font = `700 78px ${DISPLAY}`; ctx.fillText('Norte Sistemas', W / 2, 1150 + (1 - p) * 20);
+    ctx.fillStyle = C.muted; ctx.font = `500 34px ${BODY}`; ctx.fillText('Webs y sistemas para negocios', W / 2, 1208 + (1 - p) * 20);
+    ctx.restore();
+  }
+  const vg = ctx.createRadialGradient(W / 2, H * .46, H * .32, W / 2, H * .5, H * .8);
+  vg.addColorStop(0, 'rgba(3,4,8,0)'); vg.addColorStop(1, 'rgba(3,4,8,.7)'); ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
+  if (GRAIN) { ctx.save(); ctx.globalAlpha = .05; ctx.globalCompositeOperation = 'overlay';
+  const f = Math.floor(t * FPS); ctx.translate((f * 73) % 256, (f * 151) % 256); ctx.fillStyle = grain; ctx.fillRect(-256, -256, W + 512, H + 512); ctx.restore(); }
+  drawHook(t);
+  drawCaptions(t);
+}
+
+/* ---------- reproducción y exportación ---------- */
+const ui = { play:document.getElementById('play'), scrub:document.getElementById('scrub'), time:document.getElementById('time'), exp:document.getElementById('exp'), status:document.getElementById('status') };
+const params = new URLSearchParams(location.search);
+if (params.has('clean')) document.body.classList.add('clean');
+let playing = !params.has('t'), cur = +(params.get('t') || 0), last = performance.now(), exporting = false;
+ui.scrub.max = DUR;
+function setTime(t) { cur = t; ui.scrub.value = t; ui.time.textContent = t.toFixed(2) + 's'; drawFrame(t); }
+
+/* --- audio: mezcla de la locución en una pista de DUR segundos --- */
+const SR = 48000;
+const actx = new AudioContext({ sampleRate:SR });
+let voiceMix = null, src = null;
+async function buildMix() {
+  const off = new OfflineAudioContext(2, Math.ceil(DUR * SR), SR);
+  const comp = off.createDynamicsCompressor();
+  comp.threshold.value = -14; comp.ratio.value = 3; comp.attack.value = .005; comp.release.value = .2;
+  const master = off.createGain(); master.gain.value = .92; comp.connect(master).connect(off.destination);
+  const gain = off.createGain(); gain.gain.value = 1.0; gain.connect(comp);
+  const segs = [];
+  for (const [t0, base] of VOICE) {
+    let buf = null;
+    for (const ext of VOICE_EXT) {
+      try { const r = await fetch(base + ext); if (!r.ok) continue; buf = await off.decodeAudioData(await r.arrayBuffer()); console.info('Voz', base + ext, buf.duration.toFixed(2) + 's'); break; }
+      catch (e) { console.warn('No se pudo decodificar', base + ext, e); }
+    }
+    if (!buf) { console.warn('Falta la voz', base); continue; }
+    const s = off.createBufferSource(); s.buffer = buf; s.connect(gain); s.start(t0);
+    segs.push([t0, t0 + buf.duration - .35]);
+  }
+  if (!params.has('nomusic')) addSoundtrack(off, comp, segs);
+  return off.startRendering();
+}
+
+/* --- banda sonora sintetizada (sin licencias): música + efectos sincronizados --- */
+const MUSIC_VOL = .55, MUSIC_DUCK = .17, SFX_VOL = .55;
+const midi = m => 440 * Math.pow(2, (m - 69) / 12);
+function noiseBuf(ac, sec) {
+  const b = ac.createBuffer(1, Math.ceil(sec * ac.sampleRate), ac.sampleRate), d = b.getChannelData(0); let s = 7;
+  for (let i = 0; i < d.length; i++) { s = (s * 16807) % 2147483647; d[i] = s / 2147483647 * 2 - 1; }
+  return b;
+}
+function impulse(ac, sec = 2.2, decay = 3) {
+  const n = Math.ceil(sec * ac.sampleRate), b = ac.createBuffer(2, n, ac.sampleRate);
+  for (let ch = 0; ch < 2; ch++) { const d = b.getChannelData(ch); let s = 11 + ch * 97; for (let i = 0; i < n; i++) { s = (s * 16807) % 2147483647; d[i] = (s / 2147483647 * 2 - 1) * Math.pow(1 - i / n, decay); } }
+  return b;
+}
+function addSoundtrack(ac, out, segs) {
+  const NB = noiseBuf(ac, 3);
+  const rev = ac.createConvolver(); rev.buffer = impulse(ac); const revG = ac.createGain(); revG.gain.value = .3; rev.connect(revG).connect(out);
+  const env = (g, t, peak, a, d, curve = 'exp') => { g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(peak, t + a); curve === 'exp' ? g.gain.exponentialRampToValueAtTime(.0001, t + a + d) : g.gain.linearRampToValueAtTime(0, t + a + d); };
+  const noise = (t, dur, dest) => { const s = ac.createBufferSource(); s.buffer = NB; s.connect(dest); s.start(t, (t * 7.3) % 1.5); s.stop(t + dur); };
+  const osc = (type, f, t, dur, dest) => { const o = ac.createOscillator(); o.type = type; o.frequency.setValueAtTime(f, t); o.connect(dest); o.start(t); o.stop(t + dur); return o; };
+
+  // ----- música (100 BPM, Am–F–C–G), con ducking bajo la voz -----
+  const music = ac.createGain(); music.connect(out);
+  const mg = music.gain; mg.setValueAtTime(0, 0); mg.setTargetAtTime(MUSIC_DUCK, 0, .25);
+  segs.forEach(([a, b], i) => {
+    if (i > 0) mg.setTargetAtTime(MUSIC_DUCK, Math.max(0, a - .15), .06);
+    const nextA = segs[i + 1] ? segs[i + 1][0] : DUR;
+    if (nextA - b > .5) mg.setTargetAtTime(MUSIC_VOL, b, .25);
+  });
+  mg.setTargetAtTime(0, DUR - 1.2, .35);
+  const BEAT = .6, BAR = 2.4, chords = [[57, 60, 64], [53, 57, 60], [48, 52, 55], [55, 59, 62]];
+  const padF = ac.createBiquadFilter(); padF.type = 'lowpass'; padF.frequency.value = 1000; padF.Q.value = .4;
+  const padG = ac.createGain(); padG.gain.value = .1; padF.connect(padG); padG.connect(music); padG.connect(rev);
+  const plF = ac.createBiquadFilter(); plF.type = 'lowpass'; plF.frequency.value = 2600;
+  const plG = ac.createGain(); plG.gain.value = .5; plF.connect(plG); plG.connect(music); plG.connect(rev);
+  const drumsEnd = T.s5 - .15;
+  for (let b = 0; b * BAR < DUR; b++) {
+    const t0 = b * BAR, ch = chords[b % 4];
+    for (const n of ch) for (const det of [-8, 8]) {
+      const g = ac.createGain(); g.connect(padF);
+      g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(.2, t0 + .5); g.gain.setValueAtTime(.2, t0 + BAR - .2); g.gain.linearRampToValueAtTime(0, t0 + BAR + .4);
+      osc('sawtooth', midi(n), t0, BAR + .5, g).detune.value = det;
+    }
+    for (let k = 0; k < 4; k++) {
+      const tb = t0 + k * BEAT;
+      if (tb >= 2.4 && tb < drumsEnd) {   // bajo pulsado
+        const g = ac.createGain(); g.connect(music); env(g, tb, .55, .015, .5); osc('sine', midi(ch[0] - 12), tb, .55, g);
+      }
+      if (tb >= 2.4 && tb < drumsEnd && k % 2 === 0) {   // bombo
+        const g = ac.createGain(); g.connect(music); env(g, tb, .9, .004, .32);
+        const o = osc('sine', 140, tb, .35, g); o.frequency.exponentialRampToValueAtTime(42, tb + .14);
+      }
+      if (tb >= 4.8 && tb < drumsEnd && k % 2 === 1) {   // clap suave
+        const f = ac.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 1800; f.Q.value = .8;
+        const g = ac.createGain(); f.connect(g); g.connect(music); g.connect(rev); env(g, tb, .22, .003, .14); noise(tb, .18, f);
+      }
+      if (tb + BEAT / 2 < drumsEnd) {   // hi-hat a contratiempo
+        const th = tb + BEAT / 2, f = ac.createBiquadFilter(); f.type = 'highpass'; f.frequency.value = 7500;
+        const g = ac.createGain(); f.connect(g).connect(music); env(g, th, .09, .002, .05); noise(th, .07, f);
+      }
+      if (tb >= T.s2) for (const half of [0, BEAT / 2]) {   // arpegio desde la escena 2
+        const tp = tb + half, n = ch[(k * 2 + (half ? 1 : 0)) % 3] + 12;
+        const g = ac.createGain(); g.connect(plF); env(g, tp, .13, .005, .28); osc('triangle', midi(n), tp, .32, g);
+      }
+    }
+  }
+
+  // ----- efectos -----
+  const sfx = ac.createGain(); sfx.gain.value = SFX_VOL; sfx.connect(out);
+  const click = (t, v = .3) => {
+    const f = ac.createBiquadFilter(); f.type = 'highpass'; f.frequency.value = 2500;
+    const g = ac.createGain(); f.connect(g).connect(sfx); env(g, t, v, .001, .025); noise(t, .04, f);
+  };
+  const pop = (t, v = .35) => { const g = ac.createGain(); g.connect(sfx); env(g, t, v, .004, .12); const o = osc('sine', 520, t, .15, g); o.frequency.exponentialRampToValueAtTime(900, t + .06); };
+  const ding = (t, v = .3) => [[1318.5, 0], [1975.5, .09]].forEach(([f, d]) => { const g = ac.createGain(); g.connect(sfx); g.connect(rev); env(g, t + d, v, .004, .6); osc('sine', f, t + d, .7, g); });
+  const tick = (t, f, v = .14) => { const g = ac.createGain(); g.connect(sfx); g.connect(rev); env(g, t, v, .003, .18); osc('triangle', f, t, .22, g); };
+  const whoosh = (t, v = .5, low = false) => {
+    const f = ac.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = 1.1;
+    f.frequency.setValueAtTime(low ? 200 : 350, t - .35); f.frequency.exponentialRampToValueAtTime(low ? 1400 : 4200, t); f.frequency.exponentialRampToValueAtTime(low ? 300 : 700, t + .3);
+    const g = ac.createGain(); f.connect(g); g.connect(sfx); g.connect(rev);
+    g.gain.setValueAtTime(0, t - .35); g.gain.linearRampToValueAtTime(v, t); g.gain.linearRampToValueAtTime(0, t + .32);
+    noise(t - .35, .7, f);
+  };
+  const riser = (t0, t1) => {
+    const f = ac.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = 1.4;
+    f.frequency.setValueAtTime(400, t0); f.frequency.exponentialRampToValueAtTime(6000, t1);
+    const g = ac.createGain(); f.connect(g).connect(sfx); g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(.28, t1); g.gain.linearRampToValueAtTime(0, t1 + .05);
+    noise(t0, t1 - t0 + .1, f);
+  };
+  const boom = t => {
+    const g = ac.createGain(); g.connect(sfx); env(g, t, 1.0, .005, 1.4); const o = osc('sine', 75, t, 1.5, g); o.frequency.exponentialRampToValueAtTime(36, t + .9);
+    const f = ac.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 1400;
+    const gn = ac.createGain(); f.connect(gn); gn.connect(sfx); gn.connect(rev); env(gn, t, .35, .005, 1.2); noise(t, 1.3, f);
+  };
+  // escena 1: tipeo, resultados, toque, cambio de página, formulario y confirmación
+  for (let i = 0; i < QUERY.length; i++) click(.3 + i * 1.2 / QUERY.length + ((i * 37) % 7) * .004, .16 + ((i * 13) % 5) * .02);
+  [1.75, 1.93, 2.11].forEach((t, i) => tick(t, [880, 1046.5, 1318.5][i], .08));
+  click(3.78, .5); pop(3.79, .2); whoosh(4.45, .22);
+  [[4.6, 6], [4.85, 12], [5.1, 19]].forEach(([t0, n]) => { for (let i = 0; i < n; i++) click(t0 + i * .25 / n, .12); });
+  ding(5.6, .22);
+  // cortes entre escenas
+  whoosh(T.s2, .55); whoosh(T.s3, .55); whoosh(T.s4, .55);
+  whoosh(T.s2 + .5, .3, true);                       // la notebook se abre
+  pop(8.42, .18);                                     // tooltip 02:14
+  for (let i = 0; i < NOTI.length; i++) ding(10.4 + i * .8, .26);   // notificaciones
+  [0, 2, 4, 5, 7, 9].forEach((st, i) => tick(T.s4 + .25 + i * .22, midi(69 + st), .12));   // barras
+  pop(T.s4 + 1.0, .25);                               // "Web online"
+  riser(T.s5 - 1.5, T.s5); boom(T.s5);               // cierre con el logo
+}
+const mixReady = buildMix().then(b => { voiceMix = b; });
+function stopAudio() { if (src) { try { src.stop(); } catch {} src = null; } }
+function startAudio() {
+  stopAudio(); if (!voiceMix || exporting) return;
+  actx.resume(); src = actx.createBufferSource(); src.buffer = voiceMix; src.connect(actx.destination); src.start(0, cur);
+}
+
+function loop(now) {
+  if (playing && !exporting) {
+    const nt = cur + (now - last) / 1000;
+    if (nt >= DUR) { setTime(0); startAudio(); } else setTime(nt);
+  }
+  last = now; requestAnimationFrame(loop);
+}
+ui.play.onclick = () => { playing = !playing; ui.play.textContent = playing ? 'Pausa' : 'Play'; playing ? startAudio() : stopAudio(); };
+ui.scrub.oninput = () => { playing = false; stopAudio(); ui.play.textContent = 'Play'; setTime(+ui.scrub.value); };
+addEventListener('keydown', e => { if (e.code === 'Space') { e.preventDefault(); ui.play.click(); } });
+ui.play.textContent = playing ? 'Pausa' : 'Play';
+setTime(cur); requestAnimationFrame(loop);
+
+async function exportVideo() {
+  if (exporting) return;
+  if (!('VideoEncoder' in window)) { ui.status.textContent = 'Este navegador no soporta WebCodecs (usá Chrome).'; return; }
+  stopAudio(); playing = false;
+  exporting = true; ui.exp.disabled = true; ui.status.textContent = 'Preparando…';
+  try {
+    const { Muxer, ArrayBufferTarget } = await import('https://cdn.jsdelivr.net/npm/mp4-muxer@5.1.3/+esm');
+    await mixReady;
+    const aacCfg = { codec:'mp4a.40.2', sampleRate:SR, numberOfChannels:2, bitrate:160000 };
+    const hasAudio = !!voiceMix && 'AudioEncoder' in window && (await AudioEncoder.isConfigSupported(aacCfg)).supported;
+    let chosen = null;
+    for (const [codec, mc] of [['avc1.640034', 'avc'], ['avc1.4d0034', 'avc'], ['avc1.42003e', 'avc'], ['vp09.00.51.08', 'vp9']]) {
+      const s = await VideoEncoder.isConfigSupported({ codec, width:W, height:H, bitrate:BITRATE, framerate:FPS });
+      if (s.supported) { chosen = [codec, mc]; break; }
+    }
+    if (!chosen) throw new Error('Sin codec compatible');
+    const target = new ArrayBufferTarget();
+    const muxer = new Muxer({ target, video:{ codec:chosen[1], width:W, height:H, frameRate:FPS },
+      ...(hasAudio ? { audio:{ codec:'aac', sampleRate:SR, numberOfChannels:2 } } : {}), fastStart:'in-memory' });
+    let err = null;
+    if (hasAudio) {   // pista de voz → AAC
+      const aenc = new AudioEncoder({ output:(c, m) => muxer.addAudioChunk(c, m), error:e => { err = e; } });
+      aenc.configure(aacCfg);
+      const L = voiceMix.getChannelData(0), R = voiceMix.getChannelData(voiceMix.numberOfChannels > 1 ? 1 : 0);
+      const FR = 1024;
+      for (let o = 0; o < voiceMix.length; o += FR) {
+        const n = Math.min(FR, voiceMix.length - o), data = new Float32Array(n * 2);
+        data.set(L.subarray(o, o + n), 0); data.set(R.subarray(o, o + n), n);
+        const ad = new AudioData({ format:'f32-planar', sampleRate:SR, numberOfFrames:n, numberOfChannels:2, timestamp:Math.round(o / SR * 1e6), data });
+        aenc.encode(ad); ad.close();
+      }
+      await aenc.flush();
+    }
+    const enc = new VideoEncoder({ output:(c, m) => muxer.addVideoChunk(c, m), error:e => { err = e; } });
+    enc.configure({ codec:chosen[0], width:W, height:H, bitrate:BITRATE, framerate:FPS, latencyMode:'quality', ...(chosen[1] === 'avc' ? { avc:{ format:'avc' } } : {}) });
+    const N = Math.round(DUR * FPS);
+    for (let i = 0; i < N; i++) {
+      if (err) throw err;
+      const t = i / FPS; drawFrame(t);
+      const vf = new VideoFrame(out, { timestamp:Math.round(i * 1e6 / FPS), duration:Math.round(1e6 / FPS) });
+      enc.encode(vf, { keyFrame:i % (FPS * 2) === 0 }); vf.close();
+      if (enc.encodeQueueSize > 6) await new Promise(r => enc.addEventListener('dequeue', r, { once:true }));
+      if (i % 6 === 0) { ui.status.textContent = `Renderizando ${Math.round(i / N * 100)}% (${chosen[0]})`; ui.scrub.value = t; await new Promise(r => setTimeout(r, 0)); }
+    }
+    await enc.flush(); muxer.finalize();
+    const blob = new Blob([target.buffer], { type:'video/mp4' });
+    const url = URL.createObjectURL(blob);
+    let saved = false;
+    try { const r = await fetch('/save?name=' + NAME, { method:'POST', body:blob }); saved = r.ok; } catch {}
+    ui.status.innerHTML = `${saved ? 'Guardado en reels/out/ · ' : ''}<a href="${url}" download="${NAME}">Descargar MP4</a> (${(blob.size / 1e6).toFixed(1)} MB, ${chosen[0]})`;
+    if (!saved) { const a = document.createElement('a'); a.href = url; a.download = NAME; a.click(); }
+    window.__lastExport = { size:blob.size, codec:chosen[0], saved, audio:hasAudio };
+  } catch (e) { ui.status.textContent = 'Error: ' + e.message; window.__lastExport = { error:String(e) }; }
+  exporting = false; ui.exp.disabled = false;
+}
+ui.exp.onclick = exportVideo;
+window.exportVideo = exportVideo;
+window.renderAt = t => { playing = false; setTime(t); };
+</script>
+</body>
+</html>
