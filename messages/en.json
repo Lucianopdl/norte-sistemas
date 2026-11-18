@@ -91,9 +91,9 @@
     "cta": "Connect with me"
   },
   "Portfolio": {
-    "title": "Software for Sale",
+    "title": "Featured Projects",
     "subtitle": "Engineering Portfolio / 02",
-    "description": "Ready-to-Use solutions developed with the highest quality standards and elite engineering.",
+    "description": "Our own products and custom builds for companies and institutions, crafted to the highest quality standards.",
     "projects": {
       "sahara": {
         "title": "Sahara Academy",
@@ -118,6 +118,42 @@
         "description": "Professional quotes in seconds. Adaptable proposal tool for events and multiple industries.",
         "features": ["Fast Quoting", "PDF Export", "History & CRM", "Built-in Calendar"],
         "cta": "View Product"
+      },
+      "camara": {
+        "title": "Chamber of Commerce",
+        "description": "Official site of the Villa Ángela Chamber of Commerce, with an internal platform and a self-service portal for members.",
+        "features": ["Institutional Site", "Members Portal", "Internal Management", "News & Benefits"],
+        "cta": "View Site"
+      },
+      "hotel": {
+        "title": "Hotel Management",
+        "description": "All-in-one hotel system: bookings, front desk, guests and cash register, plus a restaurant point of sale.",
+        "features": ["Bookings & Rooms", "Guest CRM", "Restaurant POS", "AFIP Invoicing"],
+        "cta": "View System"
+      },
+      "binder": {
+        "title": "Grandes Estructuras",
+        "description": "Website for Binder Construcciones: concrete works, civil engineering services and building materials sales.",
+        "features": ["Completed Works", "Services", "Materials Sales", "WhatsApp Contact"],
+        "cta": "View Site"
+      },
+      "dearriba": {
+        "title": "De Arriba Automotores",
+        "description": "Online catalog of cars and motorcycles with live stock, monthly deals and appointment booking.",
+        "features": ["Vehicle Stock", "Motorcycle Catalog", "Monthly Deals", "Appointments"],
+        "cta": "View Catalog"
+      },
+      "refugioEvents": {
+        "title": "El Refugio Event Planner",
+        "description": "Event planning system: quotes, 3D venue designer, clients, payments and calendar.",
+        "features": ["Quote Builder", "3D Venue", "Clients & Payments", "Event Calendar"],
+        "cta": "Request Demo"
+      },
+      "grabados": {
+        "title": "Grabados Chaco",
+        "description": "Laser engraving e-commerce: catalog by category, shopping cart and corporate orders.",
+        "features": ["Online Catalog", "Shopping Cart", "Corporate Orders", "Quotes"],
+        "cta": "View Store"
       }
     }
   }

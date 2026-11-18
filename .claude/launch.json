@@ -6,6 +6,18 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "port": 3000
+    },
+    {
+      "name": "dearriba-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "/Users/luciano/Proyectos Norte sistemas/De Arriba automotores", "run", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "reels",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["reels/serve.py"],
+      "port": 4173
     }
   ]
 }

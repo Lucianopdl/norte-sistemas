@@ -1,0 +1,394 @@
+<title>AtlaSys 3D Studio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Space+Grotesk:wght@500;600&display=swap">
+<style>
+/* Layout: estudio de una pantalla. Lienzo grande a la izquierda (lo que se exporta), panel de controles angosto a la derecha; en celular se apilan. Look único oscuro de marca. */
+:root {
+  --void: #07090C;
+  --surface: #10151B;
+  --line: #1E2731;
+  --ink: #EEF3F6;
+  --ink-muted: #8B98A5;
+  --acc: #22D8F5;
+  --on-acc: #04161B;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme: dark;
+}
+html, body { background: var(--void); color: var(--ink); }
+body { font-family: var(--font-sans); font-size: 14px; }
+.app {
+  display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px;
+  max-width: 1200px; margin: 0 auto;
+  padding-block: 24px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+header { grid-column: 1 / -1; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+header h1 { margin: 0; font: 600 22px/28px var(--font-display); letter-spacing: -.01em; display: flex; align-items: center; gap: 10px; }
+header h1 svg { width: 20px; height: 20px; fill: var(--acc); transition: fill .3s; }
+.eyebrow { font: 500 11px/16px var(--font-mono); letter-spacing: .24em; text-transform: uppercase; color: var(--ink-muted); }
+
+.stage { min-width: 0; display: grid; gap: 12px; align-content: start; }
+.frame {
+  position: relative; display: grid; place-items: center;
+  background: repeating-conic-gradient(#0d1116 0% 25%, #0a0d11 0% 50%) 0 0 / 20px 20px;
+  border: 1px solid var(--line); border-radius: 12px; padding: 24px; min-height: 420px;
+}
+#view { display: block; max-width: 100%; max-height: 70vh; height: auto; box-shadow: 0 16px 40px -8px #000000cc; }
+.meta { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.meta span { font: 500 11px/16px var(--font-mono); letter-spacing: .12em; color: var(--ink-muted); text-transform: uppercase; font-variant-numeric: tabular-nums; }
+
+.panel { min-width: 0; display: grid; gap: 20px; align-content: start; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px; }
+fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 10px; min-width: 0; }
+legend { padding: 0; margin-bottom: 10px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { position: relative; }
+.chip input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.chip label {
+  display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 6px;
+  border: 1px solid var(--line); font: 500 13px/18px var(--font-sans); color: var(--ink); cursor: pointer; user-select: none;
+}
+.chip label i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+.chip input:checked + label { border-color: var(--acc); background: color-mix(in srgb, var(--acc) 14%, transparent); }
+.chip input:focus-visible + label { box-shadow: 0 0 0 2px var(--void), 0 0 0 4px var(--acc); }
+.row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 12px; }
+.row label { font: 500 13px/18px var(--font-sans); }
+.row output { font: 500 12px/18px var(--font-mono); color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+.row input[type=range] { grid-column: 1 / -1; width: 100%; accent-color: var(--acc); }
+.toggle { display: flex; align-items: center; justify-content: space-between; gap: 12px; font: 500 13px/18px var(--font-sans); }
+.toggle input { width: 18px; height: 18px; accent-color: var(--acc); margin: 0; }
+.text-in { width: 100%; box-sizing: border-box; height: 36px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--line); background: var(--void); color: var(--ink); font: 400 14px var(--font-sans); }
+.text-in:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--void), 0 0 0 4px var(--acc); }
+
+.btn {
+  height: 44px; border-radius: 6px; border: 1px solid var(--acc); background: var(--acc); color: var(--on-acc);
+  font: 600 14px/1 var(--font-sans); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+}
+.btn:disabled { opacity: .5; cursor: default; }
+.btn:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--acc); }
+.btn-quiet { background: transparent; color: var(--ink); border-color: var(--line); height: 36px; }
+.status { min-height: 18px; font: 400 12px/18px var(--font-sans); color: var(--ink-muted); }
+
+@media (max-width: 860px) {
+  .app { grid-template-columns: minmax(0, 1fr); }
+  .frame { min-height: 0; padding: 12px; }
+  #view { max-height: 60vh; }
+}
+</style>
+
+<div class="app">
+  <header>
+    <h1><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 4 L92 96 L70 96 L50 58 L30 96 L8 96 Z"/></svg>AtlaSys 3D Studio</h1>
+    <span class="eyebrow">Logo 3D por rama · exportá PNG para redes</span>
+  </header>
+
+  <section class="stage" aria-label="Vista previa">
+    <div class="frame"><canvas id="view" width="540" height="540" aria-label="Vista previa del logo 3D"></canvas></div>
+    <div class="meta"><span id="m-size">1080 × 1080 px</span><span>Arrastrá el lienzo para girar la A</span></div>
+  </section>
+
+  <form class="panel" id="panel" autocomplete="off">
+    <fieldset>
+      <legend class="eyebrow">Rama</legend>
+      <div class="chips" id="lines"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend class="eyebrow">Formato</legend>
+      <div class="chips">
+        <span class="chip"><input type="radio" name="fmt" id="fmt-sq" value="1080x1080" checked><label for="fmt-sq">Post 1:1</label></span>
+        <span class="chip"><input type="radio" name="fmt" id="fmt-45" value="1080x1350"><label for="fmt-45">Post 4:5</label></span>
+        <span class="chip"><input type="radio" name="fmt" id="fmt-st" value="1080x1920"><label for="fmt-st">Historia 9:16</label></span>
+        <span class="chip"><input type="radio" name="fmt" id="fmt-av" value="1024x1024"><label for="fmt-av">Ícono 1024</label></span>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend class="eyebrow">Acabado</legend>
+      <div class="chips">
+        <span class="chip"><input type="radio" name="fin" id="fin-laca" value="laca" checked><label for="fin-laca">Laca</label></span>
+        <span class="chip"><input type="radio" name="fin" id="fin-metal" value="metal"><label for="fin-metal">Metal</label></span>
+        <span class="chip"><input type="radio" name="fin" id="fin-vidrio" value="vidrio"><label for="fin-vidrio">Vidrio</label></span>
+        <span class="chip"><input type="radio" name="fin" id="fin-mate" value="mate"><label for="fin-mate">Mate</label></span>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend class="eyebrow">Fondo</legend>
+      <div class="chips">
+        <span class="chip"><input type="radio" name="bg" id="bg-glow" value="glow" checked><label for="bg-glow">Negro con brillo</label></span>
+        <span class="chip"><input type="radio" name="bg" id="bg-black" value="black"><label for="bg-black">Negro</label></span>
+        <span class="chip"><input type="radio" name="bg" id="bg-none" value="none"><label for="bg-none">Transparente</label></span>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend class="eyebrow">Pose</legend>
+      <div class="row"><label for="rot-y">Giro</label><output id="o-rot-y" for="rot-y">-28°</output><input type="range" id="rot-y" min="-75" max="75" value="-28"></div>
+      <div class="row"><label for="rot-x">Inclinación</label><output id="o-rot-x" for="rot-x">-8°</output><input type="range" id="rot-x" min="-35" max="35" value="-8"></div>
+      <div class="row"><label for="size">Tamaño</label><output id="o-size" for="size">52%</output><input type="range" id="size" min="25" max="80" value="52"></div>
+      <div class="row"><label for="depth">Profundidad</label><output id="o-depth" for="depth">32</output><input type="range" id="depth" min="8" max="80" value="32"></div>
+      <label class="toggle" for="spin">Girar en la vista previa<input type="checkbox" id="spin" checked></label>
+    </fieldset>
+
+    <fieldset>
+      <legend class="eyebrow">Texto</legend>
+      <label class="toggle" for="txt-on">Mostrar wordmark y rama<input type="checkbox" id="txt-on" checked></label>
+      <input class="text-in" id="txt-sub" type="text" maxlength="40" placeholder="Bajada opcional, ej: Tu web lista para vender" aria-label="Bajada opcional">
+    </fieldset>
+
+    <div style="display:grid;gap:8px">
+      <button class="btn" type="submit" id="export">Descargar PNG</button>
+      <button class="btn btn-quiet" type="button" id="pose-reset">Volver a la pose base</button>
+      <p class="status" id="status" role="status"></p>
+    </div>
+  </form>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function () {
+  var LINES = [
+    { id: "atlasys", name: "AtlaSys", label: "INSTITUCIONAL", c: "#22D8F5" },
+    { id: "web", name: "Web", label: "DESARROLLO WEB", c: "#5BE584" },
+    { id: "sistemas", name: "Sistemas", label: "SISTEMAS", c: "#5B8CFF" },
+    { id: "ia", name: "IA", label: "INTELIGENCIA ARTIFICIAL", c: "#B69CFF" },
+    { id: "soporte", name: "Soporte IT", label: "SOPORTE IT", c: "#FF8A3D" },
+    { id: "consultoria", name: "Consultoría", label: "CONSULTORÍA", c: "#F45DB5" }
+  ];
+  var $ = function (id) { return document.getElementById(id); };
+  var linesEl = $("lines");
+  LINES.forEach(function (l, i) {
+    var s = document.createElement("span"); s.className = "chip";
+    s.innerHTML = '<input type="radio" name="line" id="line-' + l.id + '" value="' + l.id + '"' + (i === 0 ? " checked" : "") + '><label for="line-' + l.id + '"><i style="background:' + l.c + '"></i>' + l.name + '</label>';
+    linesEl.appendChild(s);
+  });
+
+  var view = $("view"), vctx = view.getContext("2d");
+  var status = $("status");
+  function say(t) { status.textContent = t; }
+
+  if (!window.THREE) { say("No se pudo cargar three.js. Recargá la página."); $("export").disabled = true; return; }
+
+  var state = { line: LINES[0], W: 1080, H: 1080, fin: "laca", bg: "glow", ry: -28, rx: -8, size: 52, depth: 32, spin: true, txt: true, sub: "" };
+
+  // ---- three.js ----
+  var gl = document.createElement("canvas");
+  var renderer = new THREE.WebGLRenderer({ canvas: gl, antialias: true, alpha: true, preserveDrawingBuffer: true });
+  renderer.outputEncoding = THREE.sRGBEncoding;
+
+
+  renderer.setClearColor(0x000000, 0);
+
+  var scene = new THREE.Scene();
+  // Entorno de estudio: paneles de luz para reflejos (equivalente simple a un softbox)
+  var pmrem = new THREE.PMREMGenerator(renderer);
+  var env = new THREE.Scene();
+  env.background = new THREE.Color(0x020304);
+  function panel(w, h, x, y, z, ry, intensity) {
+    var m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: new THREE.Color(intensity, intensity, intensity), side: THREE.DoubleSide }));
+    m.position.set(x, y, z); m.lookAt(0, 0, 0); env.add(m);
+  }
+  panel(6, 3, 0, 6, 2, 0, 1.4);
+  panel(3, 6, -7, 1, 3, 0, 0.7);
+  panel(3, 6, 7, 0, -2, 0, 0.5);
+  panel(8, 1.2, 0, -5, 4, 0, 0.25);
+  var envTex = pmrem.fromScene(env, 0.02).texture;
+  scene.environment = envTex;
+
+  var hemi = new THREE.HemisphereLight(0xffffff, 0x0b1117, 0.35); scene.add(hemi);
+  var key = new THREE.DirectionalLight(0xffffff, 1.2); key.position.set(3, 4, 5); scene.add(key);
+  var rim = new THREE.PointLight(0xffffff, 3.2, 14); rim.position.set(-3.2, -1.2, -2.6); scene.add(rim);
+  var rim2 = new THREE.PointLight(0xffffff, 1.4, 12); rim2.position.set(3.4, 2.2, -2.4); scene.add(rim2);
+
+  var shape = new THREE.Shape();
+  [[50,4],[92,96],[70,96],[50,58],[30,96],[8,96]].forEach(function (p, i) {
+    var x = (p[0] - 50) / 50, y = (50 - p[1]) / 50; i ? shape.lineTo(x, y) : shape.moveTo(x, y);
+  });
+  shape.closePath();
+  var mesh = new THREE.Mesh(undefined, new THREE.MeshPhysicalMaterial());
+  scene.add(mesh);
+  function buildGeo() {
+    if (mesh.geometry) mesh.geometry.dispose();
+    var g = new THREE.ExtrudeGeometry(shape, { depth: state.depth / 100, bevelEnabled: true, bevelThickness: 0.06, bevelSize: 0.035, bevelSegments: 8, curveSegments: 4 });
+    g.center(); mesh.geometry = g;
+  }
+  function applyMaterial() {
+    var col = new THREE.Color(state.line.c); col.convertSRGBToLinear();
+    var old = mesh.material;
+    var p = { color: col, envMapIntensity: 0.55 };
+    if (state.fin === "laca") Object.assign(p, { metalness: 0.1, roughness: 0.28, clearcoat: 1, clearcoatRoughness: 0.06 });
+    if (state.fin === "metal") Object.assign(p, { metalness: 0.95, roughness: 0.22, clearcoat: 0.4, envMapIntensity: 1.2 });
+    if (state.fin === "mate") Object.assign(p, { metalness: 0, roughness: 0.75, clearcoat: 0 });
+    if (state.fin === "vidrio") Object.assign(p, { metalness: 0, roughness: 0.04, clearcoat: 1, transparent: true, opacity: 0.62, envMapIntensity: 1 });
+    mesh.material = new THREE.MeshPhysicalMaterial(p);
+    old.dispose();
+    rim.color.set(state.line.c); rim2.color.set(state.line.c);
+    document.documentElement.style.setProperty("--acc", state.line.c);
+  }
+  buildGeo(); applyMaterial();
+
+  var cam = new THREE.PerspectiveCamera(30, 1, 0.1, 50);
+  var TAN = Math.tan(THREE.MathUtils.degToRad(15));
+  var MARK_H = 2.1; // alto del sólido con bisel, en unidades
+
+  // ---- composición (vista previa y export usan exactamente lo mismo) ----
+  function layout(W, H) {
+    var a = W / H, textOn = state.txt;
+    var frac = (state.size / 100) * Math.min(1, a);           // alto de la A como fracción del alto
+    var dist = MARK_H / (frac * 2 * TAN);
+    var markCenterY = textOn ? (H < W * 1.1 ? 0.42 : 0.44) : 0.5; // 0 = arriba
+    return { dist: dist, cy: markCenterY, frac: frac };
+  }
+
+  function renderTo(ctx, W, H, scale, t) {
+    var L = layout(W, H);
+    // 3D
+    renderer.setPixelRatio(1);
+    renderer.setSize(W, H, false);
+    cam.aspect = W / H;
+    var visH = 2 * L.dist * TAN;
+    cam.position.set(0, (L.cy - 0.5) * visH * 1, L.dist); // desplaza el centro de la A hacia arriba si hay texto
+    cam.lookAt(0, (L.cy - 0.5) * visH, 0);
+    cam.updateProjectionMatrix();
+    var ry = state.ry, rx = state.rx;
+    if (t != null && state.spin && !reduce) ry += Math.sin(t * 0.7) * 22;
+    mesh.rotation.set(THREE.MathUtils.degToRad(rx), THREE.MathUtils.degToRad(ry), 0);
+    renderer.render(scene, cam);
+
+    // fondo
+    ctx.clearRect(0, 0, W, H);
+    if (state.bg !== "none") { ctx.fillStyle = "#07090C"; ctx.fillRect(0, 0, W, H); }
+    if (state.bg === "glow") {
+      var r = Math.max(W, H) * 0.55, gy = H * L.cy;
+      var g = ctx.createRadialGradient(W / 2, gy, 0, W / 2, gy, r);
+      g.addColorStop(0, hexA(state.line.c, 0.30)); g.addColorStop(0.45, hexA(state.line.c, 0.08)); g.addColorStop(1, hexA(state.line.c, 0));
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    }
+    // sombra de contacto suave
+    if (state.bg !== "none") {
+      var sy = H * L.cy + L.frac * H * 0.58, sw = L.frac * H * 0.55;
+      var sg = ctx.createRadialGradient(W / 2, sy, 0, W / 2, sy, sw);
+      sg.addColorStop(0, "rgba(0,0,0,.55)"); sg.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.save(); ctx.translate(W / 2, sy); ctx.scale(1, 0.18); ctx.translate(-W / 2, -sy);
+      ctx.fillStyle = sg; ctx.fillRect(0, sy - sw, W, sw * 2); ctx.restore();
+    }
+    ctx.drawImage(gl, 0, 0, W, H);
+
+    // texto
+    if (state.txt) {
+      var u = Math.min(W, H) / 1080;
+      var base = H * (H > W * 1.4 ? 0.80 : 0.82);
+      ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
+      ctx.fillStyle = "#EEF3F6";
+      ctx.font = "600 " + Math.round(96 * u) + "px 'Space Grotesk', ui-sans-serif, system-ui, sans-serif";
+      trackedText(ctx, "AtlaSys", W / 2, base, -0.02 * 96 * u);
+      ctx.fillStyle = state.line.c;
+      ctx.font = "500 " + Math.round(22 * u) + "px 'JetBrains Mono', ui-monospace, Menlo, monospace";
+      trackedText(ctx, state.line.label, W / 2, base + 58 * u, 0.24 * 22 * u);
+      if (state.sub) {
+        ctx.fillStyle = "#8B98A5";
+        ctx.font = "400 " + Math.round(30 * u) + "px 'Inter', ui-sans-serif, system-ui, sans-serif";
+        trackedText(ctx, state.sub, W / 2, base + 112 * u, 0);
+      }
+    }
+  }
+  function trackedText(ctx, s, cx, y, track) {
+    if (!track) { ctx.fillText(s, cx, y); return; }
+    var chars = Array.from(s), widths = chars.map(function (c) { return ctx.measureText(c).width; });
+    var total = widths.reduce(function (a, b) { return a + b; }, 0) + track * (chars.length - 1);
+    var x = cx - total / 2, prev = ctx.textAlign; ctx.textAlign = "left";
+    chars.forEach(function (c, i) { ctx.fillText(c, x, y); x += widths[i] + track; });
+    ctx.textAlign = prev;
+  }
+  function hexA(h, a) { var n = parseInt(h.slice(1), 16); return "rgba(" + (n >> 16) + "," + ((n >> 8) & 255) + "," + (n & 255) + "," + a + ")"; }
+
+  // ---- vista previa ----
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce) { state.spin = false; $("spin").checked = false; }
+  function sizePreview() {
+    var pw = Math.min(720, Math.round(540 * state.W / Math.max(state.W, state.H) * 1.333));
+    var ph = Math.round(pw * state.H / state.W);
+    if (ph > 720) { ph = 720; pw = Math.round(ph * state.W / state.H); }
+    view.width = pw; view.height = ph;
+    $("m-size").textContent = state.W + " × " + state.H + " px";
+  }
+  sizePreview();
+  var exporting = false, t0 = performance.now();
+  function loop(now) {
+    if (!exporting) renderTo(vctx, view.width, view.height, 1, (now - t0) / 1000);
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+
+  // ---- controles ----
+  var form = $("panel");
+  form.addEventListener("input", function (e) {
+    var el = e.target;
+    if (el.name === "line") { state.line = LINES.filter(function (l) { return l.id === el.value; })[0]; applyMaterial(); }
+    if (el.name === "fmt") { var p = el.value.split("x"); state.W = +p[0]; state.H = +p[1]; sizePreview(); }
+    if (el.name === "fin") { state.fin = el.value; applyMaterial(); }
+    if (el.name === "bg") state.bg = el.value;
+    if (el.id === "rot-y") { state.ry = +el.value; $("o-rot-y").textContent = el.value + "°"; }
+    if (el.id === "rot-x") { state.rx = +el.value; $("o-rot-x").textContent = el.value + "°"; }
+    if (el.id === "size") { state.size = +el.value; $("o-size").textContent = el.value + "%"; }
+    if (el.id === "depth") { state.depth = +el.value; $("o-depth").textContent = el.value; buildGeo(); }
+    if (el.id === "spin") state.spin = el.checked;
+    if (el.id === "txt-on") state.txt = el.checked;
+    if (el.id === "txt-sub") state.sub = el.value.trim();
+    say("");
+  });
+  $("pose-reset").addEventListener("click", function () {
+    setRange("rot-y", -28); setRange("rot-x", -8); setRange("size", 52); setRange("depth", 32);
+    state.ry = -28; state.rx = -8; state.size = 52; state.depth = 32; buildGeo();
+  });
+  function setRange(id, v) { $(id).value = v; var o = $("o-" + id); if (o) o.textContent = v + (id === "size" ? "%" : id === "depth" ? "" : "°"); }
+
+  // arrastrar para girar
+  var drag = null;
+  view.addEventListener("pointerdown", function (e) { drag = { x: e.clientX, y: e.clientY, ry: state.ry, rx: state.rx }; view.setPointerCapture(e.pointerId); state.spin = false; $("spin").checked = false; });
+  view.addEventListener("pointermove", function (e) {
+    if (!drag) return;
+    var ry = Math.max(-75, Math.min(75, Math.round(drag.ry + (e.clientX - drag.x) * 0.4)));
+    var rx = Math.max(-35, Math.min(35, Math.round(drag.rx + (e.clientY - drag.y) * 0.3)));
+    state.ry = ry; state.rx = rx; setRange("rot-y", ry); setRange("rot-x", rx);
+  });
+  view.addEventListener("pointerup", function () { drag = null; });
+  view.style.touchAction = "none"; view.style.cursor = "grab";
+
+  // ---- export ----
+  var downloads = null;
+  if (window.claude && window.claude.use) {
+    window.claude.use("downloads").then(function (d) {
+      downloads = d;
+      if (!d) { $("export").disabled = true; say("Las descargas no están disponibles en esta vista."); }
+    });
+  }
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!downloads) { say("Las descargas no están disponibles en esta vista."); return; }
+    var btn = $("export"); btn.disabled = true; say("Generando " + state.W + " × " + state.H + "…");
+    exporting = true;
+    var fontsReady = document.fonts && document.fonts.load ? Promise.all([
+      document.fonts.load("600 96px 'Space Grotesk'"), document.fonts.load("500 22px 'JetBrains Mono'"), document.fonts.load("400 30px 'Inter'")
+    ]) : Promise.resolve();
+    fontsReady.catch(function () {}).then(function () {
+      var out = document.createElement("canvas"); out.width = state.W; out.height = state.H;
+      renderTo(out.getContext("2d"), state.W, state.H, 1, null);
+      return new Promise(function (res) { out.toBlob(res, "image/png"); });
+    }).then(function (blob) {
+      exporting = false;
+      var fname = "atlasys-" + state.line.id + "-3d-" + state.W + "x" + state.H + ".png";
+      return downloads.save({ filename: fname, data: blob }).then(function () { say("Listo: " + fname); });
+    }).catch(function (err) {
+      exporting = false;
+      var code = err && err.code;
+      if (code === "declined") say("Descarga cancelada.");
+      else if (code === "rate_limited") say("Ya hay una descarga esperando confirmación.");
+      else say("No se pudo descargar la imagen. Probá de nuevo.");
+    }).then(function () { btn.disabled = false; });
+  });
+})();
+</script>

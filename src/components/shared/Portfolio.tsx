@@ -19,7 +19,7 @@ export const ProjectCard = ({ project, index }: any) => {
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay: index * 0.2 }}
+      transition={{ delay: (index % 2) * 0.2 }}
       className="group relative bg-surface border border-outline rounded-[28px] overflow-hidden hover:shadow-md hover:border-primary/20 transition-all duration-300 max-w-xl mx-auto"
     >
       {/* Image Container - Más compacto */}
@@ -140,7 +140,23 @@ export const Portfolio = () => {
       link: '/productos/quotemaster',
       isExternal: false,
       badge: 'Multi-rubro'
-    }
+    },
+    ...[
+      { id: 'camara', key: 'camara', image: 'camara-comercio.jpg', link: 'https://camara-de-comercio-nuevo.vercel.app', badge: 'Web + Plataforma' },
+      { id: 'hotel', key: 'hotel', image: 'hotel-gestion.jpg', link: 'https://sistema-de-gestion-hotel.vercel.app', badge: 'Sistema' },
+      { id: 'binder', key: 'binder', image: 'grandes-estructuras.jpg', link: 'https://grandes-estructuras.vercel.app', badge: 'Web' },
+      { id: 'dearriba', key: 'dearriba', image: 'de-arriba.jpg', link: 'https://consecionaria-kappa.vercel.app', badge: 'Catálogo' },
+      { id: 'refugio-events', key: 'refugioEvents', image: 'refugio-event-planner.jpg', link: '#contact', badge: 'Sistema' },
+      { id: 'grabados', key: 'grabados', image: 'grabados-chaco.jpg', link: 'https://grabados-chaco.vercel.app', badge: 'E-commerce' }
+    ].map(({ key, image, ...rest }) => ({
+      ...rest,
+      title: t(`projects.${key}.title`),
+      description: t(`projects.${key}.description`),
+      features: t.raw(`projects.${key}.features`),
+      cta: t(`projects.${key}.cta`),
+      image: `/images/projects/${image}`,
+      isExternal: rest.link.startsWith('http')
+    }))
   ];
 
   return (
