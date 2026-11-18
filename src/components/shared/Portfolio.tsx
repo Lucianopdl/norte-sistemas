@@ -142,8 +142,8 @@ export const Portfolio = () => {
       badge: 'Multi-rubro'
     },
     ...[
-      { id: 'camara', key: 'camara', image: 'camara-comercio.jpg', link: 'https://camara-de-comercio-nuevo.vercel.app', badge: 'Web + Plataforma' },
-      { id: 'hotel', key: 'hotel', image: 'hotel-gestion.jpg', link: 'https://sistema-de-gestion-hotel.vercel.app', badge: 'Sistema' },
+      { id: 'camara', key: 'camara', image: 'camara-comercio.jpg', link: 'https://camaradecomerciova.com.ar', badge: 'Web + Plataforma' },
+      { id: 'hotel', key: 'hotel', image: 'hotel-gestion.jpg', link: '#contact', badge: 'Sistema' },
       { id: 'binder', key: 'binder', image: 'grandes-estructuras.jpg', link: 'https://grandes-estructuras.vercel.app', badge: 'Web' },
       { id: 'dearriba', key: 'dearriba', image: 'de-arriba.jpg', link: 'https://consecionaria-kappa.vercel.app', badge: 'Catálogo' },
       { id: 'refugio-events', key: 'refugioEvents', image: 'refugio-event-planner.jpg', link: '#contact', badge: 'Sistema' },
