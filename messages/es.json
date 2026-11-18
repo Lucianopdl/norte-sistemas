@@ -99,9 +99,9 @@
     "cta": "Conecta conmigo"
   },
   "Portfolio": {
-    "title": "Software a la Venta",
+    "title": "Proyectos Destacados",
     "subtitle": "Portfolio de Ingeniería / 02",
-    "description": "Soluciones 'Listas para Usar' desarrolladas con los más altos estándares de calidad e ingeniería de élite.",
+    "description": "Productos propios y desarrollos a medida para empresas e instituciones, construidos con los más altos estándares de calidad.",
     "projects": {
       "sahara": {
         "title": "Sahara Academy",
@@ -126,6 +126,42 @@
         "description": "Presupuestos profesionales en segundos. Cotizador adaptable para eventos y múltiples rubros.",
         "features": ["Cotizador Rápido", "Exportación a PDF", "Historial & CRM", "Calendario Integrado"],
         "cta": "Ver Producto"
+      },
+      "camara": {
+        "title": "Cámara de Comercio",
+        "description": "Sitio oficial de la Cámara de Comercio de Villa Ángela con plataforma interna y portal de autogestión para socios.",
+        "features": ["Sitio Institucional", "Portal de Socios", "Gestión Interna", "Noticias & Beneficios"],
+        "cta": "Ver Sitio"
+      },
+      "hotel": {
+        "title": "Gestión Hotelera",
+        "description": "Sistema integral para hoteles: reservas, recepción, huéspedes y caja, con punto de venta para el restaurante.",
+        "features": ["Reservas & Habitaciones", "CRM de Huéspedes", "Restaurante POS", "Facturación AFIP"],
+        "cta": "Ver Sistema"
+      },
+      "binder": {
+        "title": "Grandes Estructuras",
+        "description": "Sitio web de Binder Construcciones: obras de hormigón, servicios de ingeniería civil y venta de materiales.",
+        "features": ["Obras Realizadas", "Servicios", "Venta de Materiales", "Contacto WhatsApp"],
+        "cta": "Ver Sitio"
+      },
+      "dearriba": {
+        "title": "De Arriba Automotores",
+        "description": "Catálogo online de vehículos y motos con stock actualizado, ofertas del mes y agenda de citas.",
+        "features": ["Stock de Vehículos", "Catálogo de Motos", "Ofertas del Mes", "Agenda de Citas"],
+        "cta": "Ver Catálogo"
+      },
+      "refugioEvents": {
+        "title": "El Refugio Event Planner",
+        "description": "Sistema para organizar eventos: presupuestos, diseño del salón en 3D, clientes, cobros y calendario.",
+        "features": ["Armador de Presupuestos", "Salón en 3D", "Clientes & Cobros", "Calendario de Eventos"],
+        "cta": "Solicitar Demo"
+      },
+      "grabados": {
+        "title": "Grabados Chaco",
+        "description": "E-commerce de grabado láser: catálogo por categorías, carrito de compras y pedidos para empresas.",
+        "features": ["Catálogo Online", "Carrito de Compras", "Pedidos Empresas", "Presupuestos"],
+        "cta": "Ver Tienda"
       }
     }
   }
