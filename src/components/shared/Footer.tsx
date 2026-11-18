@@ -41,7 +41,7 @@ export const Footer = () => {
     { icon: officialLogos.gmail, href: "mailto:nortesistemas@gmail.com", color: "text-[#EA4335]", borderColor: "group-hover:border-[#EA4335]/50" },
     { icon: officialLogos.whatsapp, href: "https://wa.me/5493735609095", color: "text-[#25D366]", borderColor: "group-hover:border-[#25D366]/50" },
     { icon: officialLogos.github, href: "https://github.com/Lucianopdl", color: "text-foreground", borderColor: "group-hover:border-foreground/50" },
-    { icon: officialLogos.instagram, href: "https://www.instagram.com/nortesistemasarg/", color: "text-[#E4405F]", borderColor: "group-hover:border-[#E4405F]/50" }
+    { icon: officialLogos.instagram, href: "https://www.instagram.com/atlasysoficial/", color: "text-[#E4405F]", borderColor: "group-hover:border-[#E4405F]/50" }
   ];
 
   return (

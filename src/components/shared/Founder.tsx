@@ -46,7 +46,7 @@ export const Founder = ({ className = "" }: { className?: string }) => {
               <a href="https://github.com/Lucianopdl" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-foreground/5 hover:bg-primary hover:text-on-primary transition-colors">
                 <Github className="w-4 h-4" />
               </a>
-              <a href="https://www.instagram.com/nortesistemasarg/" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-foreground/5 hover:bg-primary hover:text-on-primary transition-colors">
+              <a href="https://www.instagram.com/atlasysoficial/" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-foreground/5 hover:bg-primary hover:text-on-primary transition-colors">
                 <Instagram className="w-4 h-4" />
               </a>
             </div>
