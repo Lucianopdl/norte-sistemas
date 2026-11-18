@@ -1,71 +1,71 @@
 @import "tailwindcss";
 
-/* AtlaSys design system — tema claro (documentos, presupuestos) */
+/* Norte Sistemas design system — tema Día (documentos, presupuestos) */
 :root {
-  --background: #F5F7F8;
-  --foreground: #0B1117;
+  --background: #F4F6FA;
+  --foreground: #0A0F1F;
 
-  --primary-variant: #0B5A6E;
-  --tertiary: #10151B;
+  --primary-variant: #2438C2;
+  --tertiary: #121A2E;
 
   /* Tokens de color (nombres M3 conservados) */
-  --md-sys-color-primary: #06728C;            /* cyan claro AtlaSys */
+  --md-sys-color-primary: #2E46E6;            /* ultramar (norte) */
   --md-sys-color-on-primary: #FFFFFF;
-  --md-sys-color-primary-container: #DDF6FB;
-  --md-sys-color-on-primary-container: #06303A;
-  --md-sys-color-secondary: #52606D;
-  --md-sys-color-secondary-container: #DCE3E8;
+  --md-sys-color-primary-container: #E4E8FF;
+  --md-sys-color-on-primary-container: #161D45;
+  --md-sys-color-secondary: #55607A;
+  --md-sys-color-secondary-container: #DDE2EC;
   --md-sys-color-surface: #FFFFFF;
-  --md-sys-color-surface-variant: #EEF2F4;
-  --md-sys-color-on-surface: #0B1117;
-  --md-sys-color-on-surface-variant: #52606D;
-  --md-sys-color-outline: rgba(11, 17, 23, 0.12);
-  --md-sys-color-outline-variant: rgba(11, 17, 23, 0.06);
+  --md-sys-color-surface-variant: #EDF0F6;
+  --md-sys-color-on-surface: #0A0F1F;
+  --md-sys-color-on-surface-variant: #55607A;
+  --md-sys-color-outline: rgba(10, 15, 31, 0.12);
+  --md-sys-color-outline-variant: rgba(10, 15, 31, 0.06);
 
   --surface: #FFFFFF;
-  --surface-low: #EEF2F4;
-  --surface-high: #DCE3E8;
-  --surface-bright: #C9D3DA;
+  --surface-low: #EDF0F6;
+  --surface-high: #DDE2EC;
+  --surface-bright: #C8CFDD;
 
-  /* Sub-marcas: un color por rama de servicio */
-  --web: #127A3A;         --web-soft: #DCF7E5;
-  --sistemas: #2350D8;    --sistemas-soft: #E1E9FF;
-  --ia: #6D3FD9;          --ia-soft: #EEE8FF;
-  --soporte: #A84A0C;     --soporte-soft: #FFEBDC;
-  --consultoria: #B0217A; --consultoria-soft: #FDE3F1;
+  /* Sub-marcas: un color de la aurora por rama */
+  --web: #0B7A4C;         --web-soft: #DBF7EA;
+  --sistemas: #0A6C8A;    --sistemas-soft: #DDF3FB;
+  --ia: #6B3FD6;          --ia-soft: #EEE7FF;
+  --soporte: #A4500A;     --soporte-soft: #FFEEDC;
+  --consultoria: #B4234A; --consultoria-soft: #FFE3EA;
 }
 
-/* AtlaSys design system — tema oscuro (principal de la marca) */
+/* Norte Sistemas design system — tema Noche (principal de la marca) */
 .dark {
-  --background: #07090C;
-  --foreground: #EEF3F6;
+  --background: #0A0F1F;
+  --foreground: #EEF1F8;
 
-  --primary-variant: #7EE8F9;
-  --tertiary: #C9D3DA;
+  --primary-variant: #A5B0FF;
+  --tertiary: #C8CFDD;
 
-  --md-sys-color-primary: #22D8F5;            /* Cian Atlas */
-  --md-sys-color-on-primary: #04161B;
-  --md-sys-color-primary-container: #06303A;
-  --md-sys-color-on-primary-container: #BFF4FC;
-  --md-sys-color-secondary: #8B98A5;
-  --md-sys-color-secondary-container: #1E2731;
-  --md-sys-color-surface: #10151B;
-  --md-sys-color-surface-variant: #141B22;
-  --md-sys-color-on-surface: #EEF3F6;
-  --md-sys-color-on-surface-variant: #8B98A5;
-  --md-sys-color-outline: rgba(238, 243, 246, 0.12);
-  --md-sys-color-outline-variant: rgba(238, 243, 246, 0.06);
+  --md-sys-color-primary: #7C8CFF;            /* ultramar (norte) */
+  --md-sys-color-on-primary: #0A0F1F;
+  --md-sys-color-primary-container: #161D45;
+  --md-sys-color-on-primary-container: #D9DEFF;
+  --md-sys-color-secondary: #95A0B8;
+  --md-sys-color-secondary-container: #222C45;
+  --md-sys-color-surface: #121A2E;
+  --md-sys-color-surface-variant: #16203A;
+  --md-sys-color-on-surface: #EEF1F8;
+  --md-sys-color-on-surface-variant: #95A0B8;
+  --md-sys-color-outline: rgba(238, 241, 248, 0.12);
+  --md-sys-color-outline-variant: rgba(238, 241, 248, 0.06);
 
-  --surface: #10151B;
-  --surface-low: #141B22;
-  --surface-high: #1E2731;
-  --surface-bright: #2C3A47;
+  --surface: #121A2E;
+  --surface-low: #16203A;
+  --surface-high: #222C45;
+  --surface-bright: #303C5C;
 
-  --web: #5BE584;         --web-soft: #0B2A17;
-  --sistemas: #5B8CFF;    --sistemas-soft: #0F1C3D;
-  --ia: #B69CFF;          --ia-soft: #1E1440;
-  --soporte: #FF8A3D;     --soporte-soft: #2B1703;
-  --consultoria: #F45DB5; --consultoria-soft: #2E0A1F;
+  --web: #4BE3A0;         --web-soft: #0A2A20;
+  --sistemas: #4CC9F0;    --sistemas-soft: #0A2533;
+  --ia: #B794FF;          --ia-soft: #1D1640;
+  --soporte: #FFA94D;     --soporte-soft: #2B1A06;
+  --consultoria: #FF7A9A; --consultoria-soft: #2E0D18;
 }
 
 @theme inline {
@@ -98,15 +98,15 @@
   --color-consultoria: var(--consultoria);
   --color-consultoria-soft: var(--consultoria-soft);
 
-  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui;
-  --font-body: var(--font-inter), ui-sans-serif, system-ui;
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui;
+  --font-body: var(--font-geist), ui-sans-serif, system-ui;
   --font-mono: var(--font-mono), monospace;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter), system-ui, sans-serif;
+  font-family: var(--font-geist), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   position: relative;
 }

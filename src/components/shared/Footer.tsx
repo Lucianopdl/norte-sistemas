@@ -154,7 +154,7 @@ export const Footer = () => {
           className="pt-12 border-t border-outline flex flex-col md:flex-row justify-between items-center gap-8"
         >
           <div className="text-foreground/40 text-[0.65rem] font-mono tracking-widest space-x-6">
-            <span>© 2026 ATLASYS // TODOS_LOS_DERECHOS_RESERVADOS</span>
+            <span>© 2026 NORTE SISTEMAS // TODOS_LOS_DERECHOS_RESERVADOS</span>
             <span className="hidden md:inline cursor-pointer hover:text-primary transition-colors">POLÍTICA_DE_PRIVACIDAD</span>
             <span className="hidden md:inline cursor-pointer hover:text-primary transition-colors">TÉRMINOS_DE_SERVICIO</span>
           </div>
