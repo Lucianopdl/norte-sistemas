@@ -39,7 +39,7 @@ export const ContactCTA = () => {
               className="text-6xl md:text-8xl lg:text-9xl font-display font-black tracking-tighter leading-tight text-foreground"
             >
               ¿Listo para escalar tu <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-blue-500 to-purple-500 animate-gradient">infraestructura?</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-sistemas to-ia animate-gradient">infraestructura?</span>
             </motion.h2>
             
             <motion.p 

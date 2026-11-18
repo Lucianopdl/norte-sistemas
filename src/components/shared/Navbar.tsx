@@ -84,7 +84,7 @@ export const Navbar = () => {
             {theme === 'dark' ? (
               <Sun className="w-[18px] h-[18px] text-yellow-500 fill-yellow-500/20" />
             ) : (
-              <Moon className="w-[18px] h-[18px] text-[#4285F4] fill-[#4285F4]/20" />
+              <Moon className="w-[18px] h-[18px] text-primary fill-primary/20" />
             )}
           </button>
           
@@ -102,7 +102,7 @@ export const Navbar = () => {
                 {t('contact').toUpperCase()}_EN_VIVO
               </span>
               <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center shrink-0">
-                <MessageCircle className="w-3.5 h-3.5 text-white" />
+                <MessageCircle className="w-3.5 h-3.5 text-on-primary" />
               </div>
             </a>
           </div>
@@ -118,7 +118,7 @@ export const Navbar = () => {
             {theme === 'dark' ? (
               <Sun className="w-[18px] h-[18px] text-yellow-500 fill-yellow-500/20" />
             ) : (
-              <Moon className="w-[18px] h-[18px] text-[#4285F4] fill-[#4285F4]/20" />
+              <Moon className="w-[18px] h-[18px] text-primary fill-primary/20" />
             )}
           </button>
           <button
@@ -166,7 +166,7 @@ export const Navbar = () => {
                   href="https://wa.me/5493735609095"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full flex items-center justify-center gap-6 py-6 rounded-2xl bg-primary text-white text-lg font-black uppercase tracking-widest shadow-[0_0_30px_rgba(0,86,224,0.3)]"
+                  className="w-full flex items-center justify-center gap-6 py-6 rounded-2xl bg-primary text-on-primary text-lg font-black uppercase tracking-widest shadow-[0_0_30px_rgba(34,216,245,0.3)]"
                 >
                   <MessageCircle className="w-6 h-6" />
                   {t('contact')}

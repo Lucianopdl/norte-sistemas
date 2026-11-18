@@ -79,7 +79,7 @@ export const ProjectCard = ({ project, index }: any) => {
         {/* Action Button - Más bajo */}
         <CtaLink
           {...ctaLinkProps}
-          className="inline-flex items-center justify-center w-full py-3.5 rounded-full bg-primary text-white font-bold text-xs tracking-wider uppercase transition-all hover:shadow-md hover:brightness-95 active:scale-[0.98]"
+          className="inline-flex items-center justify-center w-full py-3.5 rounded-full bg-primary text-on-primary font-bold text-xs tracking-wider uppercase transition-all hover:shadow-md hover:brightness-95 active:scale-[0.98]"
         >
           {project.cta}
         </CtaLink>

@@ -22,7 +22,7 @@ export const Founder = ({ className = "" }: { className?: string }) => {
         className="md:col-span-5 relative w-full aspect-square max-w-[280px] md:max-w-none mx-auto"
       >
         {/* Frame Decoration */}
-        <div className="absolute -inset-4 bg-gradient-to-br from-primary/20 via-transparent to-blue-500/20 rounded-[48px] blur-2xl opacity-50" />
+        <div className="absolute -inset-4 bg-gradient-to-br from-primary/20 via-transparent to-primary-variant/20 rounded-[48px] blur-2xl opacity-50" />
         
         <div className="relative group rounded-[40px] overflow-hidden border border-outline bg-surface-low aspect-square shadow-2xl">
           <Image 
@@ -43,10 +43,10 @@ export const Founder = ({ className = "" }: { className?: string }) => {
               <span className="text-foreground font-display font-bold">L_PDL_ARCHITECT</span>
             </div>
             <div className="flex gap-3">
-              <a href="https://github.com/Lucianopdl" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-foreground/5 hover:bg-primary hover:text-white transition-colors">
+              <a href="https://github.com/Lucianopdl" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-foreground/5 hover:bg-primary hover:text-on-primary transition-colors">
                 <Github className="w-4 h-4" />
               </a>
-              <a href="https://www.instagram.com/nortesistemasarg/" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-foreground/5 hover:bg-primary hover:text-white transition-colors">
+              <a href="https://www.instagram.com/nortesistemasarg/" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-foreground/5 hover:bg-primary hover:text-on-primary transition-colors">
                 <Instagram className="w-4 h-4" />
               </a>
             </div>
@@ -82,7 +82,7 @@ export const Founder = ({ className = "" }: { className?: string }) => {
             className="text-4xl md:text-5xl lg:text-6xl font-display font-black tracking-tighter text-foreground leading-tight"
           >
             {t('name')} <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-500">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-variant">
               {t('role')}
             </span>
           </motion.h2>
@@ -110,7 +110,7 @@ export const Founder = ({ className = "" }: { className?: string }) => {
               href="https://wa.me/5493735609095"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 bg-primary text-white hover:bg-primary-variant hover:shadow-md transition-all duration-300 px-6 py-3 rounded-full font-display font-bold text-sm group active:scale-[0.98]"
+              className="inline-flex items-center gap-3 bg-primary text-on-primary hover:bg-primary-variant hover:shadow-md transition-all duration-300 px-6 py-3 rounded-full font-display font-bold text-sm group active:scale-[0.98]"
             >
               {t('cta')}
               <ArrowUpRight className="w-4 h-4 group-hover:rotate-45 transition-transform" />
