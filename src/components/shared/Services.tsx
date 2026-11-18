@@ -4,63 +4,77 @@ import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from
 import { Code2, Cpu, Globe, Rocket, ShoppingBag, Layout, Layers, ShieldCheck, Settings2, X, CheckCircle2 } from 'lucide-react';
 import { Magnetic } from './Magnetic';
 
+/* Un color por rama de servicio (design system AtlaSys, tokens en globals.css) */
 const colorMap = {
-  blue: {
-    text: 'text-[#1967D2] dark:text-[#8ab4f8]',
-    bg: 'bg-[#E8F0FE] dark:bg-[#1b2f56]',
-    border: 'border-[#1967D2]/20 dark:border-[#8ab4f8]/30',
-    hoverBorder: 'group-hover:border-[#1967D2]/45 dark:group-hover:border-[#8ab4f8]/50',
-    hoverBg: 'group-hover:bg-[#d2e3fc] dark:group-hover:bg-[#203767]',
-    containerBg: 'bg-[#d2e3fc] dark:bg-[#203767]',
-    onContainerText: 'text-[#1967D2] dark:text-[#8ab4f8]',
-    chipBg: 'bg-[#1967D2]/10 dark:bg-[#8ab4f8]/10 border-[#1967D2]/15 dark:border-[#8ab4f8]/20',
-    chipText: 'text-[#1a3d7c] dark:text-[#d2e3fc]',
-    inkBg: 'bg-[#1967D2]/5 dark:bg-[#8ab4f8]/5',
-    cardBg: 'bg-[#E8F0FE] dark:bg-[#131a26]'
+  web: {
+    text: 'text-web',
+    bg: 'bg-web-soft',
+    border: 'border-web/25',
+    hoverBorder: 'group-hover:border-web/55',
+    hoverBg: 'group-hover:bg-web-soft',
+    containerBg: 'bg-web-soft',
+    onContainerText: 'text-web',
+    chipBg: 'bg-web/10 border-web/20',
+    chipText: 'text-foreground',
+    inkBg: 'bg-web/5',
+    cardBg: 'bg-web-soft/50'
   },
-  red: {
-    text: 'text-[#C5221F] dark:text-[#f28b82]',
-    bg: 'bg-[#FCE8E6] dark:bg-[#3c1e1a]',
-    border: 'border-[#C5221F]/20 dark:border-[#f28b82]/30',
-    hoverBorder: 'group-hover:border-[#C5221F]/45 dark:group-hover:border-[#f28b82]/50',
-    hoverBg: 'group-hover:bg-[#fad2cf] dark:group-hover:bg-[#522722]',
-    containerBg: 'bg-[#fad2cf] dark:bg-[#522722]',
-    onContainerText: 'text-[#C5221F] dark:text-[#f28b82]',
-    chipBg: 'bg-[#C5221F]/10 dark:bg-[#f28b82]/10 border-[#C5221F]/15 dark:border-[#f28b82]/20',
-    chipText: 'text-[#7a1c12] dark:text-[#fad2cf]',
-    inkBg: 'bg-[#C5221F]/5 dark:bg-[#f28b82]/5',
-    cardBg: 'bg-[#FCE8E6] dark:bg-[#251515]'
+  sistemas: {
+    text: 'text-sistemas',
+    bg: 'bg-sistemas-soft',
+    border: 'border-sistemas/25',
+    hoverBorder: 'group-hover:border-sistemas/55',
+    hoverBg: 'group-hover:bg-sistemas-soft',
+    containerBg: 'bg-sistemas-soft',
+    onContainerText: 'text-sistemas',
+    chipBg: 'bg-sistemas/10 border-sistemas/20',
+    chipText: 'text-foreground',
+    inkBg: 'bg-sistemas/5',
+    cardBg: 'bg-sistemas-soft/50'
   },
-  green: {
-    text: 'text-[#137333] dark:text-[#81c995]',
-    bg: 'bg-[#E6F4EA] dark:bg-[#15341c]',
-    border: 'border-[#137333]/20 dark:border-[#81c995]/30',
-    hoverBorder: 'group-hover:border-[#137333]/45 dark:group-hover:border-[#81c995]/50',
-    hoverBg: 'group-hover:bg-[#ceead6] dark:group-hover:bg-[#204e2b]',
-    containerBg: 'bg-[#ceead6] dark:bg-[#204e2b]',
-    onContainerText: 'text-[#137333] dark:text-[#81c995]',
-    chipBg: 'bg-[#137333]/10 dark:bg-[#81c995]/10 border-[#137333]/15 dark:border-[#81c995]/20',
-    chipText: 'text-[#125827] dark:text-[#ceead6]',
-    inkBg: 'bg-[#137333]/5 dark:bg-[#81c995]/5',
-    cardBg: 'bg-[#E6F4EA] dark:bg-[#111f16]'
+  ia: {
+    text: 'text-ia',
+    bg: 'bg-ia-soft',
+    border: 'border-ia/25',
+    hoverBorder: 'group-hover:border-ia/55',
+    hoverBg: 'group-hover:bg-ia-soft',
+    containerBg: 'bg-ia-soft',
+    onContainerText: 'text-ia',
+    chipBg: 'bg-ia/10 border-ia/20',
+    chipText: 'text-foreground',
+    inkBg: 'bg-ia/5',
+    cardBg: 'bg-ia-soft/50'
   },
-  yellow: {
-    text: 'text-[#B06000] dark:text-[#fdd663]',
-    bg: 'bg-[#FEF7E0] dark:bg-[#3d2a06]',
-    border: 'border-[#B06000]/20 dark:border-[#fdd663]/30',
-    hoverBorder: 'group-hover:border-[#B06000]/45 dark:group-hover:border-[#fdd663]/50',
-    hoverBg: 'group-hover:bg-[#feefc3] dark:group-hover:bg-[#523b0f]',
-    containerBg: 'bg-[#feefc3] dark:bg-[#523b0f]',
-    onContainerText: 'text-[#B06000] dark:text-[#fdd663]',
-    chipBg: 'bg-[#B06000]/10 dark:bg-[#fdd663]/10 border-[#B06000]/15 dark:border-[#fdd663]/20',
-    chipText: 'text-[#6e4e00] dark:text-[#feefc3]',
-    inkBg: 'bg-[#B06000]/5 dark:bg-[#fdd663]/5',
-    cardBg: 'bg-[#FEF7E0] dark:bg-[#211b11]'
+  soporte: {
+    text: 'text-soporte',
+    bg: 'bg-soporte-soft',
+    border: 'border-soporte/25',
+    hoverBorder: 'group-hover:border-soporte/55',
+    hoverBg: 'group-hover:bg-soporte-soft',
+    containerBg: 'bg-soporte-soft',
+    onContainerText: 'text-soporte',
+    chipBg: 'bg-soporte/10 border-soporte/20',
+    chipText: 'text-foreground',
+    inkBg: 'bg-soporte/5',
+    cardBg: 'bg-soporte-soft/50'
+  },
+  consultoria: {
+    text: 'text-consultoria',
+    bg: 'bg-consultoria-soft',
+    border: 'border-consultoria/25',
+    hoverBorder: 'group-hover:border-consultoria/55',
+    hoverBg: 'group-hover:bg-consultoria-soft',
+    containerBg: 'bg-consultoria-soft',
+    onContainerText: 'text-consultoria',
+    chipBg: 'bg-consultoria/10 border-consultoria/20',
+    chipText: 'text-foreground',
+    inkBg: 'bg-consultoria/5',
+    cardBg: 'bg-consultoria-soft/50'
   }
 };
 
 const ServiceCard = ({ service, index, onClick }: any) => {
-  const colors = colorMap[service.color as keyof typeof colorMap] || colorMap.blue;
+  const colors = colorMap[service.color as keyof typeof colorMap] || colorMap.sistemas;
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
@@ -114,7 +128,7 @@ const ServiceCard = ({ service, index, onClick }: any) => {
           {/* Volumetric base sheet */}
           <div 
             style={{ transform: "translateZ(20px)", transformStyle: "preserve-3d" }}
-            className={`absolute inset-0 rounded-[8px] bg-white dark:bg-[#1a1d24] border ${colors.border} shadow-[0_6px_12px_rgba(0,0,0,0.08)] flex items-center justify-center transition-all duration-300`}
+            className={`absolute inset-0 rounded-[8px] bg-surface border ${colors.border} shadow-[0_6px_12px_rgba(0,0,0,0.08)] flex items-center justify-center transition-all duration-300`}
           >
             {/* The icon floating/pulsing above base */}
             <motion.div
@@ -132,7 +146,7 @@ const ServiceCard = ({ service, index, onClick }: any) => {
           {service.title}
         </h3>
         
-        <p className="text-[#3c4043] dark:text-foreground/75 text-sm leading-relaxed mb-10 flex-grow font-body font-medium">
+        <p className="text-foreground/75 text-sm leading-relaxed mb-10 flex-grow font-body font-medium">
           {service.desc}
         </p>
 
@@ -162,7 +176,7 @@ export const Services = () => {
       desc: t('software.description'),
       full_desc: t('software.full_description'),
       features: t.raw('software.features'),
-      color: 'blue'
+      color: 'sistemas'
     },
     {
       id: 'ai',
@@ -171,7 +185,7 @@ export const Services = () => {
       desc: t('ai.description'),
       full_desc: t('ai.full_description'),
       features: t.raw('ai.features'),
-      color: 'red'
+      color: 'ia'
     },
     {
       id: 'web',
@@ -180,7 +194,7 @@ export const Services = () => {
       desc: t('web.description'),
       full_desc: t('web.full_description'),
       features: t.raw('web.features'),
-      color: 'blue'
+      color: 'web'
     },
     {
       id: 'ecommerce',
@@ -189,7 +203,7 @@ export const Services = () => {
       desc: t('ecommerce.description'),
       full_desc: t('ecommerce.full_description'),
       features: t.raw('ecommerce.features'),
-      color: 'yellow'
+      color: 'web'
     },
     {
       id: 'landing',
@@ -198,7 +212,7 @@ export const Services = () => {
       desc: t('landing.description'),
       full_desc: t('landing.full_description'),
       features: t.raw('landing.features'),
-      color: 'green'
+      color: 'web'
     },
     {
       id: 'software_crm',
@@ -207,7 +221,7 @@ export const Services = () => {
       desc: t('software_crm.description'),
       full_desc: t('software_crm.full_description'),
       features: t.raw('software_crm.features'),
-      color: 'blue'
+      color: 'sistemas'
     },
     {
       id: 'cyber',
@@ -216,7 +230,7 @@ export const Services = () => {
       desc: t('cyber.description'),
       full_desc: t('cyber.full_description'),
       features: t.raw('cyber.features'),
-      color: 'green'
+      color: 'soporte'
     },
     {
       id: 'support',
@@ -225,12 +239,12 @@ export const Services = () => {
       desc: t('support.description'),
       full_desc: t('support.full_description'),
       features: t.raw('support.features'),
-      color: 'red'
+      color: 'soporte'
     }
   ];
 
   const selectedService = services.find(s => s.id === selectedId);
-  const selectedColors = selectedService ? (colorMap[selectedService.color as keyof typeof colorMap] || colorMap.blue) : colorMap.blue;
+  const selectedColors = selectedService ? (colorMap[selectedService.color as keyof typeof colorMap] || colorMap.sistemas) : colorMap.sistemas;
 
   return (
     <section id="services" className="py-24 relative overflow-hidden bg-background">
@@ -299,7 +313,7 @@ export const Services = () => {
                   {/* Square icon container inside modal */}
                   <div 
                     style={{ transformStyle: "preserve-3d" }}
-                    className={`p-4 rounded-[8px] bg-white dark:bg-[#1a1d24] border ${selectedColors.border} shadow-sm`}
+                    className={`p-4 rounded-[8px] bg-surface border ${selectedColors.border} shadow-sm`}
                   >
                     {React.cloneElement(selectedService.icon, { className: `w-8 h-8 ${selectedColors.text}` })}
                   </div>
@@ -310,7 +324,7 @@ export const Services = () => {
                 </div>
 
                 <div className="space-y-6">
-                  <p className="text-[#3c4043] dark:text-foreground/75 text-lg leading-relaxed font-body font-medium">
+                  <p className="text-foreground/75 text-lg leading-relaxed font-body font-medium">
                     {selectedService.full_desc}
                   </p>
 

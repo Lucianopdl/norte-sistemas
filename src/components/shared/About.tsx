@@ -152,7 +152,7 @@ export const About = () => {
                 className="text-6xl md:text-8xl font-display font-black leading-tight tracking-tighter"
               >
                 Construyendo el <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-500">núcleo de las startups.</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-variant">núcleo de las startups.</span>
               </motion.h2>
               
               <motion.p 
@@ -178,7 +178,7 @@ export const About = () => {
                   transition={{ delay: 0.3 + idx * 0.1 }}
                   className="flex gap-8 group cursor-default"
                 >
-                  <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-surface-low flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-500 border border-outline group-hover:border-primary">
+                  <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-surface-low flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-all duration-500 border border-outline group-hover:border-primary">
                     {item.icon}
                   </div>
                   <div className="space-y-1">

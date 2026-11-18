@@ -26,7 +26,8 @@ export const metadata: Metadata = {
   title: "AtlaSys | Software Development",
   description: "Elite software engineering for SMEs and Startups.",
   icons: {
-    icon: "/images/logoatlas.png",
+    icon: "/brand/atlasys-avatar.svg",
+    apple: "/brand/atlasys-avatar.svg",
   },
 };
 

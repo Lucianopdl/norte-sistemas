@@ -1,59 +1,71 @@
 @import "tailwindcss";
 
+/* AtlaSys design system — tema claro (documentos, presupuestos) */
 :root {
-  --background: #f8fafc; /* Soft slate white */
-  --foreground: #1a1c1e; /* Material dark charcoal */
-  
-  --primary-variant: #0036a3;
-  --tertiary: #1e293b;
-  
-  /* Material 3 Color Tokens */
-  --md-sys-color-primary: #0056e0;
-  --md-sys-color-on-primary: #ffffff;
-  --md-sys-color-primary-container: #e0e2ec;
-  --md-sys-color-on-primary-container: #001d36;
-  --md-sys-color-secondary: #4f5b92;
-  --md-sys-color-secondary-container: #e0e2ec;
-  --md-sys-color-surface: #ffffff;
-  --md-sys-color-surface-variant: #f1f5f9;
-  --md-sys-color-on-surface: #1a1c1e;
-  --md-sys-color-on-surface-variant: #43474e;
-  --md-sys-color-outline: rgba(0, 0, 0, 0.12);
-  --md-sys-color-outline-variant: rgba(0, 0, 0, 0.06);
+  --background: #F5F7F8;
+  --foreground: #0B1117;
 
-  /* Layering Strategy */
-  --surface: #ffffff;
-  --surface-low: #f1f5f9;
-  --surface-high: #e2e8f0;
-  --surface-bright: #cbd5e1;
+  --primary-variant: #0B5A6E;
+  --tertiary: #10151B;
+
+  /* Tokens de color (nombres M3 conservados) */
+  --md-sys-color-primary: #06728C;            /* cyan claro AtlaSys */
+  --md-sys-color-on-primary: #FFFFFF;
+  --md-sys-color-primary-container: #DDF6FB;
+  --md-sys-color-on-primary-container: #06303A;
+  --md-sys-color-secondary: #52606D;
+  --md-sys-color-secondary-container: #DCE3E8;
+  --md-sys-color-surface: #FFFFFF;
+  --md-sys-color-surface-variant: #EEF2F4;
+  --md-sys-color-on-surface: #0B1117;
+  --md-sys-color-on-surface-variant: #52606D;
+  --md-sys-color-outline: rgba(11, 17, 23, 0.12);
+  --md-sys-color-outline-variant: rgba(11, 17, 23, 0.06);
+
+  --surface: #FFFFFF;
+  --surface-low: #EEF2F4;
+  --surface-high: #DCE3E8;
+  --surface-bright: #C9D3DA;
+
+  /* Sub-marcas: un color por rama de servicio */
+  --web: #127A3A;         --web-soft: #DCF7E5;
+  --sistemas: #2350D8;    --sistemas-soft: #E1E9FF;
+  --ia: #6D3FD9;          --ia-soft: #EEE8FF;
+  --soporte: #A84A0C;     --soporte-soft: #FFEBDC;
+  --consultoria: #B0217A; --consultoria-soft: #FDE3F1;
 }
 
+/* AtlaSys design system — tema oscuro (principal de la marca) */
 .dark {
-  --background: #0b0c0e; /* Matte pure black/slate */
-  --foreground: #f1f5f9; /* Off-white */
-  
-  --primary-variant: #4285F4;
-  --tertiary: #cbd5e1;
-  
-  /* Material 3 Color Tokens */
-  --md-sys-color-primary: #4285F4;
-  --md-sys-color-on-primary: #ffffff;
-  --md-sys-color-primary-container: #1b2f56;
-  --md-sys-color-on-primary-container: #d2e3fc;
-  --md-sys-color-secondary: #a8b3e5;
-  --md-sys-color-secondary-container: #2e3966;
-  --md-sys-color-surface: #121418;
-  --md-sys-color-surface-variant: #1a1d24;
-  --md-sys-color-on-surface: #f1f5f9;
-  --md-sys-color-on-surface-variant: #c4c7d0;
-  --md-sys-color-outline: rgba(255, 255, 255, 0.12);
-  --md-sys-color-outline-variant: rgba(255, 255, 255, 0.06);
+  --background: #07090C;
+  --foreground: #EEF3F6;
 
-  /* Layering Strategy */
-  --surface: #121418;
-  --surface-low: #1a1d24;
-  --surface-high: #242933;
-  --surface-bright: #383f4d;
+  --primary-variant: #7EE8F9;
+  --tertiary: #C9D3DA;
+
+  --md-sys-color-primary: #22D8F5;            /* Cian Atlas */
+  --md-sys-color-on-primary: #04161B;
+  --md-sys-color-primary-container: #06303A;
+  --md-sys-color-on-primary-container: #BFF4FC;
+  --md-sys-color-secondary: #8B98A5;
+  --md-sys-color-secondary-container: #1E2731;
+  --md-sys-color-surface: #10151B;
+  --md-sys-color-surface-variant: #141B22;
+  --md-sys-color-on-surface: #EEF3F6;
+  --md-sys-color-on-surface-variant: #8B98A5;
+  --md-sys-color-outline: rgba(238, 243, 246, 0.12);
+  --md-sys-color-outline-variant: rgba(238, 243, 246, 0.06);
+
+  --surface: #10151B;
+  --surface-low: #141B22;
+  --surface-high: #1E2731;
+  --surface-bright: #2C3A47;
+
+  --web: #5BE584;         --web-soft: #0B2A17;
+  --sistemas: #5B8CFF;    --sistemas-soft: #0F1C3D;
+  --ia: #B69CFF;          --ia-soft: #1E1440;
+  --soporte: #FF8A3D;     --soporte-soft: #2B1703;
+  --consultoria: #F45DB5; --consultoria-soft: #2E0A1F;
 }
 
 @theme inline {
@@ -65,13 +77,27 @@
   --color-tertiary: var(--tertiary);
   
   /* M3 Tokens */
+  --color-on-primary: var(--md-sys-color-on-primary);
   --color-primary-container: var(--md-sys-color-primary-container);
   --color-on-primary-container: var(--md-sys-color-on-primary-container);
+  --color-surface: var(--surface);
   --color-surface-low: var(--md-sys-color-surface-variant);
   --color-surface-high: var(--surface-high);
   --color-surface-bright: var(--surface-bright);
   --color-outline: var(--md-sys-color-outline);
   
+  /* Colores de rama: text-web, bg-sistemas-soft, border-ia/30, etc. */
+  --color-web: var(--web);
+  --color-web-soft: var(--web-soft);
+  --color-sistemas: var(--sistemas);
+  --color-sistemas-soft: var(--sistemas-soft);
+  --color-ia: var(--ia);
+  --color-ia-soft: var(--ia-soft);
+  --color-soporte: var(--soporte);
+  --color-soporte-soft: var(--soporte-soft);
+  --color-consultoria: var(--consultoria);
+  --color-consultoria-soft: var(--consultoria-soft);
+
   --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui;
   --font-body: var(--font-inter), ui-sans-serif, system-ui;
   --font-mono: var(--font-mono), monospace;
@@ -92,24 +118,23 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: var(--background);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #0056e0, #6366f1);
+  background: var(--md-sys-color-primary);
   border-radius: 10px;
-  border: 2px solid #f1f5f9;
+  border: 2px solid var(--background);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #0056e0;
-  box-shadow: 0 0 15px rgba(0, 86, 224, 0.5);
+  background: var(--primary-variant);
 }
 
 /* SMOOTH SCROLL FORCED */
 html {
   scroll-behavior: smooth !important;
-  scrollbar-color: #0056e0 #f1f5f9;
+  scrollbar-color: var(--md-sys-color-primary) transparent;
   scrollbar-width: thin;
 }
 
