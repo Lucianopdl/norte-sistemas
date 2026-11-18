@@ -4,7 +4,7 @@ import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from
 import { Code2, Cpu, Globe, Rocket, ShoppingBag, Layout, Layers, ShieldCheck, Settings2, X, CheckCircle2 } from 'lucide-react';
 import { Magnetic } from './Magnetic';
 
-/* Un color por rama de servicio (design system AtlaSys, tokens en globals.css) */
+/* Un color por rama de servicio (design system Norte Sistemas, tokens en globals.css) */
 const colorMap = {
   web: {
     text: 'text-web',

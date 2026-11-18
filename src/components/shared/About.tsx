@@ -86,14 +86,14 @@ export const About = () => {
                 </div>
               </div>
 
-              {/* CENTER: ATLASYS ILLUMINATION ON HOVER */}
+              {/* CENTER: NORTE ILLUMINATION ON HOVER */}
               <div className="flex-1 flex items-center justify-center pointer-events-none z-10">
                  <div className="text-center">
                     <motion.div 
                       transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
                       className="text-white/10 group-hover:text-primary font-mono text-[9rem] font-black select-none leading-none opacity-20 group-hover:opacity-100 group-hover:drop-shadow-[0_0_50px_rgba(0,102,255,0.8)] transition-all duration-700 tracking-tighter"
                     >
-                      ATLASYS
+                      NORTE
                     </motion.div>
                     <motion.div 
                       className="text-[0.6rem] font-mono text-white/20 group-hover:text-primary/60 tracking-[1em] uppercase font-bold transition-all duration-700"

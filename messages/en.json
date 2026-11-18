@@ -1,10 +1,10 @@
 {
   "Index": {
-    "title": "AtlaSys - Elite Software Development",
+    "title": "Norte Sistemas - Custom Software",
     "description": "Premium software engineering for SMEs and Startups.",
     "cta": "Get Started",
-    "hero_title_1": "ATLA",
-    "hero_title_2": "SYS"
+    "hero_title_1": "norte",
+    "hero_title_2": "sistemas"
   },
   "Navigation": {
     "home": "Home",
@@ -65,7 +65,7 @@
   },
   "About": {
     "title": "Top-Tier Engineering",
-    "description": "At AtlaSys, we don't just write code; we design the success engine for our clients. We fuse technical precision with business vision.",
+    "description": "At Norte Sistemas, we don't just write code; we design the success engine for our clients. We fuse technical precision with business vision.",
     "stats": {
       "uptime": "Uptime",
       "projects": "Projects",
@@ -84,7 +84,7 @@
     }
   },
   "Founder": {
-    "title": "Visionary behind AtlaSys",
+    "title": "Visionary behind Norte Sistemas",
     "name": "Luciano",
     "role": "CEO & Founder",
     "bio": "Direct committed to digital excellence. My mission is to transform complex challenges into scalable, high-performance solutions that drive the growth of our clients.",

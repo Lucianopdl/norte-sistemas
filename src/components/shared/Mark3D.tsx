@@ -4,10 +4,11 @@ import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
 /**
- * La "A" de AtlaSys extruida en 3D (three.js). Gira lento, sigue el mouse
- * y se queda quieta con prefers-reduced-motion. `color` = color de la rama.
+ * La N de Norte Sistemas extruida en 3D (three.js). Gira lento, sigue el mouse
+ * y se queda quieta con prefers-reduced-motion. `color` = color de la rama;
+ * `aurora` ilumina los bordes con verde y violeta (versión institucional).
  */
-export const Mark3D = ({ color = '#22D8F5', className = '' }: { color?: string; className?: string }) => {
+export const Mark3D = ({ color = '#4D63FF', aurora = true, className = '' }: { color?: string; aurora?: boolean; className?: string }) => {
   const hostRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -42,29 +43,29 @@ export const Mark3D = ({ color = '#22D8F5', className = '' }: { color?: string; 
     const envTex = pmrem.fromScene(env, 0.02).texture;
     scene.environment = envTex;
 
-    scene.add(new THREE.HemisphereLight(0xffffff, 0x0b1117, 0.35));
-    const key = new THREE.DirectionalLight(0xffffff, 1.2);
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x0a0f1f, 0.9));
+    const key = new THREE.DirectionalLight(0xffffff, 2.6);
     key.position.set(3, 4, 5);
     scene.add(key);
-    const rim = new THREE.PointLight(color, 40, 14);
+    const rim = new THREE.PointLight(aurora ? '#4BE3A0' : color, 40, 14);
     rim.position.set(-3.2, -1.2, -2.6);
     scene.add(rim);
-    const rim2 = new THREE.PointLight(color, 18, 12);
+    const rim2 = new THREE.PointLight(aurora ? '#B794FF' : color, 30, 12);
     rim2.position.set(3.4, 2.2, -2.4);
     scene.add(rim2);
 
     const shape = new THREE.Shape();
-    [[50, 4], [92, 96], [70, 96], [50, 58], [30, 96], [8, 96]].forEach(([px, py], i) => {
-      const x = (px - 50) / 50, y = (50 - py) / 50;
+    [[6, 96], [6, 34], [24, 34], [70, 80], [70, 28], [62, 28], [79, 2], [96, 28], [88, 28], [88, 96], [70, 96], [24, 50], [24, 96]].forEach(([px, py], i) => {
+      const x = (px - 51) / 47, y = (49 - py) / 47;
       if (i) shape.lineTo(x, y); else shape.moveTo(x, y);
     });
     shape.closePath();
     const geo = new THREE.ExtrudeGeometry(shape, {
-      depth: 0.34, bevelEnabled: true, bevelThickness: 0.06, bevelSize: 0.035, bevelSegments: 8, curveSegments: 4,
+      depth: 0.34, bevelEnabled: true, bevelThickness: 0.06, bevelSize: 0.035, bevelSegments: 8, curveSegments: 2,
     });
     geo.center();
     const mat = new THREE.MeshPhysicalMaterial({
-      color: new THREE.Color(color), metalness: 0.1, roughness: 0.28, clearcoat: 1, clearcoatRoughness: 0.06, envMapIntensity: 0.55,
+      color: new THREE.Color(color), metalness: 0.1, roughness: 0.28, clearcoat: 1, clearcoatRoughness: 0.06, envMapIntensity: 0.9,
     });
     const mesh = new THREE.Mesh(geo, mat);
     scene.add(mesh);
@@ -123,7 +124,7 @@ export const Mark3D = ({ color = '#22D8F5', className = '' }: { color?: string; 
       renderer.dispose();
       renderer.domElement.remove();
     };
-  }, [color]);
+  }, [color, aurora]);
 
   return <div ref={hostRef} className={className} aria-hidden="true" />;
 };

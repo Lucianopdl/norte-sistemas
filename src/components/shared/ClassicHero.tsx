@@ -13,28 +13,28 @@ const orbs = [
   // Blue — top-left (behind the title area, very subtle)
   {
     style: { width: '38vw', height: '38vw', top: '-10%', left: '-8%' },
-    gradient: 'radial-gradient(circle, rgba(34,216,245,0.12) 0%, transparent 70%)',
+    gradient: 'radial-gradient(circle, rgba(77,99,255,0.16) 0%, transparent 70%)',
     animate: { scale: [1, 1.06, 1], x: [0, 12, 0], y: [0, -8, 0] },
     duration: 16,
   },
-  // Cian Atlas — right-center, detrás de la A 3D
+  // Aurora — right-center, detrás de la N 3D
   {
     style: { width: '28vw', height: '28vw', top: '20%', right: '8%' },
-    gradient: 'radial-gradient(circle, rgba(34,216,245,0.20) 0%, rgba(6,114,140,0.10) 55%, transparent 80%)',
+    gradient: 'radial-gradient(circle, rgba(75,227,160,0.14) 0%, rgba(183,148,255,0.10) 55%, transparent 80%)',
     animate: { scale: [1, 1.10, 1], x: [0, -10, 0], y: [0, 14, 0] },
     duration: 12,
   },
   // Blue — bottom-right (subtle depth)
   {
     style: { width: '32vw', height: '32vw', bottom: '-8%', right: '-4%' },
-    gradient: 'radial-gradient(circle, rgba(6,114,140,0.18) 0%, transparent 70%)',
+    gradient: 'radial-gradient(circle, rgba(183,148,255,0.14) 0%, transparent 70%)',
     animate: { scale: [1, 1.08, 1], x: [0, 8, 0], y: [0, -10, 0] },
     duration: 20,
   },
-  // Cian tenue — center-bottom
+  // Celeste glaciar tenue — center-bottom
   {
     style: { width: '20vw', height: '20vw', bottom: '10%', left: '35%' },
-    gradient: 'radial-gradient(circle, rgba(34,216,245,0.06) 0%, transparent 70%)',
+    gradient: 'radial-gradient(circle, rgba(76,201,240,0.07) 0%, transparent 70%)',
     animate: { scale: [1, 1.15, 1], x: [0, -6, 0], y: [0, 8, 0] },
     duration: 25,
   },
@@ -50,7 +50,7 @@ export const ClassicHero = () => {
       {/* ── Abstract dark background ── */}
       <div
         className="absolute inset-0 z-0 pointer-events-none"
-        style={{ background: 'linear-gradient(160deg, #07090C 0%, #07090C 60%, #06121A 100%)' }}
+        style={{ background: 'linear-gradient(160deg, #0A0F1F 0%, #0A0F1F 55%, #0E1430 100%)' }}
       >
         {/* Colour orbs */}
         {orbs.map((orb, i) => (
@@ -89,13 +89,13 @@ export const ClassicHero = () => {
             transition={{ duration: 0.5 }}
             className="flex items-center gap-3 px-4 py-2 rounded-full border font-mono text-[0.68rem] font-bold tracking-[0.22em] uppercase"
             style={{
-              borderColor: 'rgba(34,216,245,0.35)',
-              color: '#22D8F5',
-              background: 'rgba(34,216,245,0.06)',
+              borderColor: 'rgba(124,140,255,0.35)',
+              color: '#A5B0FF',
+              background: 'rgba(124,140,255,0.08)',
             }}
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#22D8F5] animate-pulse" />
-            AtlaSys · Software a medida
+            <span className="w-1.5 h-1.5 rounded-full bg-[#4BE3A0] animate-pulse" />
+            Norte Sistemas · Software a medida
           </motion.div>
 
           {/* Title */}
@@ -103,16 +103,16 @@ export const ClassicHero = () => {
             initial={{ opacity: 0, x: -28 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.85, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="font-display text-[5rem] md:text-[7rem] lg:text-[8rem] xl:text-[9.5rem] font-black tracking-tighter leading-[0.85]"
+            className="font-display text-[3.75rem] sm:text-[5rem] md:text-[6rem] xl:text-[7.25rem] font-bold tracking-[-0.045em] leading-[0.88]"
           >
             <span
               className="block"
               style={{
-                background: 'linear-gradient(125deg, #EEF3F6 0%, #B7C3CC 100%)',
+                background: 'linear-gradient(125deg, #EEF1F8 0%, #C8CFDD 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
-                filter: 'drop-shadow(0 0 40px rgba(238,243,246,0.10))',
+                filter: 'drop-shadow(0 0 40px rgba(238,241,248,0.08))',
               }}
             >
               {t('hero_title_1')}
@@ -120,11 +120,11 @@ export const ClassicHero = () => {
             <span
               className="block"
               style={{
-                background: 'linear-gradient(125deg, #22D8F5 0%, #06728C 100%)',
+                background: 'linear-gradient(110deg, #7C8CFF 0%, #4CC9F0 55%, #4BE3A0 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
-                filter: 'drop-shadow(0 0 30px rgba(34,216,245,0.25))',
+                filter: 'drop-shadow(0 0 30px rgba(124,140,255,0.25))',
               }}
             >
               {t('hero_title_2')}
@@ -150,10 +150,10 @@ export const ClassicHero = () => {
           >
             <a
               href="#services"
-              className="px-8 py-4 rounded-full font-bold text-sm tracking-widest uppercase text-[#04161B] transition-all hover:scale-105 hover:brightness-110"
+              className="px-8 py-4 rounded-full font-bold text-sm tracking-widest uppercase text-[#0A0F1F] transition-all hover:scale-105 hover:brightness-110"
               style={{
-                background: '#22D8F5',
-                boxShadow: '0 4px 28px rgba(34,216,245,0.28)',
+                background: '#7C8CFF',
+                boxShadow: '0 4px 28px rgba(124,140,255,0.30)',
               }}
             >
               Explorar Servicios
@@ -180,14 +180,14 @@ export const ClassicHero = () => {
               { value: '24/7', label: 'Soporte activo' },
             ].map((stat) => (
               <div key={stat.label} className="flex flex-col gap-0.5">
-                <span className="text-2xl font-black" style={{ color: '#22D8F5' }}>{stat.value}</span>
+                <span className="text-2xl font-black" style={{ color: '#A5B0FF' }}>{stat.value}</span>
                 <span className="text-[0.7rem] text-white/40 font-mono tracking-wider uppercase">{stat.label}</span>
               </div>
             ))}
           </motion.div>
         </div>
 
-        {/* RIGHT: la A de AtlaSys en 3D */}
+        {/* RIGHT: la N de Norte Sistemas en 3D */}
         <motion.div
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -196,9 +196,9 @@ export const ClassicHero = () => {
         >
           <div
             className="absolute inset-[12%] rounded-full pointer-events-none"
-            style={{ background: 'radial-gradient(circle, rgba(34,216,245,0.22) 0%, rgba(34,216,245,0.06) 45%, transparent 70%)', filter: 'blur(20px)' }}
+            style={{ background: 'radial-gradient(circle, rgba(77,99,255,0.26) 0%, rgba(75,227,160,0.06) 45%, transparent 70%)', filter: 'blur(20px)' }}
           />
-          <Mark3D color="#22D8F5" className="relative w-full h-full" />
+          <Mark3D color="#6276FF" aurora className="relative w-full h-full" />
         </motion.div>
 
       </div>
@@ -209,7 +209,7 @@ export const ClassicHero = () => {
         animate={{ scaleX: 1 }}
         transition={{ duration: 1.4, delay: 1, ease: [0.22, 1, 0.36, 1] }}
         className="absolute bottom-0 left-0 h-px w-[45vw] origin-left z-10"
-        style={{ background: 'linear-gradient(to right, #22D8F5 0%, #06728C 60%, transparent 100%)' }}
+        style={{ background: 'linear-gradient(to right, #4BE3A0 0%, #4CC9F0 30%, #7C8CFF 60%, transparent 100%)' }}
       />
     </section>
   );
