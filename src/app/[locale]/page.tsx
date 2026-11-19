@@ -11,6 +11,8 @@ import { ContactCTA } from '@/components/shared/ContactCTA';
 import { TechCarousel } from '@/components/shared/TechCarousel';
 import { Portfolio } from '@/components/shared/Portfolio';
 import { ClassicHero } from '@/components/shared/ClassicHero';
+import { FundadoresBanner } from '@/components/shared/FundadoresBanner';
+import { DiagnosticForm } from '@/components/shared/DiagnosticForm';
 
 export default function Home() {
   const t = useTranslations('Index');
@@ -51,6 +53,7 @@ export default function Home() {
 
       <main className="relative z-10">
         <ClassicHero />
+        <FundadoresBanner />
 
         <section className="relative flex flex-col justify-center container mx-auto px-6 pt-16 pb-12 bg-background">
           <Founder />
@@ -84,6 +87,9 @@ export default function Home() {
         </motion.section>
 
         <Portfolio />
+        <section id="diagnostico" className="container mx-auto px-6 py-16 scroll-mt-24">
+          <DiagnosticForm source="Web · Inicio" />
+        </section>
         <ContactCTA />
       </main>
     </div>
