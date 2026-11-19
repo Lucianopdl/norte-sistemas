@@ -56,7 +56,7 @@ export const ContactCTA = () => {
           {/* High-Tech WhatsApp Button Replacement */}
           <div className="pt-8">
             <motion.a
-                href="https://wa.me/5493735609095"
+                href="https://wa.me/5493735609095?text=%C2%A1Hola%20Norte%20Sistemas!%20Quiero%20pedir%20un%20diagn%C3%B3stico%20gratis%20para%20mi%20negocio."
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.01 }}
@@ -75,10 +75,10 @@ export const ContactCTA = () => {
                         <span className="text-[10px] font-mono text-primary font-bold tracking-[0.3em] uppercase">Estado: En línea</span>
                     </div>
                     <span className="text-3xl md:text-4xl lg:text-5xl font-display font-black text-foreground group-hover:text-primary transition-colors flex items-center gap-4">
-                        LÍNEA_DIRECTA
+                        Escribinos por WhatsApp
                         <ArrowUpRight className="w-8 h-8 opacity-40 group-hover:opacity-100 group-hover:translate-x-2 group-hover:-translate-y-2 transition-all text-primary" />
                     </span>
-                    <span className="text-foreground/50 text-[10px] font-mono tracking-widest mt-1 uppercase">Protocolo: Chat_Seguro_v2.1</span>
+                    <span className="text-foreground/50 text-[10px] font-mono tracking-widest mt-1 uppercase">Diagnóstico gratis · respondemos en el día</span>
                 </div>
 
                 {/* Ink Hover State Overlay */}

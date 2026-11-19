@@ -45,7 +45,8 @@ export const Navbar = () => {
     { name: t('home'), href: '/' },
     { name: t('services'), href: '#services' },
     { name: t('portfolio'), href: '#portfolio' },
-    { name: t('about'), href: '#about' }
+    { name: t('about'), href: '#about' },
+    { name: t('founders'), href: '/fundadores' }
   ];
 
   return (
